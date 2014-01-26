@@ -47,6 +47,9 @@ pubnub.subscribe({
             if (message.transmit) {
                 console.log("Message transmitted!")
             }
+            else if (message.laser){
+            	console.log("Laser fired from "+message.playerName+" with a value of "+message.laser)
+            }
         }
     }
 });

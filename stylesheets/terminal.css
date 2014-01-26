@@ -35,10 +35,13 @@
 }
 
 .terminal {
-    font-family: FreeMono, monospace;
-    color: #aaa;
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 200;
+  src: local('Press Start 2P'), local('PressStart2P-Regular'), url(http://themes.googleusercontent.com/static/fonts/pressstart2p/v2/8Lg6LX8-ntOHUQnvQ0E7o2jf3WypfQQP02nP_ZmoBRo.woff) format('woff');
+    color: white;
     background-color: #000;
-    font-size: 12px;
+    font-size: 8px;
     line-height: 14px;
 }
 .terminal-output > div {

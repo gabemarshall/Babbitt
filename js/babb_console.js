@@ -19,7 +19,7 @@ $(document).ready(function() {
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
             playerName = command
-            term.echo("\nThank you, welcome " + command + ".")
+            term.echo("\nThank you, welcome Cpt. " + command + ".")
             sendMessage({
                 "playerInit": "true",
                 "playerName": command
@@ -37,6 +37,29 @@ $(document).ready(function() {
                     "playerName": playerName
                 })
 
+            } else if (command.indexOf("fire_laser") >= 0 || command.indexOf("laser_fire") >= 0) {
+                if (shieldsActive) {
+                    term.echo("Cannot fire sir! Shields are up!")
+                } else {
+                    term.echo("Laser fired!")
+                    sendMessage({
+                        "laser": 100,
+                        "playerName": playerName
+                    })
+                    ig.game.spawnEntity(EntityLaser, 0, 0);
+                }
+
+            }
+            else if (command.indexOf("raise_shields") >= 0){
+                term.echo("Raising shields");
+                ig.game.spawnEntity(EntityShields, 0, 0);
+                shieldsActive = true
+            }
+            else if (command.indexOf("lower_shields") >= 0){
+                term.echo("Lowering shields");
+                var shield = ig.game.getEntitiesByType( EntityShields )[0];
+                shield.kill()
+                shieldsActive = false
             }
 
         } else {
@@ -44,11 +67,14 @@ $(document).ready(function() {
         }
 
         var oppJoined = function() {
-            term.echo("Oh shit! " + oppName + " has entered our sector!")
+            term.echo("Oh shit! " + oppName + " has entered our sector! Bringing him on screen now...")
+            ig.game.spawnEntity(EntityShip, 0, 0);
             sendMessage({
                 "playerInit": "true",
                 "playerName": playerName
             })
+
+            gameBegun = true
 
         }
 
@@ -65,10 +91,12 @@ $(document).ready(function() {
             }
         }, 1000)
 
+// MULTIPLAYER 
+
         pubnub.subscribe({
             channel: 'main_game',
             callback: function(message) {
-                
+
                 if (message.playerInit) {
 
                     if (message.playerName != playerName && !oppName) {
@@ -76,16 +104,24 @@ $(document).ready(function() {
                     }
                 }
 
+            // MULTIPLAYER CHAT
+
                 if (message.transmit) {
 
 
 
                     if (message.playerName != playerName) {
 
-                        //  alert("Incoming Transmission Sir!! -- "+message.transmit)
+                        printMessage("Incoming Transmission from Cpt. "+message.playerName+":[[b;#000;#d3d3d3]"+message.transmit+"] " )
 
-                        printMessage("Incoming Transmission:" + message.transmit)
+                    }
+                }
 
+            // MULTIPLAYER FIRE LASER
+
+                else if (message.laser){
+                    if (message.playerName != playerName){
+                        alert("INCOMING LASER, OH FUCKKKK")
                     }
                 }
 
@@ -95,10 +131,10 @@ $(document).ready(function() {
     }, {
         greetings: 'Hello..Sir, Welcome to [[b;#000;#d3d3d3]Babbitt] . \nYou must be our new captain, what is your name?',
         name: 'js_demo',
-        height: 200,
+        height: 150,
         prompt: '$> '
     });
-   pubnub.publish({
+    pubnub.publish({
         channel: 'main_game',
         message: "COUNT_REQ"
     })
