@@ -4,9 +4,7 @@
 <head>
     <!--<script src="http://localhost:8080/socket.io/socket.io.js"></script> -->
     <title>Babbitt</title>
-    <script type="text/javascript" src="/js/hud.js"></script>
-    <script type="text/javascript" src="/lib/impact/impact.js"></script>
-	<script type="text/javascript" src="/lib/game/main.js"></script>
+
 	<link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel=
     'stylesheet' type='text/css'>
     <link href='/stylesheets/terminal.css' rel='stylesheet'>
@@ -30,18 +28,20 @@
 </head>
 
 <body>
-    <!-- <div id="info">
-		<p>Players Online: <span class="playerCount"></p>
-	</div> -->
     <div class="wrapper">
         <canvas id="canvas"></canvas>
         <div class="terminal" id="term_demo">
         </div>
 </body>
+
+<script src="js/game_state.js"></script>
+<script type="text/javascript" src="/js/hud.js"></script>
+<script type="text/javascript" src="/lib/impact/impact.js"></script>
+<script type="text/javascript" src="/lib/game/main.js"></script>
 <script src="https://cdn.pubnub.com/pubnub.min.js"></script>
 <script src="bower_components/jquery/jquery.min.js"></script>
 <script src="js/terminal.js"></script>
-<script src="js/game_state.js"></script>
+
 <script src="js/babb_publish.js"></script>
 
 <script src="js/babb_console.js"></script>

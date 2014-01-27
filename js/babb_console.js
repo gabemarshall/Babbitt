@@ -74,8 +74,6 @@ $(document).ready(function() {
             } else if (command.indexOf("lower_shields") >= 0) {
                 if (shieldsActive) {
                     term.echo("Lowering shields");
-                    var shield = ig.game.getEntitiesByType(EntityShields)[0];
-                    shield.kill()
                     shieldsActive = false
                 } else {
                     term.echo("Cannot lower shields. They're already down!")
