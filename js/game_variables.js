@@ -22,8 +22,36 @@ var checkIfAlive = function(hp) {
     }
 }
 
+var checkPowerAvailability = function(powerRequest, module){
+    var actualPowerReq = Math.ceil((powerRequest + 0) / 10) * 10;
+    if ((powerLevel - actualPowerReq) <= 0){
+        return false;
+    } else {
+        
+        if(module === "shields"){
+            shieldLevel = actualPowerReq;
+            //powerLevel -= actualPowerReq
+        } else {
+            powerLevel -= actualPowerReq
+        }
+        return true;
+    }
+}
+
 var destroyEnemyShip = function() {
     var ship = ig.game.getEntitiesByType(EntityShip)[0];
     ship.kill()
-    
+
+}
+
+var shakeScreen = function() {
+    $('.wrapper').jrumble({
+        x: 2,
+        y: 2,
+        rotation: 1
+    });
+    $('.wrapper').trigger('startRumble');
+    setTimeout(function(){
+    	$('.wrapper').trigger('stopRumble');
+    }, 200)
 }

@@ -39,44 +39,55 @@ $(document).ready(function() {
 
                 // LOCAL PLAYER FIRE LASER
 
-            } else if (command.indexOf("fire_laser") >= 0 || command.indexOf("laser_fire") >= 0) {
+            } else if (command.indexOf("laser") >= 0 || command.indexOf("laser_fire") >= 0) {
+
+                var laserValue = command.replace(/(laser)/g, "")
+                if (!laserValue) {
+                    var laserValue = 1
+                }
+
                 if (shieldsActive) {
-                    term.echo("Cannot fire sir! Shields are up!")
+                    term.echo("Error: Cannot engage lasers while Shields are up.")
                 } else if (laserActive) {
-                    term.echo("Cannot fire sir! Laser is already engaged!")
+                    term.echo("Error: Laser system already engaged")
+                } else if (!checkPowerAvailability(laserValue, "laser")) {
+                    term.echo("Error: Not enough available power.")
                 } else {
                     term.echo("Firing laser cannon!")
                     laserActive = true
-                    // TODO - Instead of simply firing a laser, send a message to opponent that lasers 
-                    // Are warming up so they will have a chance to defend
+
+                    // Send opponent a warning message that
+                    // lasers are warming up so they will have a chance to defend
                     sendMessage({
                         "incoming_laser": true,
                         "playerName": playerName
                     })
                     setTimeout(function() {
                         sendMessage({
-                            "laser": 1,
+                            "laser": laserValue,
                             "playerName": playerName
                         })
                     }, 4500)
                     ig.game.spawnEntity(EntityLaser, 0, 0);
                 }
 
-            } else if (command.indexOf("raise_shields") >= 0) {
-                if (!shieldsActive) {
-                    term.echo("Raising shields");
-                    ig.game.spawnEntity(EntityShields, 0, 0);
-                    shieldsActive = true
-                } else {
-                    term.echo("Cannot raise shields, they're already up!")
-                }
-
-            } else if (command.indexOf("lower_shields") >= 0) {
-                if (shieldsActive) {
+            } else if (command.indexOf("shields") >= 0) {
+                var shieldsPowerValue = command.replace(/(shields)/g, "")
+                if (shieldsPowerValue == 0) {
                     term.echo("Lowering shields");
                     shieldsActive = false
+
+                }
+                else if (!shieldsPowerValue) {
+                    term.echo("Error: You must enter a value after the command Shields")
+                } else if (checkPowerAvailability(shieldsPowerValue, "shields") && shieldsPowerValue != 0) {
+                    
+                    term.echo("Raising shields. Shields set to " + shieldsPowerValue);
+                    ig.game.spawnEntity(EntityShields, 0, 0);
+                    shieldsActive = true
+                    // TODO setShields
                 } else {
-                    term.echo("Cannot lower shields. They're already down!")
+                    term.echo("Error: Not enough power, cannot raise shields to that level.")
                 }
 
             }
@@ -144,20 +155,21 @@ $(document).ready(function() {
                     if (message.playerName != playerName) {
                         if (shieldsActive) {
                             printMessage("We've been hit! No worries sir, shields were active so no damage was taken.")
+                            shakeScreen()
                             sendMessage({
-                                "laser_hit": 0,
+                                "laser_hit": false,
                                 "damage": 0,
                                 "playerName": playerName
                             })
                         } else {
                             printMessage("We've been hit! We took [[b;#FF0000;#000000]" + message.laser + "] damage sir..")
-
+                            shakeScreen()
                             // Subtract damage from hitpoints
                             shipHP = shipHP - message.laser;
 
 
                             sendMessage({
-                                "laser_hit": message.laser,
+                                "laser_hit": true,
                                 "damage": message.laser,
                                 "hitpoints": shipHP,
                                 "playerName": playerName
@@ -174,7 +186,7 @@ $(document).ready(function() {
                     }
                 }
                 // MULTIPLAYER ATTACKER RECEIVES WHETHER OR NOT HIT WAS SUCCESSFUL
-                else if (message.laser_hit === 0 || message.laser_hit === 1) {
+                else if (message.laser_hit) {
                     laserActive = false // disengage laser to allow them to fire again
                     if (message.playerName != playerName) {
                         if (message.laser_hit === 0) {
@@ -183,7 +195,7 @@ $(document).ready(function() {
                             laser.kill()
                             ig.game.spawnEntity(EntityeShields, 0, 0);
                             ig.game.spawnEntity(EntityLaserHit, 0, 0);
-                        
+
                         } else {
                             printMessage("Inflicted " + message.damage + " points of damage! Hurrah!")
                             printMessage(message.playerName + " is down to " + message.hitpoints)
