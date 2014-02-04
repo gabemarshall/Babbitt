@@ -19,7 +19,7 @@ $(document).ready(function() {
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
             playerName = command
-            term.echo("\nThank you, welcome Cpt. " + command + ".")
+            term.echo("\nThank you, welcome Cpt. " + command + ". Welcome to Sector "+gameID)
             sendMessage({
                 "playerInit": "true",
                 "playerName": command
@@ -77,11 +77,10 @@ $(document).ready(function() {
                     term.echo("Lowering shields");
                     shieldsActive = false
 
-                }
-                else if (!shieldsPowerValue) {
+                } else if (!shieldsPowerValue) {
                     term.echo("Error: You must enter a value after the command Shields")
                 } else if (checkPowerAvailability(shieldsPowerValue, "shields") && shieldsPowerValue != 0) {
-                    
+
                     term.echo("Raising shields. Shields set to " + shieldsPowerValue);
                     ig.game.spawnEntity(EntityShields, 0, 0);
                     shieldsActive = true
@@ -112,6 +111,9 @@ $(document).ready(function() {
             term.echo(msg)
         }
 
+        if(!gameBegun){
+
+
         var consoleChecksGameStatus = setInterval(function() {
             if (oppName && !gameBegun) {
                 gameBegun = true
@@ -120,13 +122,16 @@ $(document).ready(function() {
 
             }
         }, 1000)
+    }
 
         // MULTIPLAYER 
 
         pubnub.subscribe({
-            channel: 'main_game',
+            channel: 'babb'+gameID,
             callback: function(message) {
 
+
+                
                 if (message.playerInit) {
 
                     if (message.playerName != playerName && !oppName) {
@@ -204,7 +209,7 @@ $(document).ready(function() {
                             ig.game.spawnEntity(EntityLaserHit, 0, 0);
                             if (!checkIfAlive(message.hitpoints)) {
                                 destroyEnemyShip()
-                                printMessage("We've won sir! Good job!")
+                                printMessage("The enemy has been destroyed. Congratulations.")
                             }
                         }
 
@@ -215,15 +220,12 @@ $(document).ready(function() {
         });
 
     }, {
-        greetings: 'Hello..Sir, Welcome to [[b;#000;#d3d3d3]Babbitt] . \nYou must be our new captain, what is your name?',
+        greetings: 'Hello there, Welcome to [[b;#000;#d3d3d3]Babbitt] . \nYou must be the new captain, what is your name?',
         name: 'js_demo',
         height: 150,
         prompt: '$> '
     });
-    pubnub.publish({
-        channel: 'main_game',
-        message: "COUNT_REQ"
-    })
+
 });
 $('#term_demo').click(function() {
     this.focus();

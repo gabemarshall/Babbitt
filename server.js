@@ -1,12 +1,6 @@
-﻿var express = require('express')
-  , http = require('http')
-  , path = require('path');
-
-var pubnub = require("./node/pubnub.js").init({
-    publish_key: "pub-c-2046f9d0-c49d-4375-b449-fc635c431624",
-    subscribe_key: "sub-c-b1fa38be-85ec-11e3-a9a9-02ee2ddab7fe"
-});
-
+﻿var express = require('express'),
+    http = require('http'),
+    path = require('path');
 
 var app = express();
 
@@ -23,69 +17,78 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-
 var players = []
 var clients = 0
 
-pubnub.subscribe({
-    channel: "main_game",
-    callback: function(message) {
-        console.log("Message From Client - ", message);
 
-        if (message === "COUNT_REQ") {
-            clients++
-
-            if (clients > 2) {
-                setTimeout(function() {
-                    pubnub.publish({
-                        channel: "main_game",
-                        message: {"error_player_count":"There are too many players in the game..."}
-                    })
-                }, 3000)
-            }
-            console.log("Requesting player count, there are " + players.length + " players.")
-            console.log(clients)
-
-
-        }
-
-        if (message.playerName) {
-            if (players.indexOf(message.playerName) >= 0) {
-
-            } else {
-                players.push(message.playerName)
-                console.log("New player joined!")
-            }
-
-            if (message.transmit) {
-                console.log("Message transmitted!")
-            }
-            else if (message.laser){
-            	console.log("Laser fired from "+message.playerName+" with a value of "+message.laser)
-            }
-        }
-    }
+app.get('/sector', function(req, res) {
+    res.render('sector');
 });
 
-
-
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
     res.render('index');
+})
+
+app.get('/error', function(req, res) {
+    res.render('error');
+})
+
+http.createServer(app).listen(app.get('port'), function() {
+    console.log('Express server listening on port ' + app.get('port'));
 });
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});
 
-// var startGame = function() {
-//     pubnub.publish({
-//         channel: "main_game",
-//         message: 'GAMEON'
+// var subscribeToChannel = function(channelID) {
+//     pubnub.subscribe({
+//         channel: "main_game"+channelID,
+//         callback: function(message) {
+//             console.log("Message From Client - ", message);
+
+
+//             if (message.CANPLAY) {
+//                 clients++
+
+//                 console.log("Number of clients: " + clients)
+
+//             }
+
+//             if (message.playerName) {
+//                 if (players.indexOf(message.playerName) >= 0) {
+
+//                 } else {
+//                     players.push(message.playerName)
+//                     console.log("New player joined!")
+//                 }
+
+//                 if (message.transmit) {
+//                     console.log("Message transmitted!")
+//                 } else if (message.laser) {
+//                     console.log("Laser fired from " + message.playerName + " with a value of " + message.laser)
+//                 }
+//             }
+//         }
 //     });
 // }
-// setInterval( function() {
+
+// subscribeToChannel("main_game512")
+
+
+//"main_game512"
+
+// var HealthCheck = function(gameID, p_clients) {
 //     pubnub.publish({
-//         channel : "my_browser_channel",
-//         message : 'Hello from Node!'
+//         channel: gameID,
+//         message: {
+//             "HEALTHCHECK": p_clients,
+//             "GAMEID": gameID
+//         }
 //     });
-// }, 1000 );
+// }
+
+
+// setInterval(function() {
+//     for (i = 0; i < games.length; i++) {
+//         HealthCheck(games[i].id, games[i].clients)
+//     }
+//     //console.log("hummm")
+// }, 1000);

@@ -1,0 +1,14 @@
+    .wrapper {
+        height:100%;
+        width:100%;
+        position:absolute;
+    }
+    .terminal {
+        bottom:0;
+        width:100%;
+    }
+    #canvas {
+        /*position:absolute;*/
+        height:75%;
+        width:100%;
+    }

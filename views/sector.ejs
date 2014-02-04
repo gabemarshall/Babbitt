@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--<script src="http://localhost:8080/socket.io/socket.io.js"></script> -->
+    <title>Babbitt</title>
+
+	<link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel=
+    'stylesheet' type='text/css'>
+    <link href='/stylesheets/terminal.css' rel='stylesheet'>
+    <link href='/stylesheets/game.css' rel='stylesheet'>
+    <script>
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+        var gameID = decodeURI(getParameterByName("id"))
+
+        var allowedToPlay = false
+    </script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <canvas id="canvas"></canvas>
+        <div class="terminal" id="term_demo">
+        </div>
+</body>
+
+<script src="bower_components/jquery/jquery.min.js"></script> <!-- UI Terminal Dependency -->
+<script type="text/javascript" src="/js/game_variables.js"></script> <!-- Global Game Variables -->
+<script type="text/javascript" src="/lib/impact/impact.js"></script> <!-- ImpactJS Core Library -->
+<script type="text/javascript" src="/lib/game/main.js"></script> <!-- ImpactJS Draw/Update Methods -->
+<script src="https://cdn.pubnub.com/pubnub.min.js"></script> <!-- Multiplayer Networking depdency -->
+
+<script src="js/terminal.js"></script>  <!-- UI Terminal Dependency -->
+<script src="js/game_multiplayer.js"></script> <!-- Game Multiplayer Methods -->
+<script src="js/game_console.js"></script>  <!-- Game Console Functionality --> 
+<script src="js/game_loop.js"></script> <!-- Main Game Loop -->
+<script src="js/rumble.min.js"></script>
+
+<script>
+
+
+</script>
+</html>
