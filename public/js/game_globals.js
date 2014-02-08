@@ -1,19 +1,28 @@
 // Variables set in here are global and used in both core game logic (game_loop.js & game_console.js)
 // and also used in the ImpactJS draw method (lib/game/main.js)
 
-
-var powerLevel = 100;
-var shieldLevel = 100;
-
-var playerName;
-var oppName;
+//game states
 var termInit = false;
 var gameBegun = false;
 
-var shieldsActive = false;
-var laserActive = false;
+//player
+var playerName;
+var oppName;
 
+//ship
 var shipHP = 100;
+
+//reactor
+var powerLevel = 100;
+
+//lasers
+var laserActive = false;
+var laserBound = {lowerBound:0, upperBound:100};
+
+//shields
+var shieldsActive = false;
+var shieldLevel = 100;
+var shieldBound = {lowerBound:0, upperBound:100};
 
 var checkIfAlive = function(hp) {
     if (hp <= 0) {
@@ -24,13 +33,12 @@ var checkIfAlive = function(hp) {
     }
 }
 
-var checkPowerAvailability = function(powerRequest, module){
-
-    if ((powerLevel - powerRequest) <= 0){
+var checkPowerAvailability = function(powerRequest, module) {
+    if ((powerLevel - powerRequest) <= 0) {
         return false;
     }
     else {
-        if(module === "shields"){
+        if(module === "shields") {
             shieldLevel = powerRequest;
         }
         else {
@@ -68,7 +76,7 @@ var adjustLaserValue = function(laserValue) {
     return laserValue;
 }
 
-var adjustShipHP = function(laserValue){
+var adjustShipHP = function(laserValue) {
     shipHP = shipHP - laserValue;
     if (shipHP < 0) {
         shipHP = 0;
@@ -77,4 +85,14 @@ var adjustShipHP = function(laserValue){
         shipHP = 100;
     }
     return shipHP;
+}
+
+var limitValue = function(value, lbound, ubound) {
+    if (value < lbound) {
+        value = lbound;
+    }
+    else if (value > ubound) {
+        value = ubound;
+    }
+    return value;
 }
