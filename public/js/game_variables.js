@@ -13,7 +13,7 @@ var gameBegun = false
 var shieldsActive = false
 var laserActive = false
 
-var shipHP = 10
+var shipHP = 100
 
 var checkIfAlive = function(hp) {
     if (hp <= 0) {
@@ -24,16 +24,15 @@ var checkIfAlive = function(hp) {
 }
 
 var checkPowerAvailability = function(powerRequest, module){
-    var actualPowerReq = Math.ceil((powerRequest + 0) / 10) * 10;
-    if ((powerLevel - actualPowerReq) <= 0){
+
+    if ((powerLevel - powerRequest) <= 0){
         return false;
     } else {
         
         if(module === "shields"){
-            shieldLevel = actualPowerReq;
-            //powerLevel -= actualPowerReq
+            shieldLevel = powerRequest;
         } else {
-            powerLevel -= actualPowerReq
+            powerLevel -= powerRequest;
         }
         return true;
     }
@@ -55,4 +54,15 @@ var shakeScreen = function() {
     setTimeout(function(){
     	$('.wrapper').trigger('stopRumble');
     }, 200)
+}
+
+function adjustLaserValue(laserValue) {
+    laserValue = laserValue - shieldLevel;
+    if (laserValue < 0) {
+        laserValue = 0;
+    }
+    else if (laserValue > 100) {
+        laserValue = 100;
+    }
+    return laserValue;
 }

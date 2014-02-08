@@ -154,42 +154,16 @@ $(document).ready(function() {
                 // MULTIPLAYER FIRE LASER
                 else if (message.incoming_laser) {
                     if (message.playerName != playerName) {
-                        printMessage(message.playerName + " is warming up his lasers!")
+                        printMessage(message.playerName + " is powering up his lasers.")
                     }
-                } else if (message.laser) {
+                } 
+                else if (message.laser) {
                     if (message.playerName != playerName) {
-                        if (shieldsActive) {
-                            printMessage("We've been hit! No worries sir, shields were active so no damage was taken.")
-                            shakeScreen()
-                            sendMessage({
-                                "laser_hit": false,
-                                "damage": 0,
-                                "playerName": playerName
-                            })
-                        } else {
-                            printMessage("We've been hit! We took [[b;#FF0000;#000000]" + message.laser + "] damage sir..")
-                            shakeScreen()
-                            // Subtract damage from hitpoints
-                            shipHP = shipHP - message.laser;
-
-
-                            sendMessage({
-                                "laser_hit": true,
-                                "damage": message.laser,
-                                "hitpoints": shipHP,
-                                "playerName": playerName
-                            })
-                            if (!checkIfAlive(shipHP)) {
-                                destroyEnemyShip()
-                                printMessage("You are dead.")
-                                setTimeout(function() {
-                                    window.location = 'http://www.youtube.com/watch?v=mD7R5yx27ec#t=21'
-                                }, 2000)
-
-                            }
-                        }
+                        var laserDamage = adjustLaserValue(message.laser);
+                        alert(laserDamage);
+                        } 
                     }
-                }
+                
                 // MULTIPLAYER ATTACKER RECEIVES WHETHER OR NOT HIT WAS SUCCESSFUL
                 else if (message.laser_hit) {
                     laserActive = false // disengage laser to allow them to fire again
@@ -201,7 +175,8 @@ $(document).ready(function() {
                             ig.game.spawnEntity(EntityeShields, 0, 0);
                             ig.game.spawnEntity(EntityLaserHit, 0, 0);
 
-                        } else {
+                        }
+                        else {
                             printMessage("Inflicted " + message.damage + " points of damage! Hurrah!")
                             printMessage(message.playerName + " is down to " + message.hitpoints)
                             var laser = ig.game.getEntitiesByType(EntityLaser)[0];
@@ -212,7 +187,6 @@ $(document).ready(function() {
                                 printMessage("The enemy has been destroyed. Congratulations.")
                             }
                         }
-
                     }
                 }
 
