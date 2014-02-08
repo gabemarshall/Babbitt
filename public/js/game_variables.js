@@ -1,7 +1,7 @@
 // Variables set in here are global and used in both core game logic (game_loop.js & game_console.js)
 // and also used in the ImpactJS draw method (lib/game/main.js)
 
-
+//Ship Stats
 var powerLevel = 100;
 var shieldLevel = 100;
 
@@ -15,6 +15,8 @@ var laserActive = false;
 
 var shipHP = 100;
 
+
+//Functions
 var checkIfAlive = function(hp) {
     if (hp <= 0) {
         return false;
@@ -24,13 +26,13 @@ var checkIfAlive = function(hp) {
     }
 }
 
-var checkPowerAvailability = function(powerRequest, module){
+var checkPowerAvailability = function(powerRequest, module) {
 
-    if ((powerLevel - powerRequest) <= 0){
+    if ((powerLevel - powerRequest) <= 0) {
         return false;
     }
     else {
-        if(module === "shields"){
+        if(module === "shields") {
             shieldLevel = powerRequest;
         }
         else {
@@ -42,7 +44,7 @@ var checkPowerAvailability = function(powerRequest, module){
 
 var destroyEnemyShip = function() {
     var ship = ig.game.getEntitiesByType(EntityShip)[0];
-    ship.kill()
+    ship.kill();
 }
 
 var shakeScreen = function() {
