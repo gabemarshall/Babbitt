@@ -1,6 +1,7 @@
 // Variables set in here are global and used in both core game logic (game_loop.js & game_console.js)
 // and also used in the ImpactJS draw method (lib/game/main.js)
 
+
 //game states
 var termInit = false;
 var gameBegun = false;
@@ -11,6 +12,28 @@ var playerName;
 //opponent
 var oppName;
 var opponent; //stores oppontens ship properties
+
+function limit(low, high) {
+    this.lower = low;
+    this.upper = high;
+}
+
+function shipSystem() {
+    this.power {
+        current:0,
+        limits: new limit(0,100)
+    };
+}
+
+function playerShip() {
+    //reactor
+    this.hull = new shipSystem();
+    this.reactor = new shipSystem();
+    this.laser = new shipSystem();
+    this.shield = new shipSystem();
+}
+
+var ship = new playerShip();
 
 //ship
 var shipHP = 100;
