@@ -2,24 +2,25 @@
 // and also used in the ImpactJS draw method (lib/game/main.js)
 
 
-var powerLevel = 100
-var shieldLevel = 100
+var powerLevel = 100;
+var shieldLevel = 100;
 
-var playerName
-var oppName
-var termInit = false
-var gameBegun = false
+var playerName;
+var oppName;
+var termInit = false;
+var gameBegun = false;
 
-var shieldsActive = false
-var laserActive = false
+var shieldsActive = false;
+var laserActive = false;
 
-var shipHP = 100
+var shipHP = 100;
 
 var checkIfAlive = function(hp) {
     if (hp <= 0) {
-        return false
-    } else {
-        return true
+        return false;
+    }
+    else {
+        return true;
     }
 }
 
@@ -27,11 +28,12 @@ var checkPowerAvailability = function(powerRequest, module){
 
     if ((powerLevel - powerRequest) <= 0){
         return false;
-    } else {
-        
+    }
+    else {
         if(module === "shields"){
             shieldLevel = powerRequest;
-        } else {
+        }
+        else {
             powerLevel -= powerRequest;
         }
         return true;
@@ -41,7 +43,6 @@ var checkPowerAvailability = function(powerRequest, module){
 var destroyEnemyShip = function() {
     var ship = ig.game.getEntitiesByType(EntityShip)[0];
     ship.kill()
-
 }
 
 var shakeScreen = function() {
