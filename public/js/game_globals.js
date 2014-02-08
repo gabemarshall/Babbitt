@@ -7,10 +7,14 @@ var gameBegun = false;
 
 //player
 var playerName;
+
+//opponent
 var oppName;
+var opponent; //stores oppontens ship properties
 
 //ship
 var shipHP = 100;
+var shipHPBound = {lowerBound:0, upperBound:100};
 
 //reactor
 var powerLevel = 100;
@@ -78,6 +82,7 @@ var adjustLaserValue = function(laserValue) {
 
 var adjustShipHP = function(laserValue) {
     shipHP = shipHP - laserValue;
+    //shipHP = limitValue(shipHP, ship)
     if (shipHP < 0) {
         shipHP = 0;
     }
