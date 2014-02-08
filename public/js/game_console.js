@@ -160,7 +160,8 @@ $(document).ready(function() {
                 else if (message.laser) {
                     if (message.playerName != playerName) {
                         var laserDamage = adjustLaserValue(message.laser);
-                        alert(laserDamage);
+                        adjustShipHP(laserDamage)
+                        alert(shipHP);
                         } 
                     }
                 
