@@ -1,79 +1,82 @@
 // Variables set in here are global and used in both core game logic (game_loop.js & game_console.js)
 // and also used in the ImpactJS draw method (lib/game/main.js)
 
-
-//game states
-var termInit = false;
-var gameBegun = false;
-
-//player
-//**plase out this 
-var playerName;
-
-//opponent
-var oppName;
-
-//used to limit values
-function Limit(low, high) {
-    this.lower = low;
-    this.upper = high;
-}
-
-//store data, history, and limits
-function Value(low, high) {
-    this.current = 0.0;
-    this.previous = 0.0;
-    this.limit = new Limit(low, high);
-}
-
-//foundation for ship systems
-function System() {
-    this.power = new Value(0.0,100.0);
-    this.operation = new Value(0.0,100.0);
-}
-
-//ship systems defined
-//**work to inherit methods/vars from System
-function Reactor() {
-    this.output = new Value(0.0,100.0);
-}
-
-function Laser() {
-
-}
-
-function Sheild() {
-
-}
-
+//Ship Data
+//Just getting organized, still needs a ton of work.
 function playerShip() {
-    //reactor
+
     this.shipName;
     this.playerName;
-    this.hull = new System();
     this.reactor = new System();
     this.laser = new System();
     this.shield = new System();
+
+    function History(past, present) {
+        this.previous = past;
+        this.current = present;
+    }
+
+    function Vector(h, v) {
+        this.horizontal = new History(h, h);
+        this.vertical = new History(v, v);
+    }
+
+    function Limit(low, high) {
+        this.lower = new History(low, low);
+        this.upper = new History(high, high);
+    }
+
+    function Resource(low, high) {
+        this.reserve = new History();
+        this.limit = new Limit(low, high);
+    }
+
+    function System() {
+        this.location = new Vector();
+        this.power = new Resource(0.0, 100.0);
+    }
+
+    function Reactor() {
+
+    }
+
+    function Laser() {
+
+    }
+
+    function Sheild() {
+
+    }
+
+    function Hull() {
+
+    }
 }
 
+//two variables that hold player ship and enemy ship data
 var myShip = new playerShip();
 var enemyShip;
 
-//ship
+//an example of acessing ship data
+//getting the upper power limit of a reactor system
+//alert(myShip.reactor.power.limit.upper.current);
+
+//Game States
+var termInit = false;
+var gameBegun = false;
+
+//**PHASE OUT
+var playerName; 
+var oppName;
 var shipHP = 100;
 var shipHPBound = {lowerBound:0, upperBound:100};
-
-//reactor
 var powerLevel = 100;
-
-//lasers
 var laserActive = false;
 var laserBound = {lowerBound:0, upperBound:100};
-
-//shields
 var shieldsActive = false;
 var shieldLevel = 100;
 var shieldBound = {lowerBound:0, upperBound:100};
+//**PHASE OUT
 
 var checkIfAlive = function(hp) {
     if (hp <= 0) {
