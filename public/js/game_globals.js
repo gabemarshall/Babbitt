@@ -19,7 +19,7 @@ function limit(low, high) {
 }
 
 function shipSystem() {
-    this.power {
+    this.power = {
         current:0,
         limits: new limit(0,100)
     };

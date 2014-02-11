@@ -19,7 +19,7 @@ $(document).ready(function() {
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
             playerName = command
-            term.echo("\nThank you, welcome Cpt. " + command + ". Welcome to Sector "+gameID)
+            term.echo("\nThank you, welcome Cpt. " + command + ". Welcome to Sector " + gameID)
             sendMessage({
                 "playerInit": "true",
                 "playerName": command
@@ -111,27 +111,31 @@ $(document).ready(function() {
             term.echo(msg)
         }
 
-        if(!gameBegun){
+        if (!gameBegun) {
 
 
-        var consoleChecksGameStatus = setInterval(function() {
-            if (oppName && !gameBegun) {
-                gameBegun = true
-                oppJoined()
-            } else {
+            var consoleChecksGameStatus = setInterval(function() {
+                if (oppName && !gameBegun) {
+                    gameBegun = true
+                    oppJoined()
+                } else {
 
-            }
-        }, 1000)
-    }
+                }
+            }, 1000)
+        }
 
         // MULTIPLAYER 
 
         pubnub.subscribe({
-            channel: 'babb'+gameID,
+            channel: 'babb' + gameID,
             callback: function(message) {
 
+                if (message.UPDATE && message.SENDER != playerName) {
+                    opponent = message.UPDATE
+                }
 
-                
+
+
                 if (message.playerInit) {
 
                     if (message.playerName != playerName && !oppName) {
@@ -156,15 +160,14 @@ $(document).ready(function() {
                     if (message.playerName != playerName) {
                         printMessage(message.playerName + " is powering up his lasers.")
                     }
-                } 
-                else if (message.laser) {
+                } else if (message.laser) {
                     if (message.playerName != playerName) {
                         var laserDamage = adjustLaserValue(message.laser);
                         adjustShipHP(laserDamage)
                         alert(shipHP);
-                        } 
                     }
-                
+                }
+
                 // MULTIPLAYER ATTACKER RECEIVES WHETHER OR NOT HIT WAS SUCCESSFUL
                 else if (message.laser_hit) {
                     laserActive = false // disengage laser to allow them to fire again
@@ -176,8 +179,7 @@ $(document).ready(function() {
                             ig.game.spawnEntity(EntityeShields, 0, 0);
                             ig.game.spawnEntity(EntityLaserHit, 0, 0);
 
-                        }
-                        else {
+                        } else {
                             printMessage("Inflicted " + message.damage + " points of damage! Hurrah!")
                             printMessage(message.playerName + " is down to " + message.hitpoints)
                             var laser = ig.game.getEntitiesByType(EntityLaser)[0];

@@ -4,23 +4,7 @@ var pubnub = PUBNUB.init({
     subscribe_key: 'sub-c-b1fa38be-85ec-11e3-a9a9-02ee2ddab7fe',
     uuid: userID
 });
-pubnub.subscribe({
-    channel: 'babb'+gameID,
-    message: function(message) {
-        if (message.HEALTHCHECK) {
-            //alert(1)
-            var healthcheck = parseInt(message.HEALTHCHECK)
-            if (healthcheck >= 2 && !allowedToPlay) {
-                alert("Hey get out")
-            } else {
-                allowedToPlay = true;
-                sendMessage({
-                    "CANPLAY":true
-                })
-            }
-        }
-    }
-});
+
 
 
 var sendMessage = function(msg) {
@@ -30,20 +14,13 @@ var sendMessage = function(msg) {
     })
 }
 
+var updateOtherPlayer = function(){
+    pubnub.publish({
+        channel: 'babb'+gameID,
+        message: {'UPDATE':ship, 'SENDER':playerName}
+    })
+}
 
-
-
-
-   pubnub.subscribe({
-    channel: 'babb'+gameID,
-    message: function(message){
-        if (message.HEALTHCHECK){
-            alert("yooo")
-        }
-
-
-    }
- });
 
 var getPlayers = function(){
 pubnub.here_now({
