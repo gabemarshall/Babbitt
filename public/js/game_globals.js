@@ -11,29 +11,51 @@ var playerName;
 
 //opponent
 var oppName;
-var opponent; //stores oppontens ship properties
 
-function limit(low, high) {
+//used to limit values
+function Limit(low, high) {
     this.lower = low;
     this.upper = high;
 }
 
-function shipSystem() {
-    this.power = {
-        current:0,
-        limits: new limit(0,100)
-    };
+//store data, history, and limits
+function Value(low, high) {
+    this.current = 0.0;
+    this.previous = 0.0;
+    this.limit = new Limit(low, high);
+}
+
+//foundation for ship systems
+function System() {
+    this.power = new Value(0.0,100.0);
+    this.operation = new Value(0.0,100.0);
+}
+
+//ship systems defined
+//**work to inherit methods/vars from System
+function Reactor() {
+    this.output = new Value(0.0,100.0);
+}
+
+function Laser() {
+
+}
+
+function Sheild() {
+
 }
 
 function playerShip() {
     //reactor
-    this.hull = new shipSystem();
-    this.reactor = new shipSystem();
-    this.laser = new shipSystem();
-    this.shield = new shipSystem();
+    this.name;
+    this.hull = new System();
+    this.reactor = new System();
+    this.laser = new System();
+    this.shield = new System();
 }
 
-var ship = new playerShip();
+var myShip = new playerShip();
+var enemyShip;
 
 //ship
 var shipHP = 100;
