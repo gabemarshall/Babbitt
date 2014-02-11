@@ -7,6 +7,7 @@ var termInit = false;
 var gameBegun = false;
 
 //player
+//**plase out this 
 var playerName;
 
 //opponent
@@ -47,7 +48,8 @@ function Sheild() {
 
 function playerShip() {
     //reactor
-    this.name;
+    this.shipName;
+    this.playerName;
     this.hull = new System();
     this.reactor = new System();
     this.laser = new System();
