@@ -13,9 +13,10 @@ function playerShip() {
 
     //A function that keep tract of current/previous value
     //** Merge Limit/Resource with History, and rename to Data
-    function History(previous, current) {
+    function History(previous, current, lower, upper) {
         var previous = previous;
         var current = current;
+        var limit = new Limit(lower, upper);
         this.__defineGetter__("previous", function() {
             return previous;
         });
@@ -26,8 +27,14 @@ function playerShip() {
             if (value !== current) {
                 previous = current;
                 current = value;
+
+                //insert code to keep in limits
             }
         });
+        function Limit(lower, upper) {
+            this.lower = lower;
+            this.upper = upper;
+        }
     }
 
     function Vector(horizontal, vertical) {
@@ -48,18 +55,15 @@ function playerShip() {
     //** Phase out
 
     function Reactor() {
-        this.location = new Vector(0,0);
-        this.power = new Resource(0.0, 100.0);       
+        this.location = new Vector(0,0);   
     }
 
     function Laser() {
         this.location = new Vector(0,0);
-        this.power = new Resource(0.0, 100.0);
     }
 
     function Shield() {
         this.location = new Vector(0,0);
-        this.power = new Resource(0.0, 100.0);
     }
 }
 
