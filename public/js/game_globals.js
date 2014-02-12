@@ -10,13 +10,11 @@ function playerShip() {
     this.reactor = new Reactor();
     this.laser = new Laser();
     this.shield = new Shield();
+    this.hull = new Hull();
 
-    //A function that keep tract of current/previous value
-    //** Merge Limit/Resource with History, and rename to Data
-    function History(previous, current, lower, upper) {
-        var previous = previous;
-        var current = current;
-        var limit = new Limit(lower, upper);
+    function Data(initialize) {
+        var previous = initialize;
+        var current = initialize;
         this.__defineGetter__("previous", function() {
             return previous;
         });
@@ -24,56 +22,41 @@ function playerShip() {
             return current;
         });  
         this.__defineSetter__("current", function(value) {
-            if (value !== current) {
+            if (current !== value) {
                 previous = current;
                 current = value;
-
-                //insert code to keep in limits
             }
         });
-        function Limit(lower, upper) {
-            this.lower = lower;
-            this.upper = upper;
-        }
     }
 
-    function Vector(horizontal, vertical) {
-        this.horizontal = new History(horizontal, horizontal);
-        this.vertical = new History(vertical, vertical);
+    function Location(horizontal, vertical) {
+        this.horizontal = new Data(horizontal);
+        this.vertical = new Data(vertical);
     }
-
-    //** Phase out
-    function Limit(lower, upper) {
-        this.lower = new History(lower, lower);
-        this.upper = new History(upper, upper);
-    }
-    // ** Merge Limit/Resource with History - rename history as "Data"
-    function Resource(lower, upper) {
-        this.reserve = new History(0,0);
-        this.limit = new Limit(lower, upper);
-    }
-    //** Phase out
 
     function Reactor() {
-        this.location = new Vector(0,0);   
+        this.location = new Location(0, 0);
+        this.power = new Data(0.0);
+        this.damage = new Data(0.0);
+        this.operation = new Data(100.0);
     }
 
     function Laser() {
-        this.location = new Vector(0,0);
+
     }
 
-    function Shield() {
-        this.location = new Vector(0,0);
+    function Shield () {
+
+    }
+
+    function Hull() {
+
     }
 }
 
 //two variables that hold player ship and enemy ship data
 var myShip = new playerShip();
 var enemyShip;
-
-//an example of acessing ship data
-//getting the upper power limit of a reactor system
-//alert(myShip.reactor.power.limit.upper.current);
 
 //Game States
 var termInit = false;
