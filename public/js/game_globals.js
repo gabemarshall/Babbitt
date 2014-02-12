@@ -7,49 +7,59 @@ function playerShip() {
 
     this.shipName;
     this.playerName;
-    this.reactor = new System();
-    this.laser = new System();
-    this.shield = new System();
+    this.reactor = new Reactor();
+    this.laser = new Laser();
+    this.shield = new Shield();
 
-    function History(past, present) {
-        this.previous = past;
-        this.current = present;
+    //A function that keep tract of current/previous value
+    //** Merge Limit/Resource with History, and rename to Data
+    function History(previous, current) {
+        var previous = previous;
+        var current = current;
+        this.__defineGetter__("previous", function() {
+            return previous;
+        });
+        this.__defineGetter__("current", function() {
+            return current;
+        });  
+        this.__defineSetter__("current", function(value) {
+            if (value !== current) {
+                previous = current;
+                current = value;
+            }
+        });
     }
 
-    function Vector(h, v) {
-        this.horizontal = new History(h, h);
-        this.vertical = new History(v, v);
+    function Vector(horizontal, vertical) {
+        this.horizontal = new History(horizontal, horizontal);
+        this.vertical = new History(vertical, vertical);
     }
 
-    function Limit(low, high) {
-        this.lower = new History(low, low);
-        this.upper = new History(high, high);
+    //** Phase out
+    function Limit(lower, upper) {
+        this.lower = new History(lower, lower);
+        this.upper = new History(upper, upper);
     }
-
-    function Resource(low, high) {
-        this.reserve = new History();
-        this.limit = new Limit(low, high);
+    // ** Merge Limit/Resource with History - rename history as "Data"
+    function Resource(lower, upper) {
+        this.reserve = new History(0,0);
+        this.limit = new Limit(lower, upper);
     }
-
-    function System() {
-        this.location = new Vector();
-        this.power = new Resource(0.0, 100.0);
-    }
+    //** Phase out
 
     function Reactor() {
-
+        this.location = new Vector(0,0);
+        this.power = new Resource(0.0, 100.0);       
     }
 
     function Laser() {
-
+        this.location = new Vector(0,0);
+        this.power = new Resource(0.0, 100.0);
     }
 
-    function Sheild() {
-
-    }
-
-    function Hull() {
-
+    function Shield() {
+        this.location = new Vector(0,0);
+        this.power = new Resource(0.0, 100.0);
     }
 }
 
