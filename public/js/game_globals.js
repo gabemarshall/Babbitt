@@ -5,6 +5,7 @@
 //Just getting organized, still needs a ton of work.
 function playerShip() {
 
+    //public
     this.shipName;
     this.playerName;
     this.reactor = new Reactor();
@@ -12,6 +13,7 @@ function playerShip() {
     this.shield = new Shield();
     this.hull = new Hull();
 
+    //object used to hold data, and keep record of its previous value
     function Data(initialize) {
         var previous = initialize;
         var current = initialize;
@@ -29,11 +31,13 @@ function playerShip() {
         });
     }
 
+    //vector/locatin data type
     function Location(horizontal, vertical) {
         this.horizontal = new Data(horizontal);
         this.vertical = new Data(vertical);
     }
 
+    //Ship Systems
     function Reactor() {
         this.location = new Location(0, 0);
         this.power = new Data(0.0);
