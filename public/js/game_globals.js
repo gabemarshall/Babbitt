@@ -8,7 +8,7 @@ function playerShip() {
     //public
     this.shipName;
     this.playerName;
-    this.reactor = new Reactor();
+    this.generator = new Generator();
     this.laser = new Laser();
     this.shield = new Shield();
     this.hull = new Hull();
@@ -38,11 +38,18 @@ function playerShip() {
     }
 
     //Ship Systems
-    function Reactor() {
+    function Generator() {
         this.location = new Location(0, 0);
-        this.power = new Data(0.0);
         this.damage = new Data(0.0);
         this.operation = new Data(100.0);
+        this.output = new Data(0.0);
+    }
+
+    function Capacitor() {
+        this.location = new Location(0, 0);
+        this.damage = new Data(0.0);
+        this.operation = new Data(100.0);
+        this.reserve = new Data(0.0);
     }
 
     function Laser() {
