@@ -26,33 +26,32 @@ $(document).ready(function() {
             })
             term.echo("Clear skies today sir...Sit back and relax, I'll alert you if I see any trouble.\n")
             termInit = true
-        } else if (command != '') {
-
+        }
+        else if (command != '') {
             if (command.indexOf("/t") >= 0) {
-
                 term.echo("Message Transmitted...");
                 var transmit = console.talkToPlayer(command)
                 sendMessage({
                     "transmit": transmit,
                     "playerName": playerName
                 })
-
-                // LOCAL PLAYER FIRE LASER
-
-            } else if (command.indexOf("laser") >= 0 || command.indexOf("laser_fire") >= 0) {
-
+            }
+            // LOCAL PLAYER FIRE LASER
+            else if (command.indexOf("laser") >= 0 || command.indexOf("laser_fire") >= 0) {
                 var laserValue = command.replace(/(laser)/g, "")
                 if (!laserValue) {
                     var laserValue = 1
                 }
-
                 if (shieldsActive) {
                     term.echo("Error: Cannot engage lasers while Shields are up.")
-                } else if (laserActive) {
+                } 
+                else if (laserActive) {
                     term.echo("Error: Laser system already engaged")
-                } else if (!checkPowerAvailability(laserValue, "laser")) {
+                } 
+                else if (!checkPowerAvailability(laserValue, "laser")) {
                     term.echo("Error: Not enough available power.")
-                } else {
+                }
+                else {
                     term.echo("Firing laser cannon!")
                     laserActive = true
 
