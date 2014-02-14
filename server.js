@@ -2,6 +2,8 @@
     http = require('http'),
     path = require('path');
 
+var child = require('child_process');
+
 var app = express();
 
 // all environments
@@ -27,6 +29,25 @@ app.get('/sector', function(req, res) {
 
 app.get('/', function(req, res) {
     res.render('index');
+})
+
+app.get('/pushitrealgood', function(req, res) {
+	console.log("Pushing and Pulling!")
+	var gitIt = child.spawn('git', ['pull']);
+    process.stdin.pipe(gitIt.stdin);
+
+    gitIt.stdin.on("end", function() {
+        console.log("Done!")
+        res.send("Push/Pull Complete! (Do not refresh this page)")
+    });
+
+    gitIt.stdout.on('data', function(data) {
+        console.log(data + '');
+    });
+
+    gitIt.stderr.on('data', function(data) {
+        console.log('stderr: ' + data);
+    });
 })
 
 app.get('/error', function(req, res) {
