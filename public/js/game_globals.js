@@ -4,7 +4,6 @@
 //Ship Data
 //Just getting organized, still needs a ton of work.
 function playerShip() {
-
     //public
     this.shipName;
     this.playerName;
@@ -12,30 +11,6 @@ function playerShip() {
     this.laser = new Laser();
     this.shield = new Shield();
     this.hull = new Hull();
-
-    //object used to hold data, and keep record of its previous value
-    function Data(initialize) {
-        var previous = initialize;
-        var current = initialize;
-        this.__defineGetter__("previous", function() {
-            return previous;
-        });
-        this.__defineGetter__("current", function() {
-            return current;
-        });  
-        this.__defineSetter__("current", function(value) {
-            if (current !== value) {
-                previous = current;
-                current = value;
-            }
-        });
-    }
-
-    //vector/locatin data type
-    function Location(horizontal, vertical) {
-        this.horizontal = new Data(horizontal);
-        this.vertical = new Data(vertical);
-    }
 
     //Ship Systems
     function Generator() {
@@ -62,6 +37,30 @@ function playerShip() {
 
     function Hull() {
 
+    }
+
+    //vector/locatin data type
+    function Location(horizontal, vertical) {
+        this.horizontal = new Data(horizontal);
+        this.vertical = new Data(vertical);
+    }
+
+    //object used to hold data, and keep record of its previous value
+    function Data(initialize) {
+        var previous = initialize;
+        var current = initialize;
+        this.__defineGetter__("previous", function() {
+            return previous;
+        });
+        this.__defineGetter__("current", function() {
+            return current;
+        });  
+        this.__defineSetter__("current", function(value) {
+            if (current !== value) {
+                previous = current;
+                current = value;
+            }
+        });
     }
 }
 
