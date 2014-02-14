@@ -7,7 +7,7 @@ var child = require('child_process');
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 1338);
+app.set('port', process.env.PORT || 1983);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(express.favicon());
