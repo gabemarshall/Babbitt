@@ -18,8 +18,8 @@ $(document).ready(function() {
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
             playerName = command;
-            term.echo("\nPlayer Name:" + command);
-            term.echo("\nSector: " + gameID);
+            term.echo("Player Name:" + command);
+            term.echo("Sector: " + gameID);
             sendMessage({
                 "playerInit": "true",
                 "playerName": command
