@@ -1,3 +1,5 @@
+//console takes in user input and breaks it down into something suitable to be passed to commandLogic
+
 var console = {
     list: function(term) {
         for (i = 0; i < availableCommands.length; i++) {
