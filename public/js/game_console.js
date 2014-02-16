@@ -12,6 +12,48 @@ var console = {
     }
 }
 
+var consoleLogic = function(input) {
+    
+    //breakdown input
+    
+    var command
+    var value
+    
+    findCommand(command, value)
+
+    function findCommand(command, value) {
+        if (command == "") {
+        }
+
+        if (command == "/t") {
+            talk(value)
+        }
+
+        if (command == "shields") {
+            shields(value)
+        }
+        if (command == "laser") {
+            laser(value)
+        }
+    }
+
+    function openChannel() {
+
+    }
+
+    function talk(message) {
+
+    }
+
+    function shields() {
+
+    }
+    
+    function laser() {
+
+    }
+}
+
 $(document).ready(function() {
     $('#term_demo').terminal(function(command, term) {
 
@@ -28,7 +70,7 @@ $(document).ready(function() {
         }
 
         //Interpret console commands
-        else if (command != '') {
+        else if (command != "") {
 
             //Transmit message
             if (command.indexOf("/t") >= 0) {
