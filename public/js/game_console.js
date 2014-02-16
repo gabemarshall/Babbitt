@@ -12,55 +12,42 @@ var console = {
     }
 }
 
-var consoleLogic = function(input) {
-    
-    //breakdown input
-    
-    var command
-    var value
-    
-    findCommand(command, value)
-
-    function findCommand(command, value) {
-        if (command == "") {
-        }
-
-        if (command == "/t") {
-            talk(value)
-        }
-
-        if (command == "shields") {
-            shields(value)
-        }
-        if (command == "laser") {
-            laser(value)
-        }
-    }
-
-    function openChannel() {
-
-    }
-
-    function talk(message) {
-
-    }
-
-    function shields() {
-
-    }
-    
-    function laser() {
-
-    }
-}
-
 $(document).ready(function() {
     $('#term_demo').terminal(function(command, term) {
+
+        var oppJoined = function() {
+            term.echo("Player " + oppName + " has entered this sector")
+            ig.game.spawnEntity(EntityShip, 0, 0);
+            sendMessage({
+                "playerInit": "true",
+                "playerName": playerName
+            })
+            gameBegun = true;
+        }
+
+        var printMessage = function(msg) {
+            term.echo(msg);
+        }
+
+        var terminalLogic = function(input) {
+            
+            if (input.search("/t") == 0) {
+                talkToPlayer(input)
+            }
+
+            function talkToPlayer(input) {
+                var message = input.replace("/t", "")
+                sendMessage({
+                    "transmit": message,
+                    "playerName": playerName
+                })
+            }
+        }
 
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
             playerName = command;
-            term.echo("Player Name:" + command);
+            term.echo("Player Name: " + command);
             term.echo("Sector: " + gameID);
             sendMessage({
                 "playerInit": "true",
@@ -74,7 +61,6 @@ $(document).ready(function() {
 
             //Transmit message
             if (command.indexOf("/t") >= 0) {
-                term.echo("Message Transmitted...");
                 var transmit = console.talkToPlayer(command);
                 sendMessage({
                     "transmit": transmit,
@@ -82,8 +68,10 @@ $(document).ready(function() {
                 })
             }
 
+            //terminalLogic(command)
+
             //Laser command
-            else if (command.indexOf("laser") >= 0 || command.indexOf("laser_fire") >= 0) {
+            if (command.indexOf("laser") >= 0 || command.indexOf("laser_fire") >= 0) {
                 var laserValue = command.replace(/(laser)/g, "")
                 //Input error
                 if (!laserValue) {
@@ -149,18 +137,6 @@ $(document).ready(function() {
             term.echo("ERROR: Unknown Command");
         }
 
-        var oppJoined = function() {
-            term.echo("Player " + oppName + " has entered this sector")
-            ig.game.spawnEntity(EntityShip, 0, 0);
-            sendMessage({
-                "playerInit": "true",
-                "playerName": playerName
-            })
-            gameBegun = true;
-        }
-        var printMessage = function(msg) {
-            term.echo(msg);
-        }
 
         if (!gameBegun) {
             var consoleChecksGameStatus = setInterval(function() {
