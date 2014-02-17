@@ -12,44 +12,47 @@ var console = {
     }
 }
 
-var terminalLogic = function(inputString) {
-    var commandList = ["/t",
-                       "sheilds",
-                       "lasers"
-                      ]
-
-    var input = inputString.trim()
-    var input = input.toLowerCase()
-    
-    for (var i = 0; i < commandList.length; i++) {
-        if (input.search(commandList[i]) != -1) {
-            switch (commandList[i]) {
-                case "/t":
-                talk(input)
-                break
-                case "shields":
-                sheilds()
-                break
-                default:
-                alert("default")
-            }
-        }
-    }
-
-    function talk(input) {
-        var message = input.replace("/t", "")
-    }
-
-    function shields(blah) {
-
-    }
-}
-
 //Terminal
 $(document).ready(function() {
     
+    //Terminal Initialization
     function initializeTerminal(term) {
-        term.echo("initializeTerminal")
+        term.echo("Initialize Terminal")
+    }
+
+    //Terminal Logic
+    var terminalLogic = function(inputString) {
+        var commandList = ["/t",
+                           "sheilds",
+                           "lasers"
+                          ]
+
+        var input = inputString.trim()
+        var input = input.toLowerCase()
+        
+        for (var i = 0; i < commandList.length; i++) {
+            if (input.search(commandList[i]) != -1) {
+                switch (commandList[i]) {
+                    case "/t":
+                    talk(input)
+                    break
+                    case "shields":
+                    sheilds()
+                    break
+                    default:
+                    alert("default")
+                }
+            }
+        }
+
+        function talk(input) {
+            var msg = input.replace("/t", "")
+            sendMessage({
+                "transmit": msg,
+                "playerName": playerName
+            })
+            term.echo("Message Transmitted")
+        }
     }
 
     $('#term_demo').terminal(function(command, term) {
@@ -79,6 +82,8 @@ $(document).ready(function() {
 
         //Interpret console commands
         else if (command != "") {
+
+        
 
             //Transmit message
             if (command.indexOf("/t") >= 0) {
