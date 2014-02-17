@@ -238,7 +238,7 @@ $(document).ready(function() {
     {
         greetings: "",
         prompt: "",
-        height: 100 
+        height: 100,
         onInit: function(term) {
             startup(term)
         }
