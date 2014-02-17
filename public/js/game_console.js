@@ -12,6 +12,41 @@ var console = {
     }
 }
 
+var terminalLogic = function(inputString) {
+    var commandList = ["/t",
+                       "sheilds"
+                       "lasers"
+                      ]
+
+    var input = inputString.trim()
+    var input = input.toLowerCase()
+    
+    for (var i = 0; i < commandList.length; i++) {
+        if (input.search(commandList[i]) != -1) {
+            switch (commandList[i]) {
+                case "/t":
+                talk(input)
+                break
+                case "shields":
+                sheilds()
+                break
+                default:
+                alert("default")
+            }
+        }
+    }
+
+    function talk(input) {
+        var message = input.replace("/t", "")
+        //send message to terminal to be transmitted to other player
+    }
+
+    function shields(blah) {
+        //alert("function shields")
+        //make local changes
+    }
+}
+
 $(document).ready(function() {
     $('#term_demo').terminal(function(command, term) {
 
@@ -27,21 +62,6 @@ $(document).ready(function() {
 
         var printMessage = function(msg) {
             term.echo(msg);
-        }
-
-        var terminalLogic = function(input) {
-            
-            if (input.search("/t") == 0) {
-                talkToPlayer(input)
-            }
-
-            function talkToPlayer(input) {
-                var message = input.replace("/t", "")
-                sendMessage({
-                    "transmit": message,
-                    "playerName": playerName
-                })
-            }
         }
 
         // Check if the game was just loaded, if so then the player will need to enter their name
@@ -66,9 +86,8 @@ $(document).ready(function() {
                     "transmit": transmit,
                     "playerName": playerName
                 })
+                term.echo("Message Sent")
             }
-
-            //terminalLogic(command)
 
             //Laser command
             if (command.indexOf("laser") >= 0 || command.indexOf("laser_fire") >= 0) {
