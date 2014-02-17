@@ -52,7 +52,7 @@ $(document).ready(function() {
         term.echo("initializeTerminal")
     }
 
-    $('#terminal').terminal(function(command, term) {
+    $('#term_demo').terminal(function(command, term) {
 
         var oppJoined = function() {
             term.echo("Player " + oppName + " has entered this sector")
