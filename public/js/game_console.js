@@ -38,7 +38,6 @@ var terminalLogic = function(inputString) {
 
     function talk(input) {
         var message = input.replace("/t", "")
-        $('#term_demo').terminal
     }
 
     function shields(blah) {
@@ -48,7 +47,7 @@ var terminalLogic = function(inputString) {
 
 $(document).ready(function() {
     $('#term_demo').terminal(function(command, term) {
-        
+
         var oppJoined = function() {
             term.echo("Player " + oppName + " has entered this sector")
             ig.game.spawnEntity(EntityShip, 0, 0);
@@ -61,6 +60,10 @@ $(document).ready(function() {
 
         var printMessage = function(msg) {
             term.echo(msg);
+        }
+
+        function startup(term) {
+            term.echo("startup")
         }
 
         // Check if the game was just loaded, if so then the player will need to enter their name
@@ -232,14 +235,12 @@ $(document).ready(function() {
             }
         });
     }, 
-    { 
+    {
         greetings: "",
         prompt: "",
         height: 100 
+        onInit: function(term) {
+            startup(term)
+        }
     });
 });
-/*
-$('#term_demo').click(function() {
-    this.focus();
-})
-*/
