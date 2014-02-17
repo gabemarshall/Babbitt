@@ -48,7 +48,11 @@ var terminalLogic = function(inputString) {
 $(document).ready(function() {
     
     function startup(term) {
-        term.echo("startup")
+        term.echo("testing startup functionality")
+    }
+
+    function printMessage(msg) {
+        term.echo(msg)
     }
 
     $('#term_demo').terminal(function(command, term) {
@@ -62,12 +66,6 @@ $(document).ready(function() {
             })
             gameBegun = true;
         }
-
-        var printMessage = function(msg) {
-            term.echo(msg);
-        }
-
-
 
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
