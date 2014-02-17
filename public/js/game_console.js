@@ -48,7 +48,7 @@ var terminalLogic = function(inputString) {
 
 $(document).ready(function() {
     $('#term_demo').terminal(function(command, term) {
-
+        
         var oppJoined = function() {
             term.echo("Player " + oppName + " has entered this sector")
             ig.game.spawnEntity(EntityShip, 0, 0);
@@ -233,7 +233,8 @@ $(document).ready(function() {
         });
     }, 
     { 
-        prompt: " ",
+        greetings: "",
+        prompt: "",
         height: 100 
     });
 });
