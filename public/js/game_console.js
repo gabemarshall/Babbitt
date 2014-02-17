@@ -83,16 +83,18 @@ $(document).ready(function() {
         //Interpret console commands
         else if (command != "") {
 
-        
+            terminalLogic(command)
 
             //Transmit message
             if (command.indexOf("/t") >= 0) {
+                /*
                 var transmit = console.talkToPlayer(command);
                 sendMessage({
                     "transmit": transmit,
                     "playerName": playerName
                 })
                 term.echo("Message Sent")
+                */
             }
 
             //Laser command
