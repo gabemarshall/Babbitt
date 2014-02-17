@@ -170,8 +170,8 @@ $(document).ready(function() {
             callback: function(message) {
 
                 //If incoming message is from the opponent
-                if (message.UPDATE && message.SENDER != myShip.playerName) {
-                    opponent = message.UPDATE;
+                if (message.UPDATE && message.UPDATE.playerName != myShip.playerName) {
+                    enemyShip = message.UPDATE;
                 }
 
                 //Get opponent's name
@@ -201,12 +201,14 @@ $(document).ready(function() {
                         var laserDamage = adjustLaserValue(message.laser);
                         adjustShipHP(laserDamage);
                         if (laserDamage > 0){
-                            term.echo("Damage taken. Hull down to "+shipHP+" percent.")
+                            term.echo("Damage taken. Hull down to "+myShip.hull.damage.current+" percent.")
                             shakeScreen()
                             notifyPlayerDamage(true)
+                            updateOtherPlayer()
                         } else {
                             term.echo("No damage taken.")
                             notifyPlayerDamage(false)
+                            updateOtherPlayer()
                         }
                         
                         

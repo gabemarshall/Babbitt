@@ -38,7 +38,7 @@ function playerShip() {
     }
 
     function Hull() {
-
+        this.damage = new Data(100.0);
     }
 
     //vector/locatin data type
@@ -140,15 +140,15 @@ var adjustLaserValue = function(laserValue) {
 }
 
 var adjustShipHP = function(laserValue) {
-    shipHP = shipHP - laserValue;
+    myShip.hull.damage.current = myShip.hull.damage.current - laserValue;
     //shipHP = limitValue(shipHP, ship)
-    if (shipHP < 0) {
-        shipHP = 0;
+    if (myShip.hull.damage.current < 0) {
+        myShip.hull.damage.current = 0;
     }
-    else if (shipHP > 100) {
-        shipHP = 100;
+    else if (myShip.hull.damage.current > 100) {
+        myShip.hull.damage.current = 100;
     }
-    return shipHP;
+    return myShip.hull.damage.current;
 }
 
 var limitValue = function(value, lbound, ubound) {

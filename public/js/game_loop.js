@@ -1,5 +1,14 @@
 var shipSystemsLoop = setInterval(function() {
 
+    // Check if enemy is dead
+
+    if (gameBegun && enemyShip.hull.damage.current <= 0) {
+       // destroyEnemyShip();
+        alert("Enemy Annihilated");
+    } else if (gameBegun && myShip.hull.damage.current <= 0) {
+        alert("You lose...")
+    }
+
     // Check for shields being active
     if (!shieldsActive) {
         shieldLevel = 0
