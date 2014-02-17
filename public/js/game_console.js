@@ -90,7 +90,7 @@ $(document).ready(function() {
             }
 
             //Laser command
-            if (command.indexOf("laser") >= 0 || command.indexOf("laser_fire") >= 0) {
+            else if (command.indexOf("laser") >= 0 || command.indexOf("laser_fire") >= 0) {
                 var laserValue = command.replace(/(laser)/g, "")
                 //Input error
                 if (!laserValue) {
