@@ -14,10 +14,17 @@ var sendMessage = function(msg) {
     })
 }
 
+var notifyPlayerDamage = function(bool){
+    pubnub.publish({
+        channel: 'babb'+gameID,
+        message: {title: 'DAMAGE','successful': bool, playerName: myShip.playerName}
+    })
+}
+
 var updateOtherPlayer = function(){
     pubnub.publish({
         channel: 'babb'+gameID,
-        message: {'UPDATE':ship, 'SENDER':playerName}
+        message: {'UPDATE':myShip}
     })
 }
 

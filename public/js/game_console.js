@@ -23,7 +23,7 @@ $(document).ready(function() {
     //Terminal Logic
     var terminalLogic = function(inputString) {
         var commandList = ["/t",
-                           "sheilds",
+                           "shields",
                            "lasers"
                           ]
 
@@ -53,24 +53,24 @@ $(document).ready(function() {
     $('#term_demo').terminal(function(command, term) {
 
         var oppJoined = function() {
-            term.echo("Player " + oppName + " has entered this sector")
+            term.echo("Player " + enemyShip.playerName + " has entered this sector")
             ig.game.spawnEntity(EntityShip, 0, 0);
             sendMessage({
                 "playerInit": "true",
-                "playerName": playerName
+                "shipData": myShip
             })
             gameBegun = true;
         }
 
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
-            playerName = command;
+            myShip.playerName = command;
             term.echo("Player Name: " + command);
             term.echo("Sector: " + gameID);
             sendMessage({
                 "playerInit": "true",
-                "playerName": command
-            });
+                "shipData": myShip
+            })
             termInit = true; //game has been initialized
         }
 
@@ -82,7 +82,7 @@ $(document).ready(function() {
                 var transmit = console.talkToPlayer(command);
                 sendMessage({
                     "transmit": transmit,
-                    "playerName": playerName
+                    "playerName": myShip.playerName
                 })
                 term.echo("Message Sent")
             }
@@ -113,12 +113,12 @@ $(document).ready(function() {
                     //Send oppoent warning of lasers being fired
                     sendMessage({
                         "incoming_laser": true,
-                        "playerName": playerName
+                        "playerName": myShip.playerName
                     })
                     setTimeout(function() {
                         sendMessage({
                             "laser": laserValue,
-                            "playerName": playerName
+                            "playerName": myShip.playerName
                         })
                     }, 4500)
                     ig.game.spawnEntity(EntityLaser, 0, 0);
@@ -157,7 +157,7 @@ $(document).ready(function() {
 
         if (!gameBegun) {
             var consoleChecksGameStatus = setInterval(function() {
-                if (oppName && !gameBegun) {
+                if (enemyShip && !gameBegun) {
                     gameBegun = true;
                     oppJoined();
                 }
@@ -170,45 +170,55 @@ $(document).ready(function() {
             callback: function(message) {
 
                 //If incoming message is from the opponent
-                if (message.UPDATE && message.SENDER != playerName) {
+                if (message.UPDATE && message.SENDER != myShip.playerName) {
                     opponent = message.UPDATE;
                 }
 
                 //Get opponent's name
                 if (message.playerInit) {
-                    if (message.playerName != playerName && !oppName) {
-                        oppName = message.playerName;
+                    if (message.shipData.playerName != myShip.playerName && !enemyShip) {
+                        enemyShip = message.shipData;
+                        oppJoined()
                     }
                 }
 
                 //Incoming chat dialog from opponent
                 if (message.transmit) {
-                    if (message.playerName != playerName) {
+                    if (message.playerName != myShip.playerName) {
                         term.echo(message.playerName + " :[[b;#000;#d3d3d3]" + message.transmit + "]");
                     }
                 }
 
-                //Waring of opponent firing lasers
+                //Warning of opponent firing lasers
                 else if (message.incoming_laser) {
-                    if (message.playerName != playerName) {
+                    if (message.playerName != myShip.playerName) {
                         term.echo(message.playerName + " is preparing to fire laser.");
                     }
                 }
                 //Apply opponent lasers
                 else if (message.laser) {
-                    if (message.playerName != playerName) {
+                    if (message.playerName != myShip.playerName) {
                         var laserDamage = adjustLaserValue(message.laser);
                         adjustShipHP(laserDamage);
-                        alert(shipHP);
+                        if (laserDamage > 0){
+                            term.echo("Damage taken. Hull down to "+shipHP+" percent.")
+                            shakeScreen()
+                            notifyPlayerDamage(true)
+                        } else {
+                            term.echo("No damage taken.")
+                            notifyPlayerDamage(false)
+                        }
+                        
+                        
                     }
                 }
 
                 //Send message to opponent on whether his laser attack was successful or not
-                else if (message.laser_hit) {
+                else if (message.title === 'DAMAGE' && message.playerName != myShip.playerName) {
                     laserActive = false //disengage laser to allow them to fire again
-                    if (message.playerName != playerName) {
+                    
                         //unsuccessful
-                        if (message.laser_hit === 0) {
+                        if (!message.successful) {
                             var laser = ig.game.getEntitiesByType(EntityLaser)[0];
                             laser.kill()
                             ig.game.spawnEntity(EntityeShields, 0, 0);
@@ -216,16 +226,16 @@ $(document).ready(function() {
                         }
                         //successful
                         else {
-                            term.echo("Inflicted " + message.damage + " damage");
+                            term.echo("Laser appeared to do damage blah blah blah");
                             var laser = ig.game.getEntitiesByType(EntityLaser)[0];
                             laser.kill();
                             ig.game.spawnEntity(EntityLaserHit, 0, 0);
-                            if (!checkIfAlive(message.hitpoints)) {
-                                destroyEnemyShip();
-                                term.echo("Enemy Annihilated");
-                            }
+                            // if (!checkIfAlive(message.hitpoints)) {
+                            //     destroyEnemyShip();
+                            //     term.echo("Enemy Annihilated");
+                            // }
                         }
-                    }
+                    
                 }
             }
         });
