@@ -232,7 +232,7 @@ $(document).ready(function() {
         });
     }, {
         greetings: 'Input Name',
-        prompt: '$> '
+        height: 100
     });
 });
 $('#term_demo').click(function() {
