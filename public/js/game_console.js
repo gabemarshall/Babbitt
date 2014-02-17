@@ -45,14 +45,11 @@ var terminalLogic = function(inputString) {
     }
 }
 
+//Terminal
 $(document).ready(function() {
     
     function startup(term) {
         term.echo("testing startup functionality")
-    }
-
-    function printMessage(msg) {
-        term.echo(msg)
     }
 
     $('#term_demo').terminal(function(command, term) {
@@ -190,14 +187,14 @@ $(document).ready(function() {
                 //Incoming chat dialog from opponent
                 if (message.transmit) {
                     if (message.playerName != playerName) {
-                        printMessage(message.playerName + " :[[b;#000;#d3d3d3]" + message.transmit + "]");
+                        term.echo(message.playerName + " :[[b;#000;#d3d3d3]" + message.transmit + "]");
                     }
                 }
 
                 //Waring of opponent firing lasers
                 else if (message.incoming_laser) {
                     if (message.playerName != playerName) {
-                        printMessage(message.playerName + " is preparing to fire laser.");
+                        term.echo(message.playerName + " is preparing to fire laser.");
                     }
                 }
                 //Apply opponent lasers
@@ -222,13 +219,13 @@ $(document).ready(function() {
                         }
                         //successful
                         else {
-                            printMessage("Inflicted " + message.damage + " damage");
+                            term.echo("Inflicted " + message.damage + " damage");
                             var laser = ig.game.getEntitiesByType(EntityLaser)[0];
                             laser.kill();
                             ig.game.spawnEntity(EntityLaserHit, 0, 0);
                             if (!checkIfAlive(message.hitpoints)) {
                                 destroyEnemyShip();
-                                printMessage("Enemy Annihilated");
+                                term.echo("Enemy Annihilated");
                             }
                         }
                     }
