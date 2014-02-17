@@ -46,6 +46,11 @@ var terminalLogic = function(inputString) {
 }
 
 $(document).ready(function() {
+    
+    function startup(term) {
+        term.echo("startup")
+    }
+
     $('#term_demo').terminal(function(command, term) {
 
         var oppJoined = function() {
@@ -62,9 +67,7 @@ $(document).ready(function() {
             term.echo(msg);
         }
 
-        function startup(term) {
-            term.echo("startup")
-        }
+
 
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
