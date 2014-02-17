@@ -36,11 +36,7 @@ $(document).ready(function() {
                     case "/t":
                     talk(input)
                     break
-                    case "shields":
-                    sheilds()
-                    break
                     default:
-                    alert("default")
                 }
             }
         }
@@ -51,7 +47,6 @@ $(document).ready(function() {
                 "transmit": msg,
                 "playerName": playerName
             })
-            term.echo("Message Transmitted")
         }
     }
 
@@ -69,7 +64,6 @@ $(document).ready(function() {
 
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
-            term.echo("Enter Name: ");
             playerName = command;
             term.echo("Player Name: " + command);
             term.echo("Sector: " + gameID);
@@ -83,18 +77,14 @@ $(document).ready(function() {
         //Interpret console commands
         else if (command != "") {
 
-            terminalLogic(command)
-
             //Transmit message
             if (command.indexOf("/t") >= 0) {
-                /*
                 var transmit = console.talkToPlayer(command);
                 sendMessage({
                     "transmit": transmit,
                     "playerName": playerName
                 })
                 term.echo("Message Sent")
-                */
             }
 
             //Laser command
