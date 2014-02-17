@@ -65,6 +65,7 @@ $(document).ready(function() {
 
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
+            term.echo("Enter Name: ");
             playerName = command;
             term.echo("Player Name: " + command);
             term.echo("Sector: " + gameID);
@@ -230,11 +231,14 @@ $(document).ready(function() {
                 }
             }
         });
-    }, {
-        greetings: 'Input Name',
-        height: 100
+    }, 
+    { 
+        prompt: " ",
+        height: 100 
     });
 });
+/*
 $('#term_demo').click(function() {
     this.focus();
 })
+*/
