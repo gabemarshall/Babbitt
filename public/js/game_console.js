@@ -48,11 +48,11 @@ var terminalLogic = function(inputString) {
 //Terminal
 $(document).ready(function() {
     
-    function startup(term) {
-        term.echo("testing startup functionality")
+    function initializeTerminal(term) {
+        term.echo("initializeTerminal")
     }
 
-    $('#term_demo').terminal(function(command, term) {
+    $('#terminal').terminal(function(command, term) {
 
         var oppJoined = function() {
             term.echo("Player " + oppName + " has entered this sector")
@@ -238,7 +238,7 @@ $(document).ready(function() {
         prompt: "",
         height: 100,
         onInit: function(term) {
-            startup(term)
+            initializeTerminal(term)
         }
     });
 });
