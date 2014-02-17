@@ -38,12 +38,11 @@ var terminalLogic = function(inputString) {
 
     function talk(input) {
         var message = input.replace("/t", "")
-        //send message to terminal to be transmitted to other player
+        $('#term_demo').terminal
     }
 
     function shields(blah) {
-        //alert("function shields")
-        //make local changes
+
     }
 }
 
@@ -232,9 +231,7 @@ $(document).ready(function() {
             }
         });
     }, {
-        greetings: 'Welcome to [[b;#000;#d3d3d3]Babbitt] . \nInput Name',
-        name: 'js_demo',
-        height: 150,
+        greetings: 'Input Name',
         prompt: '$> '
     });
 });
