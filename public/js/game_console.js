@@ -14,7 +14,7 @@ var console = {
 
 var terminalLogic = function(inputString) {
     var commandList = ["/t",
-                       "sheilds"
+                       "sheilds",
                        "lasers"
                       ]
 
