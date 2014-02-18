@@ -50,6 +50,7 @@ $(document).ready(function() {
         }
     }
 
+    //Terminal Input
     $('#term_demo').terminal(function(command, term) {
 
         var oppJoined = function() {
