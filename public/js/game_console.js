@@ -42,6 +42,7 @@ var terminalLogic = function(inputString) {
         return input
     }
 
+    //talk function
     function talk(input) {
         input = input.replace("/t", "")
         sendMessage({
@@ -66,7 +67,7 @@ $(document).ready(function() {
         terminalLogic(command)
 
         var oppJoined = function() {
-            term.echo("Player " + enemyShip.playerName + " has entered this sector")
+            term.echo(enemyShip.playerName + " has entered this sector")
             ig.game.spawnEntity(EntityShip, 0, 0);
             sendMessage({
                 "playerInit": "true",
@@ -91,16 +92,7 @@ $(document).ready(function() {
         else if (command != "") {
 
             //Transmit message
-            if (command.indexOf("/t") >= 0) {
-                /*
-                var transmit = console.talkToPlayer(command);
-                sendMessage({
-                    "transmit": transmit,
-                    "playerName": myShip.playerName
-                })
-                term.echo("Message Sent")
-                */
-            }
+            if (command.indexOf("/t") >= 0) {}
 
             //Laser command
             else if (command.indexOf("laser") >= 0 || command.indexOf("laser_fire") >= 0) {
