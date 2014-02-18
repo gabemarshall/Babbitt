@@ -57,26 +57,19 @@ var terminalLogic = function(inputString) {
 }
 
 /*
-//holds type of data
+//framework for types of data sent/received
 var dataType = {
-    textMessage: function(value1, value2) {
-        return {
-            type: "textMessage"
-            sender: value1,
-            message: value2
-        }
+    textMessage: {
+        type: "textMessage"
+        sender: value1,
+        message: value2
     }
+    
 }
 
 //framework to send data
-var sendData = function() {
-
-}
 
 //framework for receiving data
-var receiveData = function() {
-
-}
 */
 
 //Terminal

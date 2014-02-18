@@ -29,7 +29,7 @@ function playerShip() {
         this.operation = new Data(100.0);   //current operational ability
         this.durability = new Data(100.0);  //how susceptible the system is to damage
         this.effeciency = new Data(100.0);  //how effient the system is at operating
-        
+
         this.reserve = new Data(0.0);       //energy available
     }
 
@@ -48,7 +48,7 @@ function playerShip() {
     }
 
     function Hull() {
-        this.damage = new Data(0.0);        //current amount of damage
+        this.damage = new Data(100.0);      //current amount of damage
         this.operation = new Data(100.0);   //current operational ability
         this.durability = new Data(100.0);  //how susceptible the system is to damage
         this.damage = new Data(100.0);
