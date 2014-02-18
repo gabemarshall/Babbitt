@@ -5,8 +5,6 @@ var pubnub = PUBNUB.init({
     uuid: userID
 });
 
-
-
 var sendMessage = function(msg) {
     pubnub.publish({
         channel: 'babb'+gameID,
@@ -28,26 +26,20 @@ var updateOtherPlayer = function(){
     })
 }
 
-
 var getPlayers = function(){
 pubnub.here_now({
      channel : 'babb'+gameID,
      callback : function(m){
-
         var totalPlayers = parseInt(m.occupancy)
-
         if (totalPlayers > 1 && !allowedToPlay){
             window.location = '/error'
-        } else {
-            
+        }
+        else {
             allowedToPlay = true
-
         }
      }
  });    
 }
-
-
 
 setTimeout(function(){
     getPlayers()

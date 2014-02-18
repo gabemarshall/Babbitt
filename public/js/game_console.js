@@ -1,24 +1,12 @@
-//console takes in user input and breaks it down into something suitable to be passed to commandLogic
-
-var console = {
-    list: function(term) {
-        for (i = 0; i < availableCommands.length; i++) {
-            term.echo(availableCommands[i]);
-        }
-    },
-    talkToPlayer: function(message, term) {
-        var msg = message.replace('/t', '')
-        return msg
-    }
-}
+//Code realting to the game console/terminal
 
 //Terminal Logic
 var terminalLogic = function(inputString) {
     
-    //cleanup inputString
+    //cleanup string
     var input = cleanInput(inputString)
 
-    //list of vailable commands
+    //list of available commands
     var commandList = ["/t",
                        "shields",
                        "lasers",
@@ -34,21 +22,30 @@ var terminalLogic = function(inputString) {
                 default:
             }
         }
+        else {
+            unknownCommand()
+        }
     }
 
+    //cleanup user input string
     function cleanInput(input) {
         input = input.trim()
         input = input.toLowerCase()
         return input
     }
 
-    //talk function
+    //transmitt message
     function talk(input) {
         input = input.replace("/t", "")
         sendMessage({
             "transmit": input,
             "playerName": myShip.playerName
         })
+    }
+
+    //unknown command
+    function unknownCommand() {
+        $('#term_demo').terminal(function(command, term).echo("Error: Unkown Command")
     }
 }
 
@@ -92,7 +89,9 @@ $(document).ready(function() {
         else if (command != "") {
 
             //Transmit message
-            if (command.indexOf("/t") >= 0) {}
+            if (command.indexOf("/t") >= 0) {
+                //moved to terminalLogic
+            }
 
             //Laser command
             else if (command.indexOf("laser") >= 0 || command.indexOf("laser_fire") >= 0) {
@@ -158,7 +157,7 @@ $(document).ready(function() {
 
         // Unknown command
         else {
-            term.echo("ERROR: Unknown Command");
+            //moved to terminalLogic
         }
 
 
