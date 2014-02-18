@@ -1,4 +1,6 @@
 //Code realting to the game console/terminal
+//babbitt.gabemarshall.me/pushitrealgood
+//babbitt.gabemarshall.me
 
 //Terminal Logic
 var terminalLogic = function(inputString) {
@@ -9,7 +11,7 @@ var terminalLogic = function(inputString) {
     //list of available commands
     var commandList = ["/t",
                        "shields",
-                       "lasers",
+                       "lasers"
                       ]
 
     //find commands in inputString
@@ -21,9 +23,6 @@ var terminalLogic = function(inputString) {
                 break
                 default:
             }
-        }
-        else {
-            unknownCommand()
         }
     }
 
@@ -45,7 +44,7 @@ var terminalLogic = function(inputString) {
 
     //unknown command
     function unknownCommand() {
-        $('#term_demo').terminal(function(command, term).echo("Error: Unkown Command")
+        $('#term_demo').terminal(function(command, term) { }).echo("ERROR: Input")
     }
 }
 
