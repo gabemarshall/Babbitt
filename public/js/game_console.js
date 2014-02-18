@@ -7,23 +7,33 @@ var terminalLogic = function(inputString) {
     
     //cleanup string
     var input = cleanInput(inputString)
+    var commandFound = false
 
     //list of available commands
     var commandList = ["/t",
-                       "shields",
-                       "lasers"
+                       "/shields",
+                       "/lasers"
                       ]
 
     //find commands in inputString
     for (var i = 0; i < commandList.length; i++) {
         if (input.search(commandList[i]) != -1) {
+            commandFound = true
             switch (commandList[i]) {
                 case "/t":
                 talk(input)
                 break
+                case "/shields":
+                break
+                break
+                case "/lasers":
+                break
                 default:
             }
         }
+    }
+    if (commandFound = false) {
+        unknownCommand()
     }
 
     //cleanup user input string
@@ -44,7 +54,7 @@ var terminalLogic = function(inputString) {
 
     //unknown command
     function unknownCommand() {
-        $('#term_demo').terminal(function(command, term) { }).echo("ERROR: Input")
+        $('#term_demo').terminal(function(command, term) { }).echo("Unknown Command")
     }
 }
 
