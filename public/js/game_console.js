@@ -47,8 +47,8 @@ var terminalLogic = function(inputString) {
     }
 
     function talk(input) {
-        var msg = input.replace("/t", "")
-        $('#term_demo').terminal(function(command, term){}).sendMessage({
+        msg = input.replace("/t", "")
+        $('#term_demo').sendMessage({
             "transmit": msg,
             "playerName": myShip.playerName
         })
