@@ -1,11 +1,11 @@
-//Code realting to the game console/terminal
+//Code realating to the game console/terminal
 //babbitt.gabemarshall.me/pushitrealgood
 //babbitt.gabemarshall.me
 
 //Terminal Logic
 var terminalLogic = function(inputString) {
     
-    //cleanup string
+    //clean up input
     var input = cleanInput(inputString)
     var commandFound = false
 
@@ -32,18 +32,17 @@ var terminalLogic = function(inputString) {
             }
         }
     }
+    //if no command was found in the input string
     if (commandFound === false) {
         unknownCommand()
     }
-
     //cleanup user input string
     function cleanInput(input) {
         input = input.trim()
         input = input.toLowerCase()
         return input
     }
-
-    //transmitt message
+    //transmitt chat message
     function talk(input) {
         input = input.replace("/t", "")
         sendMessage({
@@ -51,12 +50,34 @@ var terminalLogic = function(inputString) {
             "playerName": myShip.playerName
         })
     }
-
     //unknown command
-    function unknownCommand() {
-        $('#term_demo').terminal(function(command, term) { }).echo("Unknown Command")
+    function unknownCommand(input) {
+        $('#term_demo').terminal(function(command, term) {}).echo("Unknown Command: " + input)
     }
 }
+
+/*
+//holds type of data
+var dataType = {
+    textMessage: function(value1, value2) {
+        return {
+            type: "textMessage"
+            sender: value1,
+            message: value2
+        }
+    }
+}
+
+//framework to send data
+var sendData = function() {
+
+}
+
+//framework for receiving data
+var receiveData = function() {
+
+}
+*/
 
 //Terminal
 $(document).ready(function() {

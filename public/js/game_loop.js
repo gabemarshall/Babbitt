@@ -45,8 +45,4 @@ var shipSystemsLoop = setInterval(function() {
         }
 
     }
-
-
-
-
 }, 100)

@@ -1,6 +1,5 @@
 // Variables set in here are global and used in both core game logic (game_loop.js & game_console.js)
 // and also used in the ImpactJS draw method (lib/game/main.js)
-
 //babbitt.gabemarshall.me/pushitrealgood
 //babbitt.gabemarshall.me
 
@@ -10,41 +9,49 @@ function playerShip() {
     this.shipName;
     this.playerName;
     this.generator = new Generator();
+    this.capacitor = new Capacitor();
     this.laser = new Laser();
     this.shield = new Shield();
     this.hull = new Hull();
 
     //Ship Systems
     function Generator() {
-        this.location = new Location(0, 0);
-        this.damage = new Data(0.0);
-        this.operation = new Data(100.0);
-        this.output = new Data(0.0);
+        this.damage = new Data(0.0);        //current amount of damage
+        this.operation = new Data(100.0);   //current operational ability
+        this.durability = new Data(100.0);  //how susceptible the system is to damage
+        this.effeciency = new Data(100.0);  //how effient the system is at operating
+
+        this.output = new Data(0.0);        //energy output
     }
 
     function Capacitor() {
-        this.location = new Location(0, 0);
-        this.damage = new Data(0.0);
-        this.operation = new Data(100.0);
-        this.reserve = new Data(0.0);
+        this.damage = new Data(0.0);        //current amount of damage
+        this.operation = new Data(100.0);   //current operational ability
+        this.durability = new Data(100.0);  //how susceptible the system is to damage
+        this.effeciency = new Data(100.0);  //how effient the system is at operating
+        
+        this.reserve = new Data(0.0);       //energy available
     }
 
     function Laser() {
-
+        this.damage = new Data(0.0);        //current amount of damage
+        this.operation = new Data(100.0);   //current operational ability
+        this.durability = new Data(100.0);  //how susceptible the system is to damage
+        this.effeciency = new Data(100.0);  //how effient the system is at operating
     }
 
     function Shield () {
-
+        this.damage = new Data(0.0);        //current amount of damage
+        this.operation = new Data(100.0);   //current operational ability
+        this.durability = new Data(100.0);  //how susceptible the system is to damage
+        this.effeciency = new Data(100.0);  //how effient the system is at operating
     }
 
     function Hull() {
+        this.damage = new Data(0.0);        //current amount of damage
+        this.operation = new Data(100.0);   //current operational ability
+        this.durability = new Data(100.0);  //how susceptible the system is to damage
         this.damage = new Data(100.0);
-    }
-
-    //vector/locatin data type
-    function Location(horizontal, vertical) {
-        this.horizontal = new Data(horizontal);
-        this.vertical = new Data(vertical);
     }
 
     //object used to hold data, and keep record of its previous value
