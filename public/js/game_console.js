@@ -22,7 +22,6 @@ var terminalLogic = function(inputString) {
     var commandList = ["/t",
                        "shields",
                        "lasers",
-                       "test"
                       ]
 
     //find commands in inputString
@@ -31,9 +30,6 @@ var terminalLogic = function(inputString) {
             switch (commandList[i]) {
                 case "/t":
                 talk(input)
-                break
-                case "test":
-                passTest()
                 break
                 default:
             }
@@ -48,19 +44,10 @@ var terminalLogic = function(inputString) {
 
     function talk(input) {
         input = input.replace("/t", "")
-        /*
-        $('#term_demo').terminal(function(command, term) {
-            sendMessage({
-                "transmit": transmit,
-                "playerName": myShip.playerName
-            })
+        sendMessage({
+            "transmit": input,
+            "playerName": myShip.playerName
         })
-        */
-        $('#term_demo').terminal(function(command, term){}).echo("talk test")
-    }
-
-    function passTest() {
-        $('#term_demo').terminal(function(command, term){}).echo("passTest")
     }
 }
 
@@ -75,10 +62,8 @@ $(document).ready(function() {
     //Terminal Input
     $('#term_demo').terminal(function(command, term) {
 
-        //Pass terminal input to terminalLogic
-        //********************
+        //Terminal Logic
         terminalLogic(command)
-        //********************
 
         var oppJoined = function() {
             term.echo("Player " + enemyShip.playerName + " has entered this sector")
@@ -107,12 +92,14 @@ $(document).ready(function() {
 
             //Transmit message
             if (command.indexOf("/t") >= 0) {
+                /*
                 var transmit = console.talkToPlayer(command);
                 sendMessage({
                     "transmit": transmit,
                     "playerName": myShip.playerName
                 })
                 term.echo("Message Sent")
+                */
             }
 
             //Laser command
