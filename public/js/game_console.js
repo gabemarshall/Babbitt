@@ -14,6 +14,9 @@ var console = {
 
 //Terminal Logic
 var terminalLogic = function(inputString) {
+    
+    //cleanup inputString
+    var input = cleanInput(inputString)
 
     //list of vailable commands
     var commandList = ["/t",
@@ -22,9 +25,6 @@ var terminalLogic = function(inputString) {
                        "test"
                       ]
 
-    //cleanup inputString
-    var input = cleanInput(inputString)
-    
     //find commands in inputString
     for (var i = 0; i < commandList.length; i++) {
         if (input.search(commandList[i]) != -1) {
@@ -47,13 +47,11 @@ var terminalLogic = function(inputString) {
     }
 
     function talk(input) {
-        /*
         var msg = input.replace("/t", "")
-        sendMessage({
+        $('#term_demo').terminal(function(command, term){}).sendMessage({
             "transmit": msg,
-            "playerName": playerName
+            "playerName": myShip.playerName
         })
-        */
     }
 
     function passTest() {
@@ -102,12 +100,14 @@ $(document).ready(function() {
 
             //Transmit message
             if (command.indexOf("/t") >= 0) {
+                /*
                 var transmit = console.talkToPlayer(command);
                 sendMessage({
                     "transmit": transmit,
                     "playerName": myShip.playerName
                 })
                 term.echo("Message Sent")
+                */
             }
 
             //Laser command
