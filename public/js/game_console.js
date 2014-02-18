@@ -34,7 +34,7 @@ var terminalLogic = function(inputString) {
     }
     //if no command was found in the input string
     if (commandFound === false) {
-        unknownCommand()
+        unknownCommand(input)
     }
     //cleanup user input string
     function cleanInput(input) {
