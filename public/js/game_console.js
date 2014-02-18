@@ -41,7 +41,7 @@ var terminalLogic = function(inputString) {
     }
 
     function cleanInput(input) {
-        input = input.strim()
+        input = input.trim()
         input = input.toLowerCase()
         return input
     }
