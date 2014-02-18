@@ -48,9 +48,11 @@ var terminalLogic = function(inputString) {
 
     function talk(input) {
         msg = input.replace("/t", "")
-        $('#term_demo').sendMessage({
-            "transmit": msg,
-            "playerName": myShip.playerName
+        $('#term_demo').terminal(function(command, term) {
+            sendMessage({
+                "transmit": msg,
+                "playerName": myShip.playerName
+            })
         })
     }
 
@@ -71,7 +73,9 @@ $(document).ready(function() {
     $('#term_demo').terminal(function(command, term) {
 
         //Pass terminal input to terminalLogic
+        //********************
         terminalLogic(command)
+        //********************
 
         var oppJoined = function() {
             term.echo("Player " + enemyShip.playerName + " has entered this sector")
