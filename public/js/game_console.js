@@ -32,7 +32,7 @@ var terminalLogic = function(inputString) {
             }
         }
     }
-    if (commandFound = false) {
+    if (commandFound === false) {
         unknownCommand()
     }
 
