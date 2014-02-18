@@ -14,16 +14,18 @@ var console = {
 
 //Terminal Logic
 var terminalLogic = function(inputString) {
-    //var terminalAccess = $('#term_demo').terminal(function(command, term) { })
+
+    //list of vailable commands
     var commandList = ["/t",
                        "shields",
                        "lasers",
                        "test"
                       ]
 
-    var input = inputString.trim()
-    var input = input.toLowerCase()
+    //cleanup inputString
+    var input = cleanInput(inputString)
     
+    //find commands in inputString
     for (var i = 0; i < commandList.length; i++) {
         if (input.search(commandList[i]) != -1) {
             switch (commandList[i]) {
@@ -36,6 +38,12 @@ var terminalLogic = function(inputString) {
                 default:
             }
         }
+    }
+
+    function cleanInput(input) {
+        input = input.strim()
+        input = input.toLowerCase()
+        return input
     }
 
     function talk(input) {
@@ -64,6 +72,7 @@ $(document).ready(function() {
     //Terminal Input
     $('#term_demo').terminal(function(command, term) {
 
+        //Pass terminal input to terminalLogic
         terminalLogic(command)
 
         var oppJoined = function() {
