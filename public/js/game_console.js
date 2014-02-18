@@ -47,14 +47,16 @@ var terminalLogic = function(inputString) {
     }
 
     function talk(input) {
-        var transmit = input.replace("/t", "")
+        input = input.replace("/t", "")
+        /*
         $('#term_demo').terminal(function(command, term) {
             sendMessage({
                 "transmit": transmit,
                 "playerName": myShip.playerName
             })
         })
-        
+        */
+        $('#term_demo').terminal(function(command, term){}).echo("talk test")
     }
 
     function passTest() {
@@ -105,14 +107,12 @@ $(document).ready(function() {
 
             //Transmit message
             if (command.indexOf("/t") >= 0) {
-                /*
                 var transmit = console.talkToPlayer(command);
                 sendMessage({
                     "transmit": transmit,
                     "playerName": myShip.playerName
                 })
                 term.echo("Message Sent")
-                */
             }
 
             //Laser command
