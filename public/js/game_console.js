@@ -47,13 +47,14 @@ var terminalLogic = function(inputString) {
     }
 
     function talk(input) {
-        msg = input.replace("/t", "")
+        var transmit = input.replace("/t", "")
         $('#term_demo').terminal(function(command, term) {
             sendMessage({
-                "transmit": msg,
+                "transmit": transmit,
                 "playerName": myShip.playerName
             })
         })
+        
     }
 
     function passTest() {
