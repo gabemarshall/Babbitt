@@ -12,6 +12,47 @@ var console = {
     }
 }
 
+//Terminal Logic
+var terminalLogic = function(inputString) {
+    //var terminalAccess = $('#term_demo').terminal(function(command, term) { })
+    var commandList = ["/t",
+                       "shields",
+                       "lasers",
+                       "test"
+                      ]
+
+    var input = inputString.trim()
+    var input = input.toLowerCase()
+    
+    for (var i = 0; i < commandList.length; i++) {
+        if (input.search(commandList[i]) != -1) {
+            switch (commandList[i]) {
+                case "/t":
+                talk(input)
+                break
+                case "test":
+                passTest()
+                break
+                default:
+            }
+        }
+    }
+
+    function talk(input) {
+        /*
+        var msg = input.replace("/t", "")
+        sendMessage({
+            "transmit": msg,
+            "playerName": playerName
+        })
+        */
+    }
+
+    function passTest() {
+        $('#term_demo').terminal(function(command, term){}).echo("passTest")
+    }
+}
+
 //Terminal
 $(document).ready(function() {
     
@@ -20,38 +61,10 @@ $(document).ready(function() {
         term.echo("Initialize Terminal")
     }
 
-    //Terminal Logic
-    var terminalLogic = function(inputString) {
-        var commandList = ["/t",
-                           "shields",
-                           "lasers"
-                          ]
-
-        var input = inputString.trim()
-        var input = input.toLowerCase()
-        
-        for (var i = 0; i < commandList.length; i++) {
-            if (input.search(commandList[i]) != -1) {
-                switch (commandList[i]) {
-                    case "/t":
-                    talk(input)
-                    break
-                    default:
-                }
-            }
-        }
-
-        function talk(input) {
-            var msg = input.replace("/t", "")
-            sendMessage({
-                "transmit": msg,
-                "playerName": playerName
-            })
-        }
-    }
-
     //Terminal Input
     $('#term_demo').terminal(function(command, term) {
+
+        terminalLogic(command)
 
         var oppJoined = function() {
             term.echo("Player " + enemyShip.playerName + " has entered this sector")
