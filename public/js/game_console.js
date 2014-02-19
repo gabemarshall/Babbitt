@@ -75,12 +75,12 @@ var terminalLogic = function(input) {
         terminal = $('#term_demo').terminal(function(command, term) {})
         terminal.echo('Unknown Command: ' + input)
     }
-    //change the name of your player
+    //change the name of player
     function changePlayerName(command, input) {
         input = input.replace(command, '')
         //code
     }
-    //change the name of your ship
+    //change the name of ship
     function changeShipName(command, input) {
         input = input.replace(command, '')
         //code
