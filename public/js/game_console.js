@@ -59,7 +59,8 @@ var terminalLogic = function(input) {
     }
     //unknown command
     function unknownCommand(input) {
-        $('#term_demo').terminal(function(command, term) {}).echo('Unknown Command: ' + input)
+        terminal = $('#term_demo').terminal(function(command, term) {})
+        terminal.echo('Unknown Command: ' + input)
     }
 
     function changePlayerName(command, input) {
