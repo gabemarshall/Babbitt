@@ -48,8 +48,8 @@ var terminalLogic = function(inputString) {
     function textMessage(input) {
         input = input.replace("/t", "")
         sendMessage({
-            "transmit": input,
-            "playerName": myShip.playerName
+            transmit: input,
+            playerName: myShip.playerName
         })
         
         //sendData(dataType.textMessage(myship.playerName, input))
@@ -66,9 +66,9 @@ var terminalLogic = function(inputString) {
 var dataType = {
     textMessage: function(value1, value2) {
         return {
-            "type": "textMessage",
-            "sender": value1,
-            "message": value2
+            type: "textMessage",
+            sender: value1,
+            message: value2
         }
     }
 }
