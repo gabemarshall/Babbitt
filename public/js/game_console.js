@@ -21,13 +21,15 @@ var terminalLogic = function(inputString) {
             commandFound = true
             switch (commandList[i]) {
                 case "/t":
-                talk(input)
+                textMessage(input)
                 break
+
                 case "/shields":
                 break
-                break
+
                 case "/lasers":
                 break
+
                 default:
             }
         }
@@ -42,13 +44,16 @@ var terminalLogic = function(inputString) {
         input = input.toLowerCase()
         return input
     }
-    //transmitt chat message
-    function talk(input) {
+    //transmit chat message
+    function textMessage(input) {
         input = input.replace("/t", "")
         sendMessage({
             "transmit": input,
             "playerName": myShip.playerName
         })
+        
+        //sendData(dataType.textMessage(myship.playerName, input))
+        
     }
     //unknown command
     function unknownCommand(input) {
@@ -57,17 +62,24 @@ var terminalLogic = function(inputString) {
 }
 
 /*
-//framework for types of data sent/received
+//framework for types of data  to send/receive
 var dataType = {
-    textMessage: {
-        type: "textMessage"
-        sender: value1,
-        message: value2
+    textMessage: function(value1, value2) {
+        return {
+            "type": "textMessage",
+            "sender": value1,
+            "message": value2
+        }
     }
-    
 }
 
 //framework to send data
+var sendData = function(data) {
+    pubnub.publish({
+        channel: "babb" + gameID,
+        data: data
+    })
+}
 
 //framework for receiving data
 */
