@@ -3,10 +3,10 @@
 //babbitt.gabemarshall.me
 
 //Terminal Logic
-var terminalLogic = function(inputString) {
+var terminalLogic = function(input) {
     
     //clean up input
-    var input = cleanInput(inputString)
+    input = cleanInput(input)
     var commandFound = false
 
     //list of available commands
@@ -20,14 +20,14 @@ var terminalLogic = function(inputString) {
         if (input.search(commandList[i]) != -1) {
             commandFound = true
             switch (commandList[i]) {
-                case "/t":
+                case '/t':
                 textMessage(input)
                 break
 
-                case "/shields":
+                case '/shields':
                 break
 
-                case "/lasers":
+                case '/lasers':
                 break
 
                 default:
@@ -46,7 +46,7 @@ var terminalLogic = function(inputString) {
     }
     //transmit chat message
     function textMessage(input) {
-        input = input.replace("/t", "")
+        input = input.replace('/t', '')
         sendMessage({
             transmit: input,
             playerName: myShip.playerName
@@ -57,7 +57,7 @@ var terminalLogic = function(inputString) {
     }
     //unknown command
     function unknownCommand(input) {
-        $('#term_demo').terminal(function(command, term) {}).echo("Unknown Command: " + input)
+        $('#term_demo').terminal(function(command, term) {}).echo('Unknown Command: ' + input)
     }
 }
 
@@ -75,7 +75,7 @@ var dataType = {
         retunr {
             type: "laserValue",
             shipName: value1,
-            value: value2
+            amount: value2
         }
     }
 }
@@ -89,6 +89,9 @@ var sendData = function(data) {
 }
 
 //framework for receiving data
+var receiveData = function(data) {
+    //code
+}
 */
 
 //Terminal
@@ -96,7 +99,7 @@ $(document).ready(function() {
     
     //Terminal Initialization
     function initializeTerminal(term) {
-        term.echo("Initialize Terminal")
+        term.echo('Initialize Terminal')
     }
 
     //Terminal Input
@@ -106,7 +109,7 @@ $(document).ready(function() {
         terminalLogic(command)
 
         var oppJoined = function() {
-            term.echo(enemyShip.playerName + " has entered this sector")
+            term.echo(enemyShip.playerName + ' has entered this sector')
             ig.game.spawnEntity(EntityShip, 0, 0);
             sendMessage({
                 "playerInit": "true",
