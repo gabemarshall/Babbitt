@@ -15,33 +15,39 @@ var sendMessage = function(msg) {
 var notifyPlayerDamage = function(bool){
     pubnub.publish({
         channel: 'babb'+gameID,
-        message: {title: 'DAMAGE','successful': bool, playerName: myShip.playerName}
+        message: { 
+            title: 'DAMAGE',
+            'successful': bool, 
+            playerName: myShip.playerName
+        }
     })
 }
 
 var updateOtherPlayer = function(){
     pubnub.publish({
         channel: 'babb'+gameID,
-        message: {'UPDATE':myShip}
+        message: {
+            'UPDATE':myShip
+        }
     })
 }
 
-var getPlayers = function(){
-pubnub.here_now({
-     channel : 'babb'+gameID,
-     callback : function(m){
-        var totalPlayers = parseInt(m.occupancy)
-        if (totalPlayers > 1 && !allowedToPlay){
-            window.location = '/error'
-        }
-        else {
-            allowedToPlay = true
-        }
-     }
- });    
+var getPlayers = function() {
+    pubnub.here_now({
+         channel : 'babb'+gameID,
+         callback : function(m) {
+            var totalPlayers = parseInt(m.occupancy)
+            if (totalPlayers > 1 && !allowedToPlay) {
+                window.location = '/error'
+            }
+            else {
+                allowedToPlay = true
+            }
+         }
+     });    
 }
 
-setTimeout(function(){
+setTimeout(function() {
     getPlayers()
     pubnub.publish({
         channel: 'nolagging',

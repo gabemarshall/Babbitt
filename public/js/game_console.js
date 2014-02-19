@@ -10,12 +10,12 @@ var terminalLogic = function(inputString) {
     var commandFound = false
 
     //list of available commands
-    var commandList = ["/t",
-                       "/shields",
-                       "/lasers"
+    var commandList = ['/t',
+                       '/shields',
+                       '/lasers'
                       ]
 
-    //find commands in inputString
+    //find commands in input
     for (var i = 0; i < commandList.length; i++) {
         if (input.search(commandList[i]) != -1) {
             commandFound = true
@@ -34,11 +34,11 @@ var terminalLogic = function(inputString) {
             }
         }
     }
-    //if no command was found in the input string
+    //if no command was found in the input
     if (commandFound === false) {
         unknownCommand(input)
     }
-    //cleanup user input string
+    //cleanup user input
     function cleanInput(input) {
         input = input.trim()
         input = input.toLowerCase()
@@ -67,8 +67,15 @@ var dataType = {
     textMessage: function(value1, value2) {
         return {
             type: "textMessage",
-            sender: value1,
+            shipName: value1,
             message: value2
+        }
+    }
+    laserValue: function(value1, value2) {
+        retunr {
+            type: "laserValue",
+            shipName: value1,
+            value: value2
         }
     }
 }
