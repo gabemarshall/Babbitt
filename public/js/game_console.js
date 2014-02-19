@@ -47,10 +47,12 @@ var terminalLogic = function(input) {
     //transmit chat message
     function textMessage(input) {
         input = input.replace('/t', '')
+        //Phase out
         sendMessage({
             transmit: input,
             playerName: myShip.playerName
         })
+        //Phase out
         
         //sendData(dataType.textMessage(myship.playerName, input))
         
@@ -112,8 +114,8 @@ $(document).ready(function() {
             term.echo(enemyShip.playerName + ' has entered this sector')
             ig.game.spawnEntity(EntityShip, 0, 0);
             sendMessage({
-                "playerInit": "true",
-                "shipData": myShip
+                'playerInit': 'true',
+                'shipData': myShip
             })
             gameBegun = true;
         }
@@ -121,29 +123,29 @@ $(document).ready(function() {
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
             myShip.playerName = command;
-            term.echo("Player Name: " + command);
-            term.echo("Sector: " + gameID);
+            term.echo('Player Name: ' + command);
+            term.echo('Sector: ' + gameID);
             sendMessage({
-                "playerInit": "true",
-                "shipData": myShip
+                'playerInit': 'true',
+                'shipData': myShip
             })
             termInit = true; //game has been initialized
         }
 
         //Interpret console commands
-        else if (command != "") {
+        else if (command != '') {
 
             //Transmit message
-            if (command.indexOf("/t") >= 0) {
+            if (command.indexOf('/t') >= 0) {
                 //moved to terminalLogic
             }
 
             //Laser command
-            else if (command.indexOf("laser") >= 0 || command.indexOf("laser_fire") >= 0) {
+            else if (command.indexOf('laser') >= 0 || command.indexOf('laser_fire') >= 0) {
                 var laserValue = command.replace(/(laser)/g, "")
                 //Input error
                 if (!laserValue) {
-                    term.echo("Error: You must enter a value after the Laser command");
+                    term.echo('Error: You must enter a value after the Laser command');
                 }
                 //Shields active
                 if (shieldsActive) {
