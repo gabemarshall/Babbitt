@@ -5,7 +5,6 @@
 //Terminal Logic
 var terminalLogic = function(input) {
     
-    //clean up input
     input = cleanInput(input)
     var commandFound = false
 
@@ -19,6 +18,7 @@ var terminalLogic = function(input) {
     for (var i = 0; i < commandList.length; i++) {
         if (input.search(commandList[i]) != -1) {
             commandFound = true
+            //input = removeCommand(commandList[i], input)
             switch (commandList[i]) {
                 case '/t':
                 textMessage(commandList[i], input)
@@ -28,6 +28,14 @@ var terminalLogic = function(input) {
                 break
 
                 case '/lasers':
+                break
+
+                case '/shipname':
+                changeShipName(command, input)
+                break
+
+                case '/playername':
+                changePlayerName(command, input)
                 break
 
                 default:
@@ -42,6 +50,11 @@ var terminalLogic = function(input) {
     function cleanInput(input) {
         input = input.trim()
         input = input.toLowerCase()
+        return input
+    }
+    //remove the command from input
+    function removeCommand(command, input) {
+        input = input.replace(command, '')
         return input
     }
     //transmit chat message
@@ -62,12 +75,12 @@ var terminalLogic = function(input) {
         terminal = $('#term_demo').terminal(function(command, term) {})
         terminal.echo('Unknown Command: ' + input)
     }
-
+    //change the name of your player
     function changePlayerName(command, input) {
         input = input.replace(command, '')
         //code
     }
-
+    //change the name of your ship
     function changeShipName(command, input) {
         input = input.replace(command, '')
         //code
