@@ -21,7 +21,7 @@ var terminalLogic = function(input) {
             commandFound = true
             switch (commandList[i]) {
                 case '/t':
-                textMessage(input)
+                textMessage(commandList[i], input)
                 break
 
                 case '/shields':
@@ -45,8 +45,8 @@ var terminalLogic = function(input) {
         return input
     }
     //transmit chat message
-    function textMessage(input) {
-        input = input.replace('/t', '')
+    function textMessage(command, input) {
+        input = input.replace(command, '')
         //Phase out
         sendMessage({
             transmit: input,
@@ -60,6 +60,16 @@ var terminalLogic = function(input) {
     //unknown command
     function unknownCommand(input) {
         $('#term_demo').terminal(function(command, term) {}).echo('Unknown Command: ' + input)
+    }
+
+    function changePlayerName(command, input) {
+        input = input.replace(command, '')
+        //code
+    }
+
+    function changeShipName(command, input) {
+        input = input.replace(command, '')
+        //code
     }
 }
 
