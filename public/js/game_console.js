@@ -78,7 +78,7 @@ var terminalLogic = function(input) {
     //change the name of player
     function changePlayerName(command, name) {
         name = name.replace(command, '')
-        name.trim()
+        name = name.trim()
         if (name != '') {
             myShip.setPlayerName(name)
             terminal = $('#term_demo').terminal(function(command, term) {})
