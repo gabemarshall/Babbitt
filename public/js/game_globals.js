@@ -1,6 +1,6 @@
 // Variables set in here are global and used in both core game logic (game_loop.js & game_console.js)
 // and also used in the ImpactJS draw method (lib/game/main.js)
-//babbitt.gabemarshall.me/pushitrealgood
+// w
 //babbitt.gabemarshall.me
 
 //Ship Data

@@ -12,7 +12,9 @@ var terminalLogic = function(input) {
     commandList = [ 
         '/t',
         '/shields',
-        '/lasers' 
+        '/lasers',
+        '/playername',
+        '/shipname'
     ]
 
     //find commands in input
