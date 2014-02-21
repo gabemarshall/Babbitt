@@ -14,6 +14,22 @@ function playerShip() {
     this.shield = new Shield();
     this.hull = new Hull();
 
+    this.getShipName = function() {
+        return this.shipName
+    }
+    this.setShipName = function(name) {
+        this.shipName = name
+    }
+    this.getPlayerName = function() {
+        return this.playerName
+    }
+    this.setPlayerName = function(name) {
+        this.playerName = name
+    }
+    function validateNameChange() {
+        //code
+    }
+
     //Ship Systems
     function Generator() {
         this.damage = new Data(0.0);        //current amount of damage

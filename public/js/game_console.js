@@ -9,10 +9,11 @@ var terminalLogic = function(input) {
     var commandFound = false
 
     //list of available commands
-    var commandList = ['/t',
-                       '/shields',
-                       '/lasers'
-                      ]
+    commandList = [ 
+        '/t',
+        '/shields',
+        '/lasers' 
+    ]
 
     //find commands in input
     for (var i = 0; i < commandList.length; i++) {
@@ -20,8 +21,9 @@ var terminalLogic = function(input) {
             commandFound = true
             //input = removeCommand(commandList[i], input)
             switch (commandList[i]) {
+
                 case '/t':
-                textMessage(commandList[i], input)
+                sendTextMessage(commandList[i], input)
                 break
 
                 case '/shields':
@@ -31,11 +33,9 @@ var terminalLogic = function(input) {
                 break
 
                 case '/shipname':
-                changeShipName(command, input)
                 break
 
                 case '/playername':
-                changePlayerName(command, input)
                 break
 
                 default:
@@ -57,8 +57,8 @@ var terminalLogic = function(input) {
         input = input.replace(command, '')
         return input
     }
-    //transmit chat message
-    function textMessage(command, input) {
+    //transmit text message
+    function sendTextMessage(command, input) {
         input = input.replace(command, '')
         //Phase out
         sendMessage({
@@ -66,24 +66,24 @@ var terminalLogic = function(input) {
             playerName: myShip.playerName
         })
         //Phase out
-        
+
         //sendData(dataType.textMessage(myship.playerName, input))
         
     }
     //unknown command
-    function unknownCommand(input) {
+    function unknownCommand(command) {
         terminal = $('#term_demo').terminal(function(command, term) {})
-        terminal.echo('Unknown Command: ' + input)
+        terminal.echo('Unknown Command: ' + command)
     }
     //change the name of player
-    function changePlayerName(command, input) {
-        input = input.replace(command, '')
-        //code
+    function changePlayerName(command, name) {
+        name = name.replace(command, '')
+        myShip.setPlayerName(name)
     }
     //change the name of ship
-    function changeShipName(command, input) {
-        input = input.replace(command, '')
-        //code
+    function changeShipName(command, name) {
+        name = name.replace(command, '')
+        myShip.setShipName(name)
     }
 }
 
