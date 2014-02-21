@@ -80,14 +80,14 @@ var terminalLogic = function(input) {
     function changePlayerName(command, name) {
         name = name.replace(command, '')
         name = name.trim()
-        if (name != '' && name != myShip.getPlayerName) {
+        if (name === '' || name === myShip.getPlayerName) {
+            terminal = $('#term_demo').terminal(function(command, term) {})
+            terminal.echo('Player Name is currently: ' + myShip.getPlayerName())
+        }
+        else {
             myShip.setPlayerName(name)
             terminal = $('#term_demo').terminal(function(command, term) {})
             terminal.echo('Player Name set to: ' + myShip.getPlayerName())
-        }
-        else {
-            terminal = $('#term_demo').terminal(function(command, term) {})
-            terminal.echo('Player Name is currently: ' + myShip.getPlayerName())
         }
     }
     //change the name of ship
