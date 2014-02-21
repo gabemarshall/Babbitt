@@ -38,6 +38,7 @@ var terminalLogic = function(input) {
                 break
 
                 case '/shipname':
+                changeShipName(commandList[i], input)
                 break
 
                 default:
@@ -79,20 +80,29 @@ var terminalLogic = function(input) {
     function changePlayerName(command, name) {
         name = name.replace(command, '')
         name = name.trim()
-        if (name != '') {
+        if (name != '' && name != myShip.getPlayerName) {
             myShip.setPlayerName(name)
             terminal = $('#term_demo').terminal(function(command, term) {})
-            terminal.echo('Player Name: ' + myShip.getPlayerName())            
+            terminal.echo('Player Name set to: ' + myShip.getPlayerName())
         }
         else {
             terminal = $('#term_demo').terminal(function(command, term) {})
-            terminal.echo('Player Name: ' + myShip.getPlayerName())
+            terminal.echo('Player Name is currently: ' + myShip.getPlayerName())
         }
     }
     //change the name of ship
     function changeShipName(command, name) {
         name = name.replace(command, '')
-        myShip.setShipName(name)
+        name = name.trim()
+        if (name != '' && name != myShip.getShipName) {
+            myShip.setShipName(name)
+            terminal = $('#term_demo').terminal(function(command, term) {})
+            terminal.echo('Ship name set to: ' + myShip.getShipName())            
+        }
+        else {
+            terminal = $('#term_demo').terminal(function(command, term) {})
+            terminal.echo('Ship name is currently: ' + myShip.getShipName())
+        }
     }
 }
 
