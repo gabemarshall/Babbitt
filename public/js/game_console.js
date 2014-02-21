@@ -73,7 +73,7 @@ var terminalLogic = function(input) {
     }
     //unknown command
     function unknownCommand(command) {
-        terminal = $('#term_demo').terminal(function(command, term) {})
+        terminal = $('#term_demo').terminal(function() {})
         terminal.echo('Unknown Command: ' + command)
     }
     //change the name of player
@@ -81,27 +81,27 @@ var terminalLogic = function(input) {
         name = name.replace(command, '')
         name = name.trim()
         if (name == '' || name == myShip.getPlayerName) {
-            terminal = $('#term_demo').terminal(function(command, term) {})
-            terminal.echo('Player Name is currently: ' + myShip.getPlayerName())
+            terminal = $('#term_demo').terminal(function() {})
+            terminal.echo('Player name is currently: ' + myShip.getPlayerName())
         }
         else {
             myShip.setPlayerName(name)
-            terminal = $('#term_demo').terminal(function(command, term) {})
-            terminal.echo('Player Name set to: ' + myShip.getPlayerName())
+            terminal = $('#term_demo').terminal(function() {})
+            terminal.echo('Player name set to: ' + myShip.getPlayerName())
         }
     }
     //change the name of ship
     function changeShipName(command, name) {
         name = name.replace(command, '')
         name = name.trim()
-        if (name != '' && name != myShip.getShipName) {
-            myShip.setShipName(name)
-            terminal = $('#term_demo').terminal(function(command, term) {})
-            terminal.echo('Ship name set to: ' + myShip.getShipName())            
+        if (name == '' || name == myShip.getShipName) {
+            terminal = $('#term_demo').terminal(function() {})
+            terminal.echo('Ship name is currently: ' + myShip.getShipName())
         }
         else {
-            terminal = $('#term_demo').terminal(function(command, term) {})
-            terminal.echo('Ship name is currently: ' + myShip.getShipName())
+            myShip.setShipName(name)
+            terminal = $('#term_demo').terminal(function() {})
+            terminal.echo('Ship name set to: ' + myShip.getShipName())
         }
     }
 }
