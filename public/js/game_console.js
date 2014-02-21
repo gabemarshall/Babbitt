@@ -19,7 +19,6 @@ var terminalLogic = function(input) {
     for (var i = 0; i < commandList.length; i++) {
         if (input.search(commandList[i]) != -1) {
             commandFound = true
-            //input = removeCommand(commandList[i], input)
             switch (commandList[i]) {
 
                 case '/t':
@@ -32,10 +31,11 @@ var terminalLogic = function(input) {
                 case '/lasers':
                 break
 
-                case '/shipname':
+                case '/playername':
+                changePlayerName(commandList[i], input)
                 break
 
-                case '/playername':
+                case '/shipname':
                 break
 
                 default:
@@ -66,9 +66,7 @@ var terminalLogic = function(input) {
             playerName: myShip.playerName
         })
         //Phase out
-
         //sendData(dataType.textMessage(myship.playerName, input))
-        
     }
     //unknown command
     function unknownCommand(command) {
@@ -78,7 +76,16 @@ var terminalLogic = function(input) {
     //change the name of player
     function changePlayerName(command, name) {
         name = name.replace(command, '')
-        myShip.setPlayerName(name)
+        name.trim()
+        if (name != '') {
+            myShip.setPlayerName(name)
+            terminal = $('#term_demo').terminal(function(command, term) {})
+            terminal.echo('Player Name: ' + myShip.getPlayerName())            
+        }
+        else {
+            terminal = $('#term_demo').terminal(function(command, term) {})
+            terminal.echo('Player Name: ' + myShip.getPlayerName())
+        }
     }
     //change the name of ship
     function changeShipName(command, name) {

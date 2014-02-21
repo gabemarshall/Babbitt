@@ -26,9 +26,6 @@ function playerShip() {
     this.setPlayerName = function(name) {
         this.playerName = name
     }
-    function validateNameChange() {
-        //code
-    }
 
     //Ship Systems
     function Generator() {
