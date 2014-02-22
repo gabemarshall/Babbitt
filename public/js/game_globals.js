@@ -107,8 +107,8 @@ var termInit = false;
 var gameBegun = false;
 
 //**PHASE OUT
-var playerName; 
-var oppName;
+//var playerName; 
+//var oppName;
 var shipHP = 100;
 var shipHPBound = {lowerBound:0, upperBound:100};
 var powerLevel = 100;
@@ -119,16 +119,6 @@ var shieldLevel = 100;
 var shieldBound = {lowerBound:0, upperBound:100};
 //**PHASE OUT
 
-/*
-var checkIfAlive = function(hp) {
-    if (hp <= 0) {
-        return false;
-    }
-    else {
-        return true;
-    }
-}
-*/
 var checkPowerAvailability = function(powerRequest, module) {
     if ((powerLevel - powerRequest) <= 0) {
         return false;
@@ -174,7 +164,6 @@ var adjustLaserValue = function(laserValue) {
 
 var adjustShipHP = function(laserValue) {
     myShip.hull.damage.current = myShip.hull.damage.current - laserValue;
-    //shipHP = limitValue(shipHP, ship)
     if (myShip.hull.damage.current < 0) {
         myShip.hull.damage.current = 0;
     }
@@ -182,14 +171,4 @@ var adjustShipHP = function(laserValue) {
         myShip.hull.damage.current = 100;
     }
     return myShip.hull.damage.current;
-}
-
-var limitValue = function(value, lbound, ubound) {
-    if (value < lbound) {
-        value = lbound;
-    }
-    else if (value > ubound) {
-        value = ubound;
-    }
-    return value;
 }
