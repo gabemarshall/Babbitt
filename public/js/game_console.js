@@ -256,7 +256,8 @@ $(document).ready(function() {
 
         //Multiplayer
         pubnub.subscribe({
-            channel: 'babb' + gameID,                  
+            channel: 'babb' + gameID,
+            data: function(data) {alert(data)},               
             callback: function(message) {
 
                 //****************************************************
