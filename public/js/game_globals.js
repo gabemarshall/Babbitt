@@ -107,9 +107,7 @@ var termInit = false;
 var gameBegun = false;
 
 //**PHASE OUT
-//var playerName; 
-//var oppName;
-var shipHP = 100;
+//var shipHP = 100;
 var shipHPBound = {lowerBound:0, upperBound:100};
 var powerLevel = 100;
 var laserActive = false;

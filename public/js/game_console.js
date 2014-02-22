@@ -194,9 +194,8 @@ $(document).ready(function() {
 
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
+            term.echo('input name')
             myShip.playerName = command;
-            term.echo('Player Name: ' + command);
-            term.echo('Sector: ' + gameID);
             sendMessage({
                 'playerInit': 'true',
                 'shipData': myShip
