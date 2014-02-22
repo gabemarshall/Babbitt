@@ -131,18 +131,20 @@ var sendData = function(data) {
 
 //framework for receiving data
 var receiveData = function(data) {
-    switch (data.type) {
+    if (data.from != myShip.getPlayerName()) {
+        switch (data.type) {
 
-        case 'textMessage':
-        textMessage(data)
-        break
+            case 'textMessage':
+            textMessage(data)
+            break
 
-        default:
+            default:
+        }
     }
 
     function textMessage(data) {
         terminal = $('#term_demo').terminal()
-        terminal.echo(data.type + 'Received')
+        terminal.echo(data.type + ' Received')
         terminal.echo(data.from + ': ' + data.message)
     }
 }
@@ -274,6 +276,7 @@ $(document).ready(function() {
             channel: 'babb' + gameID,        
             callback: function(message) {
 
+                //Work in Progress
                 //****************************************************
                 receiveData(message)
                 //****************************************************
@@ -293,9 +296,11 @@ $(document).ready(function() {
 
                 //Incoming chat dialog from opponent
                 if (message.transmit) {
-                    if (message.playerName != myShip.playerName) {
-                        term.echo(message.playerName + " :[[b;#000;#d3d3d3]" + message.transmit + "]");
-                    }
+                    /*
+                        if (message.playerName != myShip.playerName) {
+                            term.echo(message.playerName + " :[[b;#000;#d3d3d3]" + message.transmit + "]");
+                        }
+                    */
                 }
 
                 //Warning of opponent firing lasers
