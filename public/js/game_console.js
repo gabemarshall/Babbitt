@@ -102,7 +102,7 @@ var terminalLogic = function(input) {
     }
 }
 
-//Send data
+//Send Data
 var sendData = {
     textMessage: function(from, msg) {
         pubnub.publish({
@@ -128,36 +128,7 @@ var sendData = {
     }
 }
 
-/*
-//Framework for types of data  to send/receive
-var getDataType = {
-    textMessage: function(from, msg) {
-        return {
-            type: 'textMessage',
-            sender: from,
-            recipient: 'sector',
-            message: msg
-        }
-    },
-    laserBeam: function(from, to, laserValue) {
-        return {
-            type: 'laserBeam',
-            sender: from,
-            recipient: to,
-            laser: laserValue
-        }
-    }
-}
-
-//Send data
-var sendData = function(data) {
-    pubnub.publish({
-        channel: 'babb' + gameID,
-        message: data
-    })
-}*/
-
-//Receiving data
+//Receive Data
 var receiveData = function(data) {
     if (data.sender != myShip.getPlayerName()) {
         switch (data.type) {
@@ -217,13 +188,6 @@ $(document).ready(function() {
 
         //Interpret console commands
         else if (command != '') {
-
-            /*
-            //Transmit message
-            if (command.indexOf('/t') >= 0) {
-                //moved to terminalLogic
-            }
-            */
 
             //Laser command
             if (command.indexOf('laser') >= 0 || command.indexOf('laser_fire') >= 0) {
@@ -301,10 +265,8 @@ $(document).ready(function() {
             channel: 'babb' + gameID,        
             callback: function(message) {
 
-                //Work in Progress
-                //****************************************************
+                //Receive Data
                 receiveData(message)
-                //****************************************************
 
                 //If incoming message is from the opponent
                 if (message.UPDATE && message.UPDATE.playerName != myShip.playerName) {
@@ -346,25 +308,24 @@ $(document).ready(function() {
                 else if (message.title === 'DAMAGE' && message.playerName != myShip.playerName) {
                     laserActive = false //disengage laser to allow them to fire again
                     
-                        //unsuccessful
-                        if (!message.successful) {
-                            var laser = ig.game.getEntitiesByType(EntityLaser)[0];
-                            laser.kill()
-                            ig.game.spawnEntity(EntityeShields, 0, 0);
-                            ig.game.spawnEntity(EntityLaserHit, 0, 0);
-                        }
-                        //successful
-                        else {
-                            term.echo("Laser appeared to do damage blah blah blah");
-                            var laser = ig.game.getEntitiesByType(EntityLaser)[0];
-                            laser.kill();
-                            ig.game.spawnEntity(EntityLaserHit, 0, 0);
-                            // if (!checkIfAlive(message.hitpoints)) {
-                            //     destroyEnemyShip();
-                            //     term.echo("Enemy Annihilated");
-                            // }
-                        }
-                    
+                    //unsuccessful
+                    if (!message.successful) {
+                        var laser = ig.game.getEntitiesByType(EntityLaser)[0];
+                        laser.kill()
+                        ig.game.spawnEntity(EntityeShields, 0, 0);
+                        ig.game.spawnEntity(EntityLaserHit, 0, 0);
+                    }
+                    //successful
+                    else {
+                        term.echo("Laser appeared to do damage blah blah blah");
+                        var laser = ig.game.getEntitiesByType(EntityLaser)[0];
+                        laser.kill();
+                        ig.game.spawnEntity(EntityLaserHit, 0, 0);
+                        // if (!checkIfAlive(message.hitpoints)) {
+                        //     destroyEnemyShip();
+                        //     term.echo("Enemy Annihilated");
+                        // }
+                    }
                 }
             }
         });
