@@ -149,7 +149,7 @@ var receiveData = function(data) {
 
 //Terminal
 $(document).ready(function() {
-
+    
     //Terminal Initialization
     function initializeTerminal(term) {
         term.echo('Initialize Terminal')
@@ -185,6 +185,13 @@ $(document).ready(function() {
 
         //Interpret console commands
         else if (command != '') {
+
+            /*
+            //Transmit message
+            if (command.indexOf('/t') >= 0) {
+                //moved to terminalLogic
+            }
+            */
 
             //Laser command
             if (command.indexOf('laser') >= 0 || command.indexOf('laser_fire') >= 0) {
@@ -257,14 +264,19 @@ $(document).ready(function() {
             }, 1000)
         }
 
+<<<<<<< HEAD
         //Listen for incoming data
+=======
+        //Multiplayer
+>>>>>>> parent of 532c2a2... terminal logic
         pubnub.subscribe({
             channel: 'babb' + gameID,        
             callback: function(message) {
 
-                //Receive data
+                //Work in Progress
+                //****************************************************
                 receiveData(message)
-
+                //****************************************************
 
                 //If incoming message is from the opponent
                 if (message.UPDATE && message.UPDATE.playerName != myShip.playerName) {
