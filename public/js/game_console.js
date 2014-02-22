@@ -179,13 +179,15 @@ $(document).ready(function() {
         //Interpret console commands
         else if (command != '') {
 
+            /*
             //Transmit message
             if (command.indexOf('/t') >= 0) {
                 //moved to terminalLogic
             }
+            */
 
             //Laser command
-            else if (command.indexOf('laser') >= 0 || command.indexOf('laser_fire') >= 0) {
+            if (command.indexOf('laser') >= 0 || command.indexOf('laser_fire') >= 0) {
                 var laserValue = command.replace(/(laser)/g, "")
                 //Input error
                 if (!laserValue) {
@@ -246,12 +248,6 @@ $(document).ready(function() {
             }
         }
 
-        // Unknown command
-        else {
-            //moved to terminalLogic()
-        }
-
-
         if (!gameBegun) {
             var consoleChecksGameStatus = setInterval(function() {
                 if (enemyShip && !gameBegun) {
@@ -284,13 +280,6 @@ $(document).ready(function() {
                     }
                 }
 
-                /*
-                //Incoming chat dialog from opponent
-                if (message.transmit) {
-                    //moved to receiveData()
-                }
-                */
-
                 //Warning of opponent firing lasers
                 if (message.incoming_laser) {
                     if (message.playerName != myShip.playerName) {
@@ -312,11 +301,8 @@ $(document).ready(function() {
                             notifyPlayerDamage(false)
                             updateOtherPlayer()
                         }
-                        
-                        
                     }
                 }
-
                 //Send message to opponent on whether his laser attack was successful or not
                 else if (message.title === 'DAMAGE' && message.playerName != myShip.playerName) {
                     laserActive = false //disengage laser to allow them to fire again
