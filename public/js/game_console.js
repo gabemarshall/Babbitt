@@ -64,14 +64,15 @@ var terminalLogic = function(input) {
     function sendTextMessage(command, input) {
         input = input.replace(command, '')
         //Phase out
-
+        
         sendMessage({
             type: 'textMessage',
             transmit: input,
             playerName: myShip.playerName
         })  
         //Phase out
-        //sendData(getDataType.textMessage(myShip.getShipName(), input))
+        
+        sendData(getDataType.textMessage(myShip.getPlayerName(), input))
     }
     //unknown command
     function unknownCommand(command) {
@@ -121,10 +122,10 @@ var getDataType = {
 }
 
 //framework to send data
-var sendData = function(stuff) {
+var sendData = function(data) {
     pubnub.publish({
         channel: "babb" + gameID,
-        message: stuff
+        message: data
     })
 }
 
@@ -141,7 +142,8 @@ var receiveData = function(data) {
 
     function textMessage(data) {
         terminal = $('#term_demo').terminal()
-        terminal.echo('Message Received')
+        terminal.echo(data.type + 'Received')
+        terminal.echo(data.from + ': ' + data.message)
     }
 }
 
