@@ -80,7 +80,7 @@ var terminalLogic = function(input) {
     function changePlayerName(command, name) {
         name = name.replace(command, '')
         name = name.trim()
-        if (name == '' || name == myShip.getPlayerName) {
+        if (name == '' || name == myShip.getPlayerName()) {
             terminal = $('#term_demo').terminal()
             terminal.echo('Player name is currently: ' + myShip.getPlayerName())
         }
@@ -94,7 +94,7 @@ var terminalLogic = function(input) {
     function changeShipName(command, name) {
         name = name.replace(command, '')
         name = name.trim()
-        if (name == '' || name == myShip.getShipName) {
+        if (name == '' || name == myShip.getShipName()) {
             terminal = $('#term_demo').terminal()
             terminal.echo('Ship name is currently: ' + myShip.getShipName())
         }
@@ -109,18 +109,12 @@ var terminalLogic = function(input) {
 /*
 //framework for types of data  to send/receive
 var dataType = {
-    textMessage: function(value1, value2) {
+    textMessage: function(player, msg) {
         return {
             type: "textMessage",
-            shipName: value1,
-            message: value2
-        }
-    }
-    laserValue: function(value1, value2) {
-        retunr {
-            type: "laserValue",
-            shipName: value1,
-            amount: value2
+            to: 0,
+            from: player,
+            message: msg
         }
     }
 }
