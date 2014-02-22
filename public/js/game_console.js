@@ -65,7 +65,7 @@ var terminalLogic = function(input) {
         input = input.replace(command, '')
         input = input.trim()
         //sendData(getDataType.textMessage(myShip.getPlayerName(), input))
-        sendData.textMessage(myShip.getPlayerName(), input))
+        sendData.textMessage(myShip.getPlayerName(), input)
     }
     //unknown command
     function unknownCommand(command) {
