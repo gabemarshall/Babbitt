@@ -131,7 +131,7 @@ var sendData = function(stuff) {
 var receiveData = function(data) {
     //code
 }
-*/
+
 
 //Terminal
 $(document).ready(function() {
