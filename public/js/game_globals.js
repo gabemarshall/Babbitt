@@ -7,6 +7,7 @@
 function playerShip() {
     //public
     this.shipName;
+    var shipNumber = generateShipNumber();
     this.playerName;
     this.generator = new Generator();
     this.capacitor = new Capacitor();
@@ -14,6 +15,7 @@ function playerShip() {
     this.shield = new Shield();
     this.hull = new Hull();
 
+    //getters and setters
     this.getShipName = function() {
         return this.shipName
     }
@@ -26,7 +28,17 @@ function playerShip() {
     this.setPlayerName = function(name) {
         this.playerName = name
     }
-
+    this.getShipNumber = function() {
+        return this.shipNumber
+    }
+    this.getShipNumber = function() {
+        return shipNumber
+    }
+    //Randomly generate a ship number
+    function generateShipNumber() {
+        //code
+        return 0;
+    }
     //Ship Systems
     function Generator() {
         this.damage = new Data(0.0);        //current amount of damage

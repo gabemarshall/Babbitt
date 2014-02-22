@@ -9,7 +9,7 @@ var terminalLogic = function(input) {
     var commandFound = false
 
     //list of available commands
-    commandList = [ 
+    commandList = [
         '/t',
         '/shields',
         '/lasers',
@@ -73,7 +73,7 @@ var terminalLogic = function(input) {
     }
     //unknown command
     function unknownCommand(command) {
-        terminal = $('#term_demo').terminal(function() {})
+        terminal = $('#term_demo').terminal()
         terminal.echo('Unknown Command: ' + command)
     }
     //change the name of player
@@ -81,12 +81,12 @@ var terminalLogic = function(input) {
         name = name.replace(command, '')
         name = name.trim()
         if (name == '' || name == myShip.getPlayerName) {
-            terminal = $('#term_demo').terminal(function() {})
+            terminal = $('#term_demo').terminal()
             terminal.echo('Player name is currently: ' + myShip.getPlayerName())
         }
         else {
             myShip.setPlayerName(name)
-            terminal = $('#term_demo').terminal(function() {})
+            terminal = $('#term_demo').terminal()
             terminal.echo('Player name set to: ' + myShip.getPlayerName())
         }
     }
@@ -95,12 +95,12 @@ var terminalLogic = function(input) {
         name = name.replace(command, '')
         name = name.trim()
         if (name == '' || name == myShip.getShipName) {
-            terminal = $('#term_demo').terminal(function() {})
+            terminal = $('#term_demo').terminal()
             terminal.echo('Ship name is currently: ' + myShip.getShipName())
         }
         else {
             myShip.setShipName(name)
-            terminal = $('#term_demo').terminal(function() {})
+            terminal = $('#term_demo').terminal()
             terminal.echo('Ship name set to: ' + myShip.getShipName())
         }
     }
