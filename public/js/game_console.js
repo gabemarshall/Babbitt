@@ -110,6 +110,7 @@ var getDataType = {
             message: msg
         }
     }
+    /*
     laserBeam: function(from, to, laserValue) {
         return {
             type: 'laserBeam',
@@ -118,6 +119,7 @@ var getDataType = {
             message: laserValue
         }
     }
+    */
 }
 
 //Send data
@@ -264,11 +266,7 @@ $(document).ready(function() {
             }, 1000)
         }
 
-<<<<<<< HEAD
-        //Listen for incoming data
-=======
-        //Multiplayer
->>>>>>> parent of 532c2a2... terminal logic
+        //Listen for data
         pubnub.subscribe({
             channel: 'babb' + gameID,        
             callback: function(message) {
