@@ -9,7 +9,6 @@ var sendMessage = function(msg) {
     pubnub.publish({
         channel: 'babb'+gameID,
         message: msg,
-        data: 0
     })
 }
 

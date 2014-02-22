@@ -65,6 +65,7 @@ var terminalLogic = function(input) {
         input = input.replace(command, '')
         //Phase out
         sendMessage({
+            type: 'textMessage',
             transmit: input,
             playerName: myShip.playerName
         })  
@@ -106,7 +107,6 @@ var terminalLogic = function(input) {
     }
 }
 
-
 //framework for types of data  to send/receive
 var dataType = {
     textMessage: function(player, msg) {
@@ -129,7 +129,15 @@ var sendData = function(stuff) {
 
 //framework for receiving data
 var receiveData = function(data) {
-    //code
+    switch (data.type) {
+
+        case 'textMessage':
+        terminal = $('#term_demo').terminal()
+        terminal.echo('Message Received')
+        break
+
+        default:
+    }
 }
 
 
@@ -256,10 +264,11 @@ $(document).ready(function() {
 
         //Multiplayer
         pubnub.subscribe({
-            channel: 'babb' + gameID,
-            data: function(data) {alert(data)},               
+            channel: 'babb' + gameID,        
             callback: function(message) {
 
+                //****************************************************
+                receiveData(message)
                 //****************************************************
 
                 //If incoming message is from the opponent
