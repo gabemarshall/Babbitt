@@ -67,9 +67,9 @@ var terminalLogic = function(input) {
         sendMessage({
             transmit: input,
             playerName: myShip.playerName
-        })
+        })  
         //Phase out
-        //sendData(dataType.textMessage(myship.playerName, input))
+        //sendData(dataType.textMessage(myShip.getShipName(), input))
     }
     //unknown command
     function unknownCommand(command) {
@@ -106,7 +106,7 @@ var terminalLogic = function(input) {
     }
 }
 
-/*
+
 //framework for types of data  to send/receive
 var dataType = {
     textMessage: function(player, msg) {
@@ -120,10 +120,10 @@ var dataType = {
 }
 
 //framework to send data
-var sendData = function(data) {
+var sendData = function(stuff) {
     pubnub.publish({
         channel: "babb" + gameID,
-        data: data
+        data: stuff
     })
 }
 
@@ -257,7 +257,10 @@ $(document).ready(function() {
         //Multiplayer
         pubnub.subscribe({
             channel: 'babb' + gameID,
+            data: function(d){$('#term_demo').terminal().echo(d) }                      
             callback: function(message) {
+
+                //****************************************************
 
                 //If incoming message is from the opponent
                 if (message.UPDATE && message.UPDATE.playerName != myShip.playerName) {
