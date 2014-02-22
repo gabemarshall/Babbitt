@@ -63,6 +63,7 @@ var terminalLogic = function(input) {
     //transmit text message
     function sendTextMessage(command, input) {
         input = input.replace(command, '')
+        input = input.trim()
         sendData(getDataType.textMessage(myShip.getPlayerName(), input))
     }
     //unknown command
@@ -109,17 +110,15 @@ var getDataType = {
             recipient: 'sector',
             message: msg
         }
-    }
-    /*
+    },
     laserBeam: function(from, to, laserValue) {
         return {
             type: 'laserBeam',
             sender: from,
             recipient: to,
-            message: laserValue
+            laser: laserValue
         }
     }
-    */
 }
 
 //Send data
@@ -143,8 +142,11 @@ var receiveData = function(data) {
         }
     }
     function textMessage(data) {
-        terminal = $('#term_demo').terminal()
-        terminal.echo(data.sender + ': ' + data.message)
+        if (data.recipient === 'sector' || 
+            data.recipient === myShip.getPlayerName()) {
+            terminal = $('#term_demo').terminal()
+            terminal.echo(data.sender + ': ' + data.message)
+        }
     }
 }
 
