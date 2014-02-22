@@ -64,7 +64,8 @@ var terminalLogic = function(input) {
     function sendTextMessage(command, input) {
         input = input.replace(command, '')
         input = input.trim()
-        sendData(getDataType.textMessage(myShip.getPlayerName(), input))
+        //sendData(getDataType.textMessage(myShip.getPlayerName(), input))
+        sendData.textMessage(myShip.getPlayerName(), input))
     }
     //unknown command
     function unknownCommand(command) {
@@ -101,6 +102,33 @@ var terminalLogic = function(input) {
     }
 }
 
+//Send data
+var sendData = {
+    textMessage: function(from, msg) {
+        pubnub.publish({
+            channel: 'babb' + gameID,
+            message: {
+                type: 'textMessage',
+                sender: from,
+                recipient: 'sector',
+                message: msg
+            }
+        })
+    },
+    laserBeam: function(from, to, laserValue) {
+        pubnub.publish({
+            channel: 'babb' + gameID,
+            message: {
+                type: 'laserBeam',
+                sender: from,
+                recipient: to,
+                laser: laserValue
+            }
+        })
+    }
+}
+
+/*
 //Framework for types of data  to send/receive
 var getDataType = {
     textMessage: function(from, msg) {
@@ -127,7 +155,7 @@ var sendData = function(data) {
         channel: 'babb' + gameID,
         message: data
     })
-}
+}*/
 
 //Receiving data
 var receiveData = function(data) {
