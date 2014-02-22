@@ -102,15 +102,22 @@ var terminalLogic = function(input) {
 
 //Framework for types of data  to send/receive
 var getDataType = {
-    textMessage: function(player, msg) {
+    textMessage: function(from, msg) {
         return {
             type: 'textMessage',
-            to: 'sector',
-            from: player,
+            sender: from,
+            recipient: 'sector',
             message: msg
         }
     }
-    //list other data types
+    laserBeam: function(from, to, laserValue) {
+        return {
+            type: 'laserBeam',
+            sender: from,
+            recipient: to,
+            message: laserValue
+        }
+    }
 }
 
 //Send data
@@ -123,7 +130,7 @@ var sendData = function(data) {
 
 //Receiving data
 var receiveData = function(data) {
-    if (data.from != myShip.getPlayerName()) {
+    if (data.sender != myShip.getPlayerName()) {
         switch (data.type) {
 
             case 'textMessage':
@@ -135,7 +142,7 @@ var receiveData = function(data) {
     }
     function textMessage(data) {
         terminal = $('#term_demo').terminal()
-        terminal.echo(data.from + ': ' + data.message)
+        terminal.echo(data.sender + ': ' + data.message)
     }
 }
 
@@ -147,7 +154,7 @@ $(document).ready(function() {
     function initializeTerminal(term) {
         term.echo('Initialize Terminal')
     }
-    
+
     //Terminal Input
     $('#term_demo').terminal(function(command, term) {
 
@@ -250,7 +257,7 @@ $(document).ready(function() {
             }, 1000)
         }
 
-        //Listen for data
+        //Listen for incoming data
         pubnub.subscribe({
             channel: 'babb' + gameID,        
             callback: function(message) {
