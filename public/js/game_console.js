@@ -64,7 +64,6 @@ var terminalLogic = function(input) {
     function sendTextMessage(command, input) {
         input = input.replace(command, '')
         input = input.trim()
-        //sendData(getDataType.textMessage(myShip.getPlayerName(), input))
         sendData.textMessage(myShip.getPlayerName(), input)
     }
     //unknown command
@@ -115,18 +114,38 @@ var sendData = {
             }
         })
     },
-    laserBeam: function(from, to, laserValue) {
-        pubnub.publish({
-            channel: 'babb' + gameID,
-            message: {
-                type: 'laserBeam',
-                sender: from,
-                recipient: to,
-                laser: laserValue
-            }
-        })
-    }
 }
+
+/*
+//WORK IN PROGRESS
+var sendData = function(
+    system,
+    toCaptain,
+    toShipName,
+    toShipNumber,
+    dataType,
+    dataToSend
+    ) {
+
+    pubnub.publish({
+        channel: 'system:' + system,
+        message: {
+            sender: {
+                captain:    ship.captain,
+                name:       ship.name,
+                id:         ship.id
+            },
+            recipient: {
+                playerName: toCaptain,
+                shipName:   toShipName,
+                shipNumber: toShipNumber
+            },
+            type:           dataType,
+            containter:     dataToSend
+        }
+    })
+}
+*/
 
 //Receive Data
 var receiveData = function(data) {
@@ -148,7 +167,6 @@ var receiveData = function(data) {
         }
     }
 }
-
 
 //Terminal
 $(document).ready(function() {
@@ -321,10 +339,6 @@ $(document).ready(function() {
                         var laser = ig.game.getEntitiesByType(EntityLaser)[0];
                         laser.kill();
                         ig.game.spawnEntity(EntityLaserHit, 0, 0);
-                        // if (!checkIfAlive(message.hitpoints)) {
-                        //     destroyEnemyShip();
-                        //     term.echo("Enemy Annihilated");
-                        // }
                     }
                 }
             }
