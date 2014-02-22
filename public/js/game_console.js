@@ -142,12 +142,12 @@ var receiveData = function(data) {
 
 //Terminal
 $(document).ready(function() {
-    
+
     //Terminal Initialization
     function initializeTerminal(term) {
         term.echo('Initialize Terminal')
     }
-
+    
     //Terminal Input
     $('#term_demo').terminal(function(command, term) {
 
@@ -178,13 +178,6 @@ $(document).ready(function() {
 
         //Interpret console commands
         else if (command != '') {
-
-            /*
-            //Transmit message
-            if (command.indexOf('/t') >= 0) {
-                //moved to terminalLogic
-            }
-            */
 
             //Laser command
             if (command.indexOf('laser') >= 0 || command.indexOf('laser_fire') >= 0) {
@@ -257,15 +250,14 @@ $(document).ready(function() {
             }, 1000)
         }
 
-        //Multiplayer
+        //Listen for data
         pubnub.subscribe({
             channel: 'babb' + gameID,        
             callback: function(message) {
 
-                //Work in Progress
-                //****************************************************
+                //Receive data
                 receiveData(message)
-                //****************************************************
+
 
                 //If incoming message is from the opponent
                 if (message.UPDATE && message.UPDATE.playerName != myShip.playerName) {
