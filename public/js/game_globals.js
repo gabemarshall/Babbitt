@@ -119,6 +119,7 @@ var shieldLevel = 100;
 var shieldBound = {lowerBound:0, upperBound:100};
 //**PHASE OUT
 
+/*
 var checkIfAlive = function(hp) {
     if (hp <= 0) {
         return false;
@@ -127,7 +128,7 @@ var checkIfAlive = function(hp) {
         return true;
     }
 }
-
+*/
 var checkPowerAvailability = function(powerRequest, module) {
     if ((powerLevel - powerRequest) <= 0) {
         return false;
