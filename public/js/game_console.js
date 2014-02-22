@@ -63,15 +63,6 @@ var terminalLogic = function(input) {
     //transmit text message
     function sendTextMessage(command, input) {
         input = input.replace(command, '')
-        //Phase out
-        
-        sendMessage({
-            type: 'textMessage',
-            transmit: input,
-            playerName: myShip.playerName
-        })  
-        //Phase out
-        
         sendData(getDataType.textMessage(myShip.getPlayerName(), input))
     }
     //unknown command
@@ -109,27 +100,28 @@ var terminalLogic = function(input) {
     }
 }
 
-//framework for types of data  to send/receive
+//Framework for types of data  to send/receive
 var getDataType = {
     textMessage: function(player, msg) {
         return {
-            type: "textMessage",
-            to: 0,
+            type: 'textMessage',
+            to: 'sector',
             from: player,
             message: msg
         }
     }
+    //list other data types
 }
 
-//framework to send data
+//Send data
 var sendData = function(data) {
     pubnub.publish({
-        channel: "babb" + gameID,
+        channel: 'babb' + gameID,
         message: data
     })
 }
 
-//framework for receiving data
+//Receiving data
 var receiveData = function(data) {
     if (data.from != myShip.getPlayerName()) {
         switch (data.type) {
@@ -141,10 +133,8 @@ var receiveData = function(data) {
             default:
         }
     }
-
     function textMessage(data) {
         terminal = $('#term_demo').terminal()
-        terminal.echo(data.type + ' Received')
         terminal.echo(data.from + ': ' + data.message)
     }
 }
@@ -258,7 +248,7 @@ $(document).ready(function() {
 
         // Unknown command
         else {
-            //moved to terminalLogic
+            //moved to terminalLogic()
         }
 
 
@@ -294,17 +284,15 @@ $(document).ready(function() {
                     }
                 }
 
+                /*
                 //Incoming chat dialog from opponent
                 if (message.transmit) {
-                    /*
-                        if (message.playerName != myShip.playerName) {
-                            term.echo(message.playerName + " :[[b;#000;#d3d3d3]" + message.transmit + "]");
-                        }
-                    */
+                    //moved to receiveData()
                 }
+                */
 
                 //Warning of opponent firing lasers
-                else if (message.incoming_laser) {
+                if (message.incoming_laser) {
                     if (message.playerName != myShip.playerName) {
                         term.echo(message.playerName + " is preparing to fire laser.");
                     }
