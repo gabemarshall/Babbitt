@@ -60,7 +60,7 @@ var terminalLogic = function(input) {
         input = input.replace(command, '')
         return input
     }
-    //transmit text message
+    //transmit text m essage
     function sendTextMessage(command, input) {
         input = input.replace(command, '')
         input = input.trim()

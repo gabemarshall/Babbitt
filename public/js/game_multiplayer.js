@@ -32,20 +32,20 @@ var updateOtherPlayer = function(){
     })
 }
 
-var getPlayers = function() {
-    pubnub.here_now({
-         channel : 'babb'+gameID,
-         callback : function(m) {
-            var totalPlayers = parseInt(m.occupancy)
-            if (totalPlayers > 1 && !allowedToPlay) {
-                window.location = '/error'
-            }
-            else {
-                allowedToPlay = true
-            }
-         }
-     });    
-}
+// var getPlayers = function() {
+//     pubnub.here_now({
+//          channel : 'babb'+gameID,
+//          callback : function(m) {
+//             var totalPlayers = parseInt(m.occupancy)
+//             if (totalPlayers > 1 && !allowedToPlay) {
+//                 window.location = '/error'
+//             }
+//             else {
+//                 allowedToPlay = true
+//             }
+//          }
+//      });    
+// }
 
 setTimeout(function() {
     getPlayers()
