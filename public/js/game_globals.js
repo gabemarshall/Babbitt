@@ -37,7 +37,7 @@ function playerShip() {
     //Randomly generate a ship number
     function generateShipNumber() {
         //code
-        return 0;
+        return Math.floor((Math.random()*1000000)+1);
     }
     //Ship Systems
     function Generator() {

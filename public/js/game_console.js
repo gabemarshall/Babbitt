@@ -64,7 +64,9 @@ var terminalLogic = function(input) {
     function sendTextMessage(command, input) {
         input = input.replace(command, '')
         input = input.trim()
-        sendData.textMessage(myShip.getPlayerName(), input)
+        if (input !== '') {
+            sendData(myShip.getPlayerName(), 'textMessage', input)
+        }
     }
     //unknown command
     function unknownCommand(command) {
@@ -102,18 +104,16 @@ var terminalLogic = function(input) {
 }
 
 //Send Data
-var sendData = {
-    textMessage: function(from, msg) {
-        pubnub.publish({
-            channel: 'babb' + gameID,
-            message: {
-                type: 'textMessage',
-                sender: from,
-                recipient: 'sector',
-                message: msg
-            }
-        })
-    },
+var sendData = function(from, dataType, msg) {
+    pubnub.publish({
+        channel: 'babb' + gameID,
+        message: {
+            type: dataType,
+            sender: from,
+            recipient: 'sector',
+            message: msg
+        }
+    })
 }
 
 /*
@@ -136,9 +136,9 @@ var sendData = function(
                 id:         ship.id
             },
             recipient: {
-                playerName: toCaptain,
-                shipName:   toShipName,
-                shipNumber: toShipNumber
+                captain:    toCaptain,
+                name:       toShipName,
+                id:         toShipNumber
             },
             type:           dataType,
             containter:     dataToSend
@@ -149,12 +149,15 @@ var sendData = function(
 
 //Receive Data
 var receiveData = function(data) {
-    if (data.sender != myShip.getPlayerName()) {
+    if (receiveCheck(data) === true) {
         switch (data.type) {
 
             case 'textMessage':
-            textMessage(data)
+            textMessage(data);
             break
+
+            case 'confirmation':
+            confirmation(data);
 
             default:
         }
@@ -162,8 +165,27 @@ var receiveData = function(data) {
     function textMessage(data) {
         if (data.recipient === 'sector' || 
             data.recipient === myShip.getPlayerName()) {
-            terminal = $('#term_demo').terminal()
-            terminal.echo(data.sender + ': ' + data.message)
+            var terminal = $('#term_demo').terminal();
+            terminal.echo(data.sender + ': ' + data.message);
+            //send confirmation that message received
+            terminal.echo('sending confirmation');
+            sendData(myShip.getPlayerName(), 'confirmation');
+        }
+    }
+    function confirmation(data) {
+            var terminal = $('#term_demo').terminal();
+            terminal.echo('Data Sent');
+
+            //add switch code for confirmation types
+    }
+
+    //check to see if you can view income data
+    function receiveCheck(data) {
+        if (data.sender != myShip.getPlayerName()) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }
@@ -183,7 +205,6 @@ $(document).ready(function() {
         terminalLogic(command)
 
         var oppJoined = function() {
-            term.echo(enemyShip.playerName + ' has entered this sector')
             ig.game.spawnEntity(EntityShip, 0, 0);
             sendMessage({
                 'playerInit': 'true',
@@ -194,7 +215,6 @@ $(document).ready(function() {
 
         // Check if the game was just loaded, if so then the player will need to enter their name
         if (!termInit) {
-            term.echo('input name')
             myShip.playerName = command;
             sendMessage({
                 'playerInit': 'true',
