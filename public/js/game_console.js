@@ -17,37 +17,39 @@ var terminalLogic = function(input) {
         '/shipname'
     ]
 
-    //find commands in input
-    for (var i = 0; i < commandList.length; i++) {
-        if (input.search(commandList[i]) != -1) {
-            commandFound = true
-            switch (commandList[i]) {
+    if (input !== '') {
+        //find commands in input
+        for (var i = 0; i < commandList.length; i++) {
+            if (input.search(commandList[i]) != -1) {
+                commandFound = true
+                switch (commandList[i]) {
 
-                case '/t':
-                sendTextMessage(commandList[i], input)
-                break
+                    case '/t':
+                    sendTextMessage(commandList[i], input)
+                    break
 
-                case '/shields':
-                break
+                    case '/shields':
+                    break
 
-                case '/lasers':
-                break
+                    case '/lasers':
+                    break
 
-                case '/playername':
-                changePlayerName(commandList[i], input)
-                break
+                    case '/playername':
+                    changePlayerName(commandList[i], input)
+                    break
 
-                case '/shipname':
-                changeShipName(commandList[i], input)
-                break
+                    case '/shipname':
+                    changeShipName(commandList[i], input)
+                    break
 
-                default:
+                    default:
+                }
             }
         }
-    }
-    //if no command was found in the input
-    if (commandFound === false) {
-        unknownCommand(input)
+        //if no command was found in the input
+        if (commandFound === false) {
+            unknownCommand(input)
+        }
     }
     //cleanup user input
     function cleanInput(input) {
@@ -65,7 +67,7 @@ var terminalLogic = function(input) {
         input = input.replace(command, '')
         input = input.trim()
         if (input !== '') {
-            sendData(myShip.getPlayerName(), 'textMessage', input)
+            sendData('textMessage', input)
         }
     }
     //unknown command
@@ -104,12 +106,12 @@ var terminalLogic = function(input) {
 }
 
 //Send Data
-var sendData = function(from, dataType, msg) {
+var sendData = function(dataType, msg) {
     pubnub.publish({
         channel: 'babb' + gameID,
         message: {
             type: dataType,
-            sender: from,
+            sender: myShip.getPlayerName(),
             recipient: 'sector',
             message: msg
         }
@@ -169,7 +171,7 @@ var receiveData = function(data) {
             terminal.echo(data.sender + ': ' + data.message);
             //send confirmation that message received
             terminal.echo('sending confirmation');
-            sendData(myShip.getPlayerName(), 'confirmation');
+            sendData('confirmation');
         }
     }
     function confirmation(data) {

@@ -1,0 +1,11 @@
+past:
+terminal no longer reads empty/whitespace as commands
+
+
+present:
+finalize framework for function 'sendData'
+
+
+future:
+move laser code into terminal logic
+move shield code into terminal logic
