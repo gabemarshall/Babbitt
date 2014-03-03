@@ -1,10 +1,11 @@
 past:
+basic scan functionality
+intergrate initialize code into terminal/sendata
 terminal no longer reads empty/whitespace as commands
-
-
-present:
 finalize framework for function 'sendData'
 
+present:
+update playerShip function
 
 future:
 move laser code into terminal logic

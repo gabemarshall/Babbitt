@@ -6,9 +6,8 @@
 //Ship Data
 function playerShip() {
     //public
-    this.shipName;
-    var shipNumber = generateShipNumber();
-    this.playerName;
+    this.shipName = generateShipName();
+    this.playerName = this.shipName;
     this.generator = new Generator();
     this.capacitor = new Capacitor();
     this.laser = new Laser();
@@ -35,8 +34,7 @@ function playerShip() {
         return shipNumber
     }
     //Randomly generate a ship number
-    function generateShipNumber() {
-        //code
+    function generateShipName() {
         return Math.floor((Math.random()*1000000)+1);
     }
     //Ship Systems
@@ -98,7 +96,6 @@ function playerShip() {
     }
 }
 
-//two variables that hold player ship and enemy ship data
 var myShip = new playerShip();
 var enemyShip;
 

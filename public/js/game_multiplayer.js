@@ -11,31 +11,3 @@ var sendMessage = function(msg) {
         message: msg,
     })
 }
-
-var notifyPlayerDamage = function(bool){
-    pubnub.publish({
-        channel: 'babb'+gameID,
-        message: { 
-            title: 'DAMAGE',
-            'successful': bool, 
-            playerName: myShip.playerName
-        }
-    })
-}
-
-var updateOtherPlayer = function(){
-    pubnub.publish({
-        channel: 'babb'+gameID,
-        message: {
-            'UPDATE':myShip
-        }
-    })
-}
-
-setTimeout(function() {
-    getPlayers()
-    pubnub.publish({
-        channel: 'nolagging',
-        message: 'HEALTHCHECK'
-    })
-},2000)

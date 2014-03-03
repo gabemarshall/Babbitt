@@ -6,7 +6,7 @@
 var terminalLogic = function(input) {
     
     input = cleanInput(input)
-    var commandFound = false
+    commandFound = false
 
     //list of available commands
     commandList = [
@@ -14,7 +14,8 @@ var terminalLogic = function(input) {
         '/shields',
         '/lasers',
         '/playername',
-        '/shipname'
+        '/shipname',
+        '/scan'
     ]
 
     if (input !== '') {
@@ -31,7 +32,10 @@ var terminalLogic = function(input) {
                     case '/shields':
                     break
 
-                    case '/lasers':
+                    case '/powerlasers':
+                    break
+
+                    case '/firelasers':
                     break
 
                     case '/playername':
@@ -40,6 +44,10 @@ var terminalLogic = function(input) {
 
                     case '/shipname':
                     changeShipName(commandList[i], input)
+                    break
+
+                    case '/scan':
+                    scanForShip()
                     break
 
                     default:
@@ -67,7 +75,13 @@ var terminalLogic = function(input) {
         input = input.replace(command, '')
         input = input.trim()
         if (input !== '') {
-            sendData('textMessage', input)
+            sendData(
+                'babb' + gameID,
+                myShip.getPlayerName(), 
+                'open', 
+                'textMessage', 
+                input
+            )
         }
     }
     //unknown command
@@ -103,91 +117,105 @@ var terminalLogic = function(input) {
             terminal.echo('Ship name set to: ' + myShip.getShipName())
         }
     }
+    //look for other ships in the solor system
+    function scanForShip() {
+        sendData(
+            'babb' + gameID,
+            myShip.getPlayerName(), 
+            'open', 
+            'scanForShip',
+            'none'
+        )
+    }
 }
 
 //Send Data
-var sendData = function(dataType, msg) {
+var sendData = function(channel, origin, destination, type, content) {
     pubnub.publish({
-        channel: 'babb' + gameID,
+        channel: channel,
         message: {
-            type: dataType,
-            sender: myShip.getPlayerName(),
-            recipient: 'sector',
-            message: msg
+            origin:         origin,
+            destination:    destination,
+            type:           type,
+            content:        content
         }
     })
 }
-
-/*
-//WORK IN PROGRESS
-var sendData = function(
-    system,
-    toCaptain,
-    toShipName,
-    toShipNumber,
-    dataType,
-    dataToSend
-    ) {
-
-    pubnub.publish({
-        channel: 'system:' + system,
-        message: {
-            sender: {
-                captain:    ship.captain,
-                name:       ship.name,
-                id:         ship.id
-            },
-            recipient: {
-                captain:    toCaptain,
-                name:       toShipName,
-                id:         toShipNumber
-            },
-            type:           dataType,
-            containter:     dataToSend
-        }
-    })
-}
-*/
 
 //Receive Data
 var receiveData = function(data) {
-    if (receiveCheck(data) === true) {
+    if (originCheck(data) === true) {
         switch (data.type) {
 
             case 'textMessage':
-            textMessage(data);
+            textMessage(data)
             break
 
             case 'confirmation':
-            confirmation(data);
+            confirmation(data)
+            break
+
+            case 'shipEnteringSystem':
+            shipEnteringSystem(data)
+            break
+
+            case 'scanForShip':
+            scanForShip(data)
+            break
+
+            case 'scanForShipSuccess':
+            scanForShipSuccess(data)
+            break
 
             default:
         }
     }
     function textMessage(data) {
-        if (data.recipient === 'sector' || 
-            data.recipient === myShip.getPlayerName()) {
-            var terminal = $('#term_demo').terminal();
-            terminal.echo(data.sender + ': ' + data.message);
+        if (data.destination === 'open' || 
+            data.destination === myShip.getPlayerName()) {
+            terminal = $('#term_demo').terminal()
+            terminal.echo(data.origin + ': ' + data.content)
             //send confirmation that message received
-            terminal.echo('sending confirmation');
-            sendData('confirmation');
+            sendData(
+                'babb' + gameID,
+                myShip.getPlayerName(), 
+                data.origin, 
+                'confirmation', 
+                'none'
+            )
         }
     }
     function confirmation(data) {
-            var terminal = $('#term_demo').terminal();
-            terminal.echo('Data Sent');
-
-            //add switch code for confirmation types
+        terminal = $('#term_demo').terminal()
+        terminal.echo('Data Sent')
     }
+    function shipEnteringSystem(data) {
+        terminal = $('#term_demo').terminal()
+        terminal.echo(data.origin + ' has entered this solar system')
+        ig.game.spawnEntity(EntityShip, 0, 0)
+    }
+    function scanForShip(data) {
+        sendData(
+            'babb' + gameID,
+            myShip.getPlayerName(), 
+            data.origin, 
+            'scanForShipSuccess',
+            'none'
+        )
+    }
+    function scanForShipSuccess(data) {
+        ig.game.spawnEntity(EntityShip, 0, 0)
+        terminal = $('#term_demo').terminal()
+        terminal.echo(data.origin + ' has been detected')
 
+    }
     //check to see if you can view income data
-    function receiveCheck(data) {
-        if (data.sender != myShip.getPlayerName()) {
-            return true;
+    function originCheck(data) {
+        if (data.origin != myShip.getPlayerName()) {
+            return true
         }
         else {
-            return false;
+            return false
         }
     }
 }
@@ -197,7 +225,14 @@ $(document).ready(function() {
     
     //Terminal Initialization
     function initializeTerminal(term) {
-        term.echo('Initialize Terminal')
+        sendData(
+            'babb' + gameID,
+            myShip.getPlayerName(), 
+            'open', 
+            'shipEnteringSystem', 
+            'none'
+        )
+        term.echo('Systems Online')
     }
 
     //Terminal Input
@@ -206,97 +241,65 @@ $(document).ready(function() {
         //Terminal Logic
         terminalLogic(command)
 
-        var oppJoined = function() {
-            ig.game.spawnEntity(EntityShip, 0, 0);
-            sendMessage({
-                'playerInit': 'true',
-                'shipData': myShip
-            })
-            gameBegun = true;
-        }
-
-        // Check if the game was just loaded, if so then the player will need to enter their name
-        if (!termInit) {
-            myShip.playerName = command;
-            sendMessage({
-                'playerInit': 'true',
-                'shipData': myShip
-            })
-            termInit = true; //game has been initialized
-        }
-
-        //Interpret console commands
-        else if (command != '') {
-
-            //Laser command
-            if (command.indexOf('laser') >= 0 || command.indexOf('laser_fire') >= 0) {
-                var laserValue = command.replace(/(laser)/g, "")
-                //Input error
-                if (!laserValue) {
-                    term.echo('Error: You must enter a value after the Laser command');
-                }
-                //Shields active
-                if (shieldsActive) {
-                    term.echo("Error: Cannot engage lasers while Shields are raised");
-                }
-                //Laser already active
-                else if (laserActive) {
-                    term.echo("Error: Laser system currently engaged");
-                }
-                //Power unavailable
-                else if (!checkPowerAvailability(laserValue, "laser")) {
-                    term.echo("Error: Not enough power");
-                }
-                //Power available
-                else {
-                    term.echo("Firing Lasers")
-                    laserActive = true;
-                    //Send oppoent warning of lasers being fired
+        //Laser command
+        if (command.indexOf('laser') >= 0 || command.indexOf('laser_fire') >= 0) {
+            var laserValue = command.replace(/(laser)/g, "")
+            //Input error
+            if (!laserValue) {
+                term.echo('Error: You must enter a value after the Laser command');
+            }
+            //Shields active
+            if (shieldsActive) {
+                term.echo("Error: Cannot engage lasers while Shields are raised");
+            }
+            //Laser already active
+            else if (laserActive) {
+                term.echo("Error: Laser system currently engaged");
+            }
+            //Power unavailable
+            else if (!checkPowerAvailability(laserValue, "laser")) {
+                term.echo("Error: Not enough power");
+            }
+            //Power available
+            else {
+                term.echo("Firing Lasers")
+                laserActive = true;
+                //Send oppoent warning of lasers being fired
+                sendMessage({
+                    "incoming_laser": true,
+                    "playerName": myShip.playerName
+                })
+                setTimeout(function() {
                     sendMessage({
-                        "incoming_laser": true,
+                        "laser": laserValue,
                         "playerName": myShip.playerName
                     })
-                    setTimeout(function() {
-                        sendMessage({
-                            "laser": laserValue,
-                            "playerName": myShip.playerName
-                        })
-                    }, 4500)
-                    ig.game.spawnEntity(EntityLaser, 0, 0);
-                }
-            }
-
-            //Shields command
-            else if (command.indexOf("shields") >= 0) {
-                var shieldsPowerValue = command.replace(/(shields)/g, "");
-                //Input error
-                if (!shieldsPowerValue) {
-                    term.echo("Error: You must enter a value after the Shields command");
-                }
-                //Lower shields
-                else if (shieldsPowerValue == 0) {
-                    term.echo("Lowering shields to: " + shieldsPowerValue);
-                    shieldsActive = false;
-                }
-                //Raise shields
-                else if (checkPowerAvailability(shieldsPowerValue, "shields") && shieldsPowerValue != 0) {
-                    term.echo("Raising shields to: " + shieldsPowerValue);
-                    ig.game.spawnEntity(EntityShields, 0, 0);
-                    shieldsActive = true;
-                }
-                else {
-                    term.echo("ERROR: Not enough power");
-                }
+                }, 4500)
+                ig.game.spawnEntity(EntityLaser, 0, 0);
             }
         }
 
-        if (!gameBegun) {
-            var consoleChecksGameStatus = setInterval(function() {
-                if (enemyShip && !gameBegun) {
-                    gameBegun = true;
-                    oppJoined();
-                }
-            }, 1000)
+        //Shields command
+        else if (command.indexOf("shields") >= 0) {
+            var shieldsPowerValue = command.replace(/(shields)/g, "");
+            //Input error
+            if (!shieldsPowerValue) {
+                term.echo("Error: You must enter a value after the Shields command");
+            }
+            //Lower shields
+            else if (shieldsPowerValue == 0) {
+                term.echo("Lowering shields to: " + shieldsPowerValue);
+                shieldsActive = false;
+            }
+            //Raise shields
+            else if (checkPowerAvailability(shieldsPowerValue, "shields") && shieldsPowerValue != 0) {
+                term.echo("Raising shields to: " + shieldsPowerValue);
+                ig.game.spawnEntity(EntityShields, 0, 0);
+                shieldsActive = true;
+            }
+            else {
+                term.echo("ERROR: Not enough power");
+            }
         }
 
         //Listen for data
@@ -307,25 +310,13 @@ $(document).ready(function() {
                 //Receive Data
                 receiveData(message)
 
-                //If incoming message is from the opponent
-                if (message.UPDATE && message.UPDATE.playerName != myShip.playerName) {
-                    enemyShip = message.UPDATE;
-                }
-
-                //Get opponent's name
-                if (message.playerInit) {
-                    if (message.shipData.playerName != myShip.playerName && !enemyShip) {
-                        enemyShip = message.shipData;
-                        oppJoined()
-                    }
-                }
-
                 //Warning of opponent firing lasers
                 if (message.incoming_laser) {
                     if (message.playerName != myShip.playerName) {
                         term.echo(message.playerName + " is preparing to fire laser.");
                     }
                 }
+
                 //Apply opponent lasers
                 else if (message.laser) {
                     if (message.playerName != myShip.playerName) {
@@ -334,15 +325,13 @@ $(document).ready(function() {
                         if (laserDamage > 0){
                             term.echo("Damage taken. Hull down to "+myShip.hull.damage.current+" percent.")
                             shakeScreen()
-                            notifyPlayerDamage(true)
-                            updateOtherPlayer()
-                        } else {
+                        } 
+                        else {
                             term.echo("No damage taken.")
-                            notifyPlayerDamage(false)
-                            updateOtherPlayer()
                         }
                     }
                 }
+
                 //Send message to opponent on whether his laser attack was successful or not
                 else if (message.title === 'DAMAGE' && message.playerName != myShip.playerName) {
                     laserActive = false //disengage laser to allow them to fire again
