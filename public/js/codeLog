@@ -1,3 +1,5 @@
+codeLog
+
 past:
 basic scan functionality
 intergrate initialize code into terminal/sendata
@@ -5,8 +7,10 @@ terminal no longer reads empty/whitespace as commands
 finalize framework for function 'sendData'
 
 present:
-update playerShip function
+rewrite receive data types, phase out unique functions for success/failure
 
 future:
 move laser code into terminal logic
 move shield code into terminal logic
+get rid of global variable references inside functions
+	- start with sendData, pass pubnub reference

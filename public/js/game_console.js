@@ -70,7 +70,7 @@ var terminalLogic = function(input) {
         input = input.replace(command, '')
         return input
     }
-    //transmit text m essage
+    //transmit text message
     function sendTextMessage(command, input) {
         input = input.replace(command, '')
         input = input.trim()
@@ -134,6 +134,7 @@ var sendData = function(channel, origin, destination, type, content) {
     pubnub.publish({
         channel: channel,
         message: {
+            id:             0,//unique id number
             origin:         origin,
             destination:    destination,
             type:           type,
@@ -144,19 +145,20 @@ var sendData = function(channel, origin, destination, type, content) {
 
 //Receive Data
 var receiveData = function(data) {
-    if (originCheck(data) === true) {
+    if (originCheck(data) === true &&
+        destinationCheck(data) === true) {
         switch (data.type) {
 
             case 'textMessage':
             textMessage(data)
             break
 
-            case 'confirmation':
-            confirmation(data)
+            case 'textMessageSuccess':
+            textMessageSuccess(data)
             break
 
-            case 'shipEnteringSystem':
-            shipEnteringSystem(data)
+            case 'warpDriveDetected':
+            warpDriveDetected(data)
             break
 
             case 'scanForShip':
@@ -170,31 +172,48 @@ var receiveData = function(data) {
             default:
         }
     }
-    function textMessage(data) {
-        if (data.destination === 'open' || 
-            data.destination === myShip.getPlayerName()) {
-            terminal = $('#term_demo').terminal()
-            terminal.echo(data.origin + ': ' + data.content)
-            //send confirmation that message received
-            sendData(
-                'babb' + gameID,
-                myShip.getPlayerName(), 
-                data.origin, 
-                'confirmation', 
-                'none'
-            )
+    //check the origin of the data being received
+    function originCheck(data) {
+        if (data.origin != myShip.getPlayerName()) {
+            return true  //pass
+        }
+        else {
+            return false //fail
         }
     }
-    function confirmation(data) {
-        terminal = $('#term_demo').terminal()
-        terminal.echo('Data Sent')
+    //check the intended destination of the data being received
+    function destinationCheck(data) {
+        if (data.destination === 'open' || 
+            data.destination === myShip.getPlayerName()) {
+            return true  //pass
+        }
+        else {
+            return false //fail
+        }
     }
-    function shipEnteringSystem(data) {
+    function textMessage(data) {
         terminal = $('#term_demo').terminal()
-        terminal.echo(data.origin + ' has entered this solar system')
-        ig.game.spawnEntity(EntityShip, 0, 0)
+        terminal.echo(data.origin + ': ' + data.content)
+        //send confirmation that message received
+        sendData(
+            'babb' + gameID,
+            myShip.getPlayerName(), 
+            data.origin, 
+            'textMessageSuccess', 
+            'none'
+        )
+    }
+    function textMessageSuccess(data) {
+        terminal = $('#term_demo').terminal()
+        terminal.echo('Message sent')
+    }
+    function warpDriveDetected(data) {
+        terminal = $('#term_demo').terminal()
+        terminal.echo('A warp drive has been detected')
     }
     function scanForShip(data) {
+        terminal = $('#term_demo').terminal()
+        terminal.echo('We are being scanned')
         sendData(
             'babb' + gameID,
             myShip.getPlayerName(), 
@@ -207,16 +226,6 @@ var receiveData = function(data) {
         ig.game.spawnEntity(EntityShip, 0, 0)
         terminal = $('#term_demo').terminal()
         terminal.echo(data.origin + ' has been detected')
-
-    }
-    //check to see if you can view income data
-    function originCheck(data) {
-        if (data.origin != myShip.getPlayerName()) {
-            return true
-        }
-        else {
-            return false
-        }
     }
 }
 
@@ -229,7 +238,7 @@ $(document).ready(function() {
             'babb' + gameID,
             myShip.getPlayerName(), 
             'open', 
-            'shipEnteringSystem', 
+            'warpDriveDetected', 
             'none'
         )
         term.echo('Systems Online')
