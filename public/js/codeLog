@@ -3,6 +3,7 @@ codeLog
 
 past:
 -----
+fix pubnub subscribe lag
 basic scan functionality
 intergrate initialize code into terminal/sendata
 terminal no longer reads empty/whitespace as commands
@@ -11,12 +12,13 @@ finalize framework for function 'sendData'
 
 present:
 --------
-put major game systems into their own file
+breakup major game engine systems, place into their own js file
 rewrite receive data types, phase out unique functions for success/failure
 
 
 future:
 -------
+console logs for events, create a debug mode
 move laser code into terminal logic
 move shield code into terminal logic
 get rid of global variable references inside functions

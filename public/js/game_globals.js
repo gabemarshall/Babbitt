@@ -97,14 +97,20 @@ function playerShip() {
 }
 
 var myShip = new playerShip();
-var enemyShip;
 
-//Game States
+var ship = {
+    name: 0,
+    captain: 0,
+    id: 0
+}
+
+/*
+OLD CODE BELOW
+needs to be sorted, relocated, intergrated , and/or phased out
+*/
+var enemyShip;
 var termInit = false;
 var gameBegun = false;
-
-//**PHASE OUT
-//var shipHP = 100;
 var shipHPBound = {lowerBound:0, upperBound:100};
 var powerLevel = 100;
 var laserActive = false;
@@ -112,7 +118,7 @@ var laserBound = {lowerBound:0, upperBound:100};
 var shieldsActive = false;
 var shieldLevel = 100;
 var shieldBound = {lowerBound:0, upperBound:100};
-//**PHASE OUT
+
 
 var checkPowerAvailability = function(powerRequest, module) {
     if ((powerLevel - powerRequest) <= 0) {

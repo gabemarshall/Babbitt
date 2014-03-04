@@ -5,7 +5,7 @@ description
 */
 
 //******************************************************************************
-//Sending Data
+//Send Data
 //******************************************************************************
 var sendData = function(channel, origin, destination, type, content) {
     pubnub.publish({

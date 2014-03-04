@@ -5,6 +5,9 @@ var pubnub = PUBNUB.init({
     uuid: userID
 });
 
+/*
+phase out
+*/
 var sendMessage = function(msg) {
     pubnub.publish({
         channel: 'babb'+gameID,

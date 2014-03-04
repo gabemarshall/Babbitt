@@ -13,7 +13,7 @@ var receiveData = function(data) {
     if (originCheck(data) === true &&
         destinationCheck(data) === true) {
         
-        //execute code based on type of data coming in
+        //execute code based on type of data
         switch (data.type) {
 
             case 'textMessage':
@@ -113,3 +113,61 @@ var receiveData = function(data) {
         terminal.echo(data.origin + ' has been detected')
     }
 }
+
+
+/*
+OLD CODE BELOW
+needs to be sorted, relocated, intergrated , and/or phased out
+*/
+
+//Listen for data
+pubnub.subscribe({
+    channel: 'babb' + gameID,        
+    callback: function(message) {
+
+        //Receive Data
+        receiveData(message)
+
+        //Warning of opponent firing lasers
+        if (message.incoming_laser) {
+            if (message.playerName != myShip.playerName) {
+                term.echo(message.playerName + " is preparing to fire laser.");
+            }
+        }
+
+        //Apply opponent lasers
+        else if (message.laser) {
+            if (message.playerName != myShip.playerName) {
+                var laserDamage = adjustLaserValue(message.laser);
+                adjustShipHP(laserDamage);
+                if (laserDamage > 0){
+                    term.echo("Damage taken. Hull down to "+myShip.hull.damage.current+" percent.")
+                    shakeScreen()
+                } 
+                else {
+                    term.echo("No damage taken.")
+                }
+            }
+        }
+
+        //Send message to opponent on whether his laser attack was successful or not
+        else if (message.title === 'DAMAGE' && message.playerName != myShip.playerName) {
+            laserActive = false //disengage laser to allow them to fire again
+            
+            //unsuccessful
+            if (!message.successful) {
+                var laser = ig.game.getEntitiesByType(EntityLaser)[0];
+                laser.kill()
+                ig.game.spawnEntity(EntityeShields, 0, 0);
+                ig.game.spawnEntity(EntityLaserHit, 0, 0);
+            }
+            //successful
+            else {
+                term.echo("Laser appeared to do damage blah blah blah");
+                var laser = ig.game.getEntitiesByType(EntityLaser)[0];
+                laser.kill();
+                ig.game.spawnEntity(EntityLaserHit, 0, 0);
+            }
+        }
+    }
+})

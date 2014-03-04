@@ -1,3 +1,6 @@
+/*
+phase out
+*/
 var shipSystemsLoop = setInterval(function() {
 
     // Check for shields being active
