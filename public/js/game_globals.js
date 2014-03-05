@@ -37,6 +37,9 @@ function playerShip() {
     function generateShipName() {
         return Math.floor((Math.random()*1000000)+1);
     }
+    this.incomingLaser = function(value) {
+        //code
+    }
     //Ship Systems
     function Generator() {
         this.damage = new Data(0.0);        //current amount of damage

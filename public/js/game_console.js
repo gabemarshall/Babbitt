@@ -9,7 +9,7 @@ $(document).ready(function() {
             'babb' + gameID,
             myShip.getPlayerName(), 
             'open', 
-            'warpDriveDetected', 
+            'warpDriveSignal', 
             'none'
         )
         term.echo('Systems Online')

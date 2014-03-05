@@ -24,8 +24,8 @@ var receiveData = function(data) {
             textMessageSuccess(data)
             break
 
-            case 'warpDriveDetected':
-            warpDriveDetected(data)
+            case 'warpDriveSignal':
+            warpDriveSignal(data)
             break
 
             case 'scanForShip':
@@ -34,6 +34,10 @@ var receiveData = function(data) {
 
             case 'scanForShipSuccess':
             scanForShipSuccess(data)
+            break
+
+            case 'incomingLaser':
+            incomingLaser(data)
             break
 
             default:
@@ -88,7 +92,7 @@ var receiveData = function(data) {
     //**************************************************************************
     //Warp Drive Signal
     //**************************************************************************
-    function warpDriveDetected(data) {
+    function warpDriveSignal(data) {
         terminal = $('#term_demo').terminal()
         terminal.echo('A warp drive has been detected')
     }
@@ -111,6 +115,13 @@ var receiveData = function(data) {
         ig.game.spawnEntity(EntityShip, 0, 0)
         terminal = $('#term_demo').terminal()
         terminal.echo(data.origin + ' has been detected')
+    }
+
+    //**************************************************************************
+    //Incoming Laser
+    //**************************************************************************
+    function incomingLaser(data) {
+        myShip.incomingLaser(value)
     }
 }
 
