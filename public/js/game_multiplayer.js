@@ -4,13 +4,3 @@ var pubnub = PUBNUB.init({
     subscribe_key: 'sub-c-315c6844-a0b3-11e3-ab08-02ee2ddab7fe',
     uuid: userID
 });
-
-/*
-phase out
-*/
-var sendMessage = function(msg) {
-    pubnub.publish({
-        channel: 'babb'+gameID,
-        message: msg,
-    })
-}

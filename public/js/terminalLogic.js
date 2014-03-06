@@ -4,8 +4,41 @@
 description
 */
 
+
 //******************************************************************************
-//Terminal Input Logic
+//Terminal
+//******************************************************************************
+$(document).ready(function() {
+    //Terminal Initialization
+    function initializeTerminal(term) {
+        sendData(
+            'babb' + gameID,
+            myShip.getPlayerName(), 
+            'open', 
+            'warpDriveSignal', 
+            'none'
+        )
+        term.echo('Systems Online')
+    }
+
+    //Pass user input to terminalLogic
+    $('#term_demo').terminal(
+        function(command, term) {
+            terminalLogic(command)
+        },
+        //Terminal Setup
+        {
+            greetings: "",
+            prompt: "",
+            height: 100,
+            onInit: function(term) {
+                initializeTerminal(term)
+            }
+        })
+})
+
+//******************************************************************************
+//Terminal Logic
 //******************************************************************************
 var terminalLogic = function(input) {
     

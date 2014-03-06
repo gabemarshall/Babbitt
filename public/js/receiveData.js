@@ -5,15 +5,26 @@ description
 */
 
 //******************************************************************************
-//Receiving Data
+//Pubnub Subscribe
+//******************************************************************************
+pubnub.subscribe({
+    channel: 'babb' + gameID,        
+    callback: function(message) {
+
+        //Receive Data
+        receiveData(message)
+    }
+})
+
+//******************************************************************************
+//Receive Data
 //******************************************************************************
 var receiveData = function(data) {
 
     //check the source and destination of the incoming data
-    if (originCheck(data) === true &&
-        destinationCheck(data) === true) {
+    if (originCheck(data) === true) {
         
-        //execute code based on type of data
+        //execute code based on type of data received
         switch (data.type) {
 
             case 'textMessage':
@@ -36,8 +47,8 @@ var receiveData = function(data) {
             scanForShipSuccess(data)
             break
 
-            case 'incomingLaser':
-            incomingLaser(data)
+            case 'laser':
+            lased(data)
             break
 
             default:
@@ -98,7 +109,7 @@ var receiveData = function(data) {
     }
 
     //**************************************************************************
-    //Scanning Signal
+    //Scanning
     //**************************************************************************
     function scanForShip(data) {
         terminal = $('#term_demo').terminal()
@@ -111,6 +122,7 @@ var receiveData = function(data) {
             'none'
         )
     }
+
     function scanForShipSuccess(data) {
         ig.game.spawnEntity(EntityShip, 0, 0)
         terminal = $('#term_demo').terminal()
@@ -118,67 +130,9 @@ var receiveData = function(data) {
     }
 
     //**************************************************************************
-    //Incoming Laser
+    //Lasers
     //**************************************************************************
-    function incomingLaser(data) {
-        myShip.incomingLaser(value)
+    function laser(data) {
+        //send a laser
     }
 }
-
-
-/*
-OLD CODE BELOW
-needs to be sorted, relocated, intergrated , and/or phased out
-*/
-
-//Listen for data
-pubnub.subscribe({
-    channel: 'babb' + gameID,        
-    callback: function(message) {
-
-        //Receive Data
-        receiveData(message)
-
-        //Warning of opponent firing lasers
-        if (message.incoming_laser) {
-            if (message.playerName != myShip.playerName) {
-                term.echo(message.playerName + " is preparing to fire laser.");
-            }
-        }
-
-        //Apply opponent lasers
-        else if (message.laser) {
-            if (message.playerName != myShip.playerName) {
-                var laserDamage = adjustLaserValue(message.laser);
-                adjustShipHP(laserDamage);
-                if (laserDamage > 0){
-                    term.echo("Damage taken. Hull down to "+myShip.hull.damage.current+" percent.")
-                    shakeScreen()
-                } 
-                else {
-                    term.echo("No damage taken.")
-                }
-            }
-        }
-
-        //Send message to opponent on whether his laser attack was successful or not
-        else if (message.title === 'DAMAGE' && message.playerName != myShip.playerName) {
-            laserActive = false //disengage laser to allow them to fire again
-            
-            //unsuccessful
-            if (!message.successful) {
-                var laser = ig.game.getEntitiesByType(EntityLaser)[0];
-                laser.kill()
-                ig.game.spawnEntity(EntityeShields, 0, 0);
-                ig.game.spawnEntity(EntityLaserHit, 0, 0);
-            }
-            //successful
-            else {
-                term.echo("Laser appeared to do damage blah blah blah");
-                var laser = ig.game.getEntitiesByType(EntityLaser)[0];
-                laser.kill();
-                ig.game.spawnEntity(EntityLaserHit, 0, 0);
-            }
-        }
-    }
-})
