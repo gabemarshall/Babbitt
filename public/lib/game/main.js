@@ -84,10 +84,6 @@ MyGame = ig.Game.extend({
 
 		
 		this.TurretImage.draw(0,0);
-		//this.LaserImage.draw(0,0);
-		//this.LaserImage.draw(0,0);
-		
-		
 
 		var player = this.getEntitiesByType( EntityPlayer )[0];
 
@@ -116,7 +112,7 @@ MyGame = ig.Game.extend({
         ig.system.context.strokeStyle = "rgb(255,255,255)";  // Power low rgb(236,30,30)";
         ig.system.context.lineWidth = 3;
         ig.system.context.beginPath();
-        ig.system.context.rect(810, 700, 20, -powerLevel);
+        //ig.system.context.rect(810, 700, 20, -powerLevel);
         ig.system.context.closePath();
         ig.system.context.fill();
         ig.system.context.stroke();        
@@ -127,7 +123,7 @@ MyGame = ig.Game.extend({
         ig.system.context.strokeStyle = "rgb(255,255,255)";
         ig.system.context.lineWidth = 3;
         ig.system.context.beginPath();
-        ig.system.context.rect(850, 700, 20, -shieldLevel);
+        //ig.system.context.rect(850, 700, 20, -shieldLevel);
         ig.system.context.closePath();
         ig.system.context.fill();
         ig.system.context.stroke();      

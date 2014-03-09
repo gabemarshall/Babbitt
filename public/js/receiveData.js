@@ -1,8 +1,22 @@
 //receiveData.js
-
 /*
 description
 */
+
+//******************************************************************************
+//Pubnub Publish
+//******************************************************************************
+var sendData = function(channel, origin, destination, type, content) {
+    pubnub.publish({
+        channel: channel,
+        message: {
+            origin:         origin,
+            destination:    destination,
+            type:           type,
+            content:        content
+        }
+    })
+}
 
 //******************************************************************************
 //Pubnub Subscribe
@@ -59,7 +73,7 @@ var receiveData = function(data) {
     //Data Origin Check
     //**************************************************************************
     function originCheck(data) {
-        if (data.origin != myShip.getPlayerName()) {
+        if (data.origin != ship.getPlayerName()) {
             return true  //pass
         }
         else {
@@ -72,7 +86,7 @@ var receiveData = function(data) {
     //**************************************************************************
     function destinationCheck(data) {
         if (data.destination === 'open' || 
-            data.destination === myShip.getPlayerName()) {
+            data.destination === ship.getPlayerName()) {
             return true  //pass
         }
         else {
@@ -84,39 +98,35 @@ var receiveData = function(data) {
     //Text Message
     //**************************************************************************
     function textMessage(data) {
-        terminal = $('#term_demo').terminal()
-        terminal.echo(data.origin + ': ' + data.content)
+        terminalOutput(data.origin + ': ' + data.content)
         //send confirmation that message received
         sendData(
             'babb' + gameID,
-            myShip.getPlayerName(), 
+            ship.getPlayerName(), 
             data.origin, 
             'textMessageSuccess', 
             'none'
         )
     }
     function textMessageSuccess(data) {
-        terminal = $('#term_demo').terminal()
-        terminal.echo('Message sent')
+        terminalOutput('Message sent')
     }
 
     //**************************************************************************
     //Warp Drive Signal
     //**************************************************************************
     function warpDriveSignal(data) {
-        terminal = $('#term_demo').terminal()
-        terminal.echo('A warp drive has been detected')
+         terminalOutput('A warp drive has been detected')
     }
 
     //**************************************************************************
     //Scanning
     //**************************************************************************
     function scanForShip(data) {
-        terminal = $('#term_demo').terminal()
-        terminal.echo('We are being scanned')
+        terminalOutput('We are being scanned')
         sendData(
             'babb' + gameID,
-            myShip.getPlayerName(), 
+            ship.getPlayerName(), 
             data.origin, 
             'scanForShipSuccess',
             'none'
@@ -125,8 +135,7 @@ var receiveData = function(data) {
 
     function scanForShipSuccess(data) {
         ig.game.spawnEntity(EntityShip, 0, 0)
-        terminal = $('#term_demo').terminal()
-        terminal.echo(data.origin + ' has been detected')
+         terminalOutput(data.origin + ' has been detected')
     }
 
     //**************************************************************************

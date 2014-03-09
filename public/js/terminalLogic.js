@@ -1,9 +1,7 @@
 //terminalLogic.js
-
 /*
 description
 */
-
 
 //******************************************************************************
 //Terminal
@@ -13,7 +11,7 @@ $(document).ready(function() {
     function initializeTerminal(term) {
         sendData(
             'babb' + gameID,
-            myShip.getPlayerName(), 
+            ship.getPlayerName(), 
             'open', 
             'warpDriveSignal', 
             'none'
@@ -25,9 +23,9 @@ $(document).ready(function() {
     $('#term_demo').terminal(
         function(command, term) {
             terminalLogic(command)
+            //echo return from logic
         },
-        //Terminal Setup
-        {
+        /*Terminal setup*/ {
             greetings: "",
             prompt: "",
             height: 100,
@@ -36,6 +34,13 @@ $(document).ready(function() {
             }
         })
 })
+
+//******************************************************************************
+//Terminal Output
+//******************************************************************************
+var terminalOutput = function(data) {
+    $('#term_demo').terminal().echo(data)
+}
 
 //******************************************************************************
 //Terminal Logic
@@ -87,6 +92,10 @@ var terminalLogic = function(input) {
                     scanForShip()
                     break
 
+                    case '/target':
+                    setTarget(commandList[i], data)
+                    break
+
                     default:
                 }
             }
@@ -114,7 +123,7 @@ var terminalLogic = function(input) {
         if (input !== '') {
             sendData(
                 'babb' + gameID,
-                myShip.getPlayerName(), 
+                ship.getPlayerName(), 
                 'open', 
                 'textMessage', 
                 input
@@ -123,45 +132,46 @@ var terminalLogic = function(input) {
     }
     //unknown command
     function unknownCommand(command) {
-        terminal = $('#term_demo').terminal()
-        terminal.echo('Unknown Command: ' + command)
+        terminalOutput(
+            'Unknown Command: ' + 
+            command
+        )
     }
     //change the name of player
     function changePlayerName(command, name) {
         name = name.replace(command, '')
         name = name.trim()
-        if (name == '' || name == myShip.getPlayerName()) {
-            terminal = $('#term_demo').terminal()
-            terminal.echo('Player name is currently: ' + myShip.getPlayerName())
+        if (name == '' || name == ship.getPlayerName()) {
         }
         else {
-            myShip.setPlayerName(name)
-            terminal = $('#term_demo').terminal()
-            terminal.echo('Player name set to: ' + myShip.getPlayerName())
+            ship.setPlayerName(name)
         }
+        terminalOutput('Player name: ' + ship.getPlayerName())
     }
     //change the name of ship
     function changeShipName(command, name) {
         name = name.replace(command, '')
         name = name.trim()
-        if (name == '' || name == myShip.getShipName()) {
-            terminal = $('#term_demo').terminal()
-            terminal.echo('Ship name is currently: ' + myShip.getShipName())
+        if (name == '' || name == ship.getShipName()) {
         }
         else {
-            myShip.setShipName(name)
-            terminal = $('#term_demo').terminal()
-            terminal.echo('Ship name set to: ' + myShip.getShipName())
+            ship.setShipName(name)
         }
+        terminalOutput('Ship name set to: ' + ship.getShipName())
     }
     //look for other ships in the solor system
     function scanForShip() {
         sendData(
             'babb' + gameID,
-            myShip.getPlayerName(), 
+            ship.getPlayerName(), 
             'open', 
             'scanForShip',
             'none'
         )
+    }
+    function setTarget(command, input) {
+        target = removeCommand(command, input)
+        target = target.trim()
+        ship.setTarget(target)
     }
 }

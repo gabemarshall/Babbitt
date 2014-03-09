@@ -3,107 +3,81 @@
 //babbitt.gabemarshall.me/pushitrealgood
 //babbitt.gabemarshall.me
 
-//Ship Data
-function playerShip() {
-    //public
-    this.shipName = generateShipName();
-    this.playerName = this.shipName;
-    this.generator = new Generator();
-    this.capacitor = new Capacitor();
-    this.laser = new Laser();
-    this.shield = new Shield();
-    this.hull = new Hull();
-
-    //getters and setters
-    this.getShipName = function() {
-        return this.shipName
+//******************************************************************************
+//SHIP
+//******************************************************************************
+var ship = new function ship() {
+    //public methods
+    this.getName = function() {
+        return name
     }
-    this.setShipName = function(name) {
-        this.shipName = name
+    this.setName = function(data) {
+        name = data
+    }
+    this.getShipName = function() {
+        return name
+    }
+    this.setShipName = function(data) {
+        name = data
     }
     this.getPlayerName = function() {
-        return this.playerName
+        return captain
     }
-    this.setPlayerName = function(name) {
-        this.playerName = name
+    this.setPlayerName = function(data) {
+        captain = data
     }
-    this.getShipNumber = function() {
-        return this.shipNumber
+    this.getCaptainName = function() {
+        return captain
     }
-    this.getShipNumber = function() {
-        return shipNumber
+    this.setCaptainName = function(data) {
+        captain = data
     }
-    //Randomly generate a ship number
-    function generateShipName() {
-        return Math.floor((Math.random()*1000000)+1);
+    this.getShipID = function() {
+        return id
     }
-    this.incomingLaser = function(value) {
-        //code
+    this.getTarget = function() {
+        return target
     }
-    //Ship Systems
-    function Generator() {
-        this.damage = new Data(0.0);        //current amount of damage
-        this.operation = new Data(100.0);   //current operational ability
-        this.durability = new Data(100.0);  //how susceptible the system is to damage
-        this.effeciency = new Data(100.0);  //how effient the system is at operating
-
-        this.output = new Data(0.0);        //energy output
+    this.setTarget = function(data) {
+        target = data
     }
 
-    function Capacitor() {
-        this.damage = new Data(0.0);        //current amount of damage
-        this.operation = new Data(100.0);   //current operational ability
-        this.durability = new Data(100.0);  //how susceptible the system is to damage
-        this.effeciency = new Data(100.0);  //how effient the system is at operating
-
-        this.reserve = new Data(0.0);       //energy available
-    }
-
-    function Laser() {
-        this.damage = new Data(0.0);        //current amount of damage
-        this.operation = new Data(100.0);   //current operational ability
-        this.durability = new Data(100.0);  //how susceptible the system is to damage
-        this.effeciency = new Data(100.0);  //how effient the system is at operating
-    }
-
-    function Shield () {
-        this.damage = new Data(0.0);        //current amount of damage
-        this.operation = new Data(100.0);   //current operational ability
-        this.durability = new Data(100.0);  //how susceptible the system is to damage
-        this.effeciency = new Data(100.0);  //how effient the system is at operating
-    }
-
-    function Hull() {
-        this.damage = new Data(100.0);      //current amount of damage
-        this.operation = new Data(100.0);   //current operational ability
-        this.durability = new Data(100.0);  //how susceptible the system is to damage
-        this.damage = new Data(100.0);
-    }
-
-    //object used to hold data, and keep record of its previous value
+    //private methods
     function Data(initialize) {
-        var previous = initialize;
-        var current = initialize;
-        this.__defineGetter__("previous", function() {
-            return previous;
-        });
-        this.__defineGetter__("current", function() {
-            return current;
-        });  
-        this.__defineSetter__("current", function(value) {
-            if (current !== value) {
-                previous = current;
-                current = value;
+        var previous = initialize
+        var current = initialize
+        this.getPrevious = function() {
+            return previous
+        }
+        this.getCurrent = function() {
+            return current
+        }
+        this.setCurrent = function(data) {
+            if (current !== data) {
+                previous = current
+                current = data
             }
-        });
+        }
     }
-}
+    function LaserTurret() {
+        this.power = new Data(100.0)
+    }
 
-var myShip = new playerShip();
+    //private variables
+    var id = Math.floor((Math.random()*1000000)+1)
+    var shipName = id
+    var captain = id
+    var name = id
+    var target = false
+    var laserTurret = new LaserTurret()
 
-var ship = {
-    name: 0,
-    captain: 0,
-    id: 0,
-    location: 0
+    //ship operation
+    
+    var update = setInterval(
+        function() {
+            //code
+        }, 
+        1000/60
+    )
+
 }
