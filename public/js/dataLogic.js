@@ -1,4 +1,4 @@
-//receiveData.js
+//dataLogic.js
 /*
 description
 */
@@ -18,15 +18,30 @@ var sendData = function(channel, origin, destination, type, content) {
     })
 }
 
+var data = new function dataClass() {
+    this.send = new function sendClass() {
+         this.textMessage = function(channel, origin, destination, type, content) {
+             pubnub.publish({
+                channel: channel,
+                message: {
+                    origin:         origin,
+                    destination:    destination,
+                    type:           type,
+                    content:        content
+                }
+            })  
+        }     
+     }
+}
+
+
 //******************************************************************************
 //Pubnub Subscribe
 //******************************************************************************
 pubnub.subscribe({
     channel: 'babb' + gameID,        
     callback: function(message) {
-
-        //Receive Data
-        receiveData(message)
+        receiveData(message) //Receive Data
     }
 })
 
@@ -34,7 +49,6 @@ pubnub.subscribe({
 //Receive Data
 //******************************************************************************
 var receiveData = function(data) {
-
     //check the source and destination of the incoming data
     if (originCheck(data) === true) {
         
@@ -62,7 +76,12 @@ var receiveData = function(data) {
             break
 
             case 'laser':
-            lased(data)
+            break
+
+            case 'confirmTarget':
+            break
+
+            case 'confirmTargetSuccess':
             break
 
             default:
@@ -73,7 +92,7 @@ var receiveData = function(data) {
     //Data Origin Check
     //**************************************************************************
     function originCheck(data) {
-        if (data.origin != ship.getPlayerName()) {
+        if (data.origin != ship.getID()) {
             return true  //pass
         }
         else {
@@ -85,8 +104,8 @@ var receiveData = function(data) {
     //Data Destination Check
     //**************************************************************************
     function destinationCheck(data) {
-        if (data.destination === 'open' || 
-            data.destination === ship.getPlayerName()) {
+        if (data.destination === 'none' || 
+            data.destination === ship.getID()) {
             return true  //pass
         }
         else {
@@ -98,16 +117,19 @@ var receiveData = function(data) {
     //Text Message
     //**************************************************************************
     function textMessage(data) {
-        terminalOutput(data.origin + ': ' + data.content)
-        //send confirmation that message received
-        sendData(
-            'babb' + gameID,
-            ship.getPlayerName(), 
-            data.origin, 
-            'textMessageSuccess', 
-            'none'
-        )
+        if (destinationCheck(data) === true) {
+            terminalOutput(data.origin + ': ' + data.content)
+            //send confirmation that message received
+            sendData(
+                ship.getLocation(),
+                ship.getID(), 
+                data.origin, 
+                'textMessageSuccess', 
+                'none'
+            )
+        }
     }
+
     function textMessageSuccess(data) {
         terminalOutput('Message sent')
     }
@@ -116,17 +138,17 @@ var receiveData = function(data) {
     //Warp Drive Signal
     //**************************************************************************
     function warpDriveSignal(data) {
-         terminalOutput('A warp drive has been detected')
+         terminalOutput('A warp drive signal has been detected.')
     }
 
     //**************************************************************************
     //Scanning
     //**************************************************************************
     function scanForShip(data) {
-        terminalOutput('We are being scanned')
+        terminalOutput('We are being scanned.')
         sendData(
-            'babb' + gameID,
-            ship.getPlayerName(), 
+            ship.getLocation(),
+            ship.getID(), 
             data.origin, 
             'scanForShipSuccess',
             'none'
@@ -135,13 +157,17 @@ var receiveData = function(data) {
 
     function scanForShipSuccess(data) {
         ig.game.spawnEntity(EntityShip, 0, 0)
-         terminalOutput(data.origin + ' has been detected')
+         terminalOutput(data.origin + ' has been detected.')
     }
 
     //**************************************************************************
-    //Lasers
+    //Targeting
     //**************************************************************************
-    function laser(data) {
-        //send a laser
+    function confirmTarget() {
+        
+    }
+
+    function confirmTargetSuccess() {
+
     }
 }
