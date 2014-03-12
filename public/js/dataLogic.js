@@ -1,7 +1,47 @@
 //dataLogic.js
 /*
 description
+var data = {
+    deliver: function() {
+        
+    }
+    
+    TextMessage: {
+        send: function(value) {
+            alert(value)
+        },
+        receive: function(value) {
+            alert(value)
+        }
+    },
+    
+    confirmTextMessage: {
+        send: function(value) {
+            data.TextMessage.receive(value)
+        }
+    },
+
+    receive: function(value) {
+        data.confirmTextMessage.send(value)
+    }
+}
+
+data.receive('test')
 */
+
+
+
+
+//******************************************************************************
+//Pubnub Subscribe
+//******************************************************************************
+pubnub.subscribe({
+    channel: 'babb' + gameID,        
+    callback: function(message) {
+        //data.receive(message)
+        receiveData(message) //Receive Data
+    }
+})
 
 //******************************************************************************
 //Pubnub Publish
@@ -18,32 +58,79 @@ var sendData = function(channel, origin, destination, type, content) {
     })
 }
 
-var data = new function dataClass() {
-    this.send = new function sendClass() {
-         this.textMessage = function(channel, origin, destination, type, content) {
-             pubnub.publish({
-                channel: channel,
-                message: {
-                    origin:         origin,
-                    destination:    destination,
-                    type:           type,
-                    content:        content
-                }
-            })  
-        }     
-     }
-}
-
-
+//Data
 //******************************************************************************
-//Pubnub Subscribe
-//******************************************************************************
-pubnub.subscribe({
-    channel: 'babb' + gameID,        
-    callback: function(message) {
-        receiveData(message) //Receive Data
+var data = {
+    //Send Data
+    //**************************************************************************
+    deliver: function(channel, origin, destination, type, content) {
+        pubnub.publish({
+            channel: channel,
+            message: {
+                origin:         origin,
+                destination:    destination,
+                type:           type,
+                content:        content
+            }
+        })
+    },
+    //Receive Data
+    //**************************************************************************
+    receive: function() {
+        //check source
+        if (data.origin != ship.getID()) {
+
+            //check type
+            switch (data.type) {
+
+                case 'textMessage':
+                data.textMessage.receive(data)
+                break
+
+                case 'confirmTextMessage':
+                data.confirmTextMessage.receive(data)
+                break
+
+                case 'warpDriveSignal':
+                data.warpDriveSignal.receive(data)
+                break
+
+                default:
+                terminalOutput('ERROR: Uknown data.type')
+            }
+        }
+    },
+    //Text Message
+    //**************************************************************************
+    textMessage: {
+        send: function() {
+
+        },
+        receive: function() {
+
+        }
+    },
+    //Confirm Text Message
+    //**************************************************************************
+    confirmTextMessage: {
+        send: function() {
+
+        },
+        receive: function() {
+
+        }
+    },
+    //Warp Drive Signal
+    //**************************************************************************
+    warpDriveSignal: {
+        send: function() {
+
+        },
+        receive: function() {
+
+        }
     }
-})
+}
 
 //******************************************************************************
 //Receive Data

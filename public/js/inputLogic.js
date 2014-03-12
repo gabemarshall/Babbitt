@@ -134,14 +134,6 @@ var terminalLogic = function(input) {
         input = input.replace(command, '')
         input = input.trim()
         if (input !== '') {
-            data.send.textMessage(
-                ship.getLocation(),
-                ship.getID(), 
-                ship.getTarget(), 
-                'textMessage', 
-                input
-            )
-            /*
             sendData(
                 ship.getLocation(),
                 ship.getID(), 
@@ -149,7 +141,6 @@ var terminalLogic = function(input) {
                 'textMessage', 
                 input
             )
-            */
         }
     }
     //unknown command
