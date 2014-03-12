@@ -77,24 +77,17 @@ var data = {
     //Receive Data
     //**************************************************************************
     receive: function() {
-        //check source
-        if (data.origin != ship.getID()) {
-
-            //check type
-            switch (data.type) {
-
+        if (data.origin != ship.getID()) { //check source
+            switch (data.type) { //check type
                 case 'textMessage':
                 data.textMessage.receive(data)
                 break
-
                 case 'confirmTextMessage':
                 data.confirmTextMessage.receive(data)
                 break
-
                 case 'warpDriveSignal':
                 data.warpDriveSignal.receive(data)
                 break
-
                 default:
                 terminalOutput('ERROR: Uknown data.type')
             }
