@@ -13,36 +13,32 @@ pubnub.subscribe({
 var data = {
     //Send Data
     //**************************************************************************
-    deliver: function(channel, origin, destination, type, content) {
+    send: function(systemD, shipD, type, content) {
         console.log('data.deliver')
         pubnub.publish({
-            channel: channel,
+            channel: systemD,
             message: {
-                origin:         origin,
-                destination:    destination,
-                type:           type,
-                content:        content
+                origin: {
+                    system: ship.getLocation(),
+                    ship: ship.getID(),
+                },
+                destination: {
+                    system: systemD,
+                    ship: shipD,
+                },
+                type: type,
+                content: content
             }
         })
-    },
-    //Text Message
-    //**************************************************************************
-    textMessage: {
-        send: function(channel, origin, destination, type, content) {
-            console.log('data.textMessage.send')
-            data.deliver(channel, origin, destination, type, content
-                )
-        },
-        receive: function(incomingData) {
-            console.log('data.textMessage.receive')
-            terminalOutput(incomingData.origin + ': ' + incomingData.content)
-        },
+        var mergeData = function(block1, block2) {
+            return block3
+        }
     },
     //Receive Data
     //**************************************************************************
     receive: function(incomingData) {
         console.log('data.receive')
-        if (incomingData.origin != ship.getID()) { //check source
+        if (incomingData.origin.ship != ship.getID()) { //check source
             switch (incomingData.type) { //check type
 
                 case 'textMessage':
@@ -61,13 +57,30 @@ var data = {
                 break
 
                 default:
-                console.log('data.receive: default')
-                terminalOutput('ERROR: Uknown data.type')
+                console.log('data.receive: unrecognized data.type')
             }
         }
         else {
             console.log('incoming data regected')
         }
     },
-
+    //Text Message
+    //**************************************************************************
+    textMessage: {
+        //takes in the message's system destination, ship destination, and msg
+        send: function(systemDest, shipDest, message) {
+            console.log('data.textMessage.send')
+            data.send(systemDest, shipDest, 'textMessage',
+                message
+            )
+        },
+        //method called to receive a textMessage
+        receive: function(message) {
+            if (message.destination.ship === ship.getID ||
+                message.destination.ship === 'none') {
+                console.log('data.textMessage.receive')
+                terminalOutput(message.origin.ship+': '+message.content)
+            }
+        },
+    },
 }
