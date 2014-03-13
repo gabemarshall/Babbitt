@@ -9,15 +9,7 @@ description
 $(document).ready(function() {
     //Terminal Initialization
     function initializeTerminal(term) {
-        ship.setLocation('babb' + gameID) //set location
-        //set out warp drive signal
-        sendData(
-            ship.getLocation(),
-            ship.getID(), 
-            'none', 
-            'warpDriveSignal', 
-            'none'
-        )
+        ship.setLocation('babb' + gameID)
         term.echo('Systems Online')
     }
 
@@ -134,7 +126,8 @@ var terminalLogic = function(input) {
         input = input.replace(command, '')
         input = input.trim()
         if (input !== '') {
-            sendData(
+            console.log('send textMessage')
+            data.textMessage.send(
                 ship.getLocation(),
                 ship.getID(), 
                 ship.getTarget(), 
