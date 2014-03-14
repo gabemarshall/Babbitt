@@ -160,20 +160,11 @@ var terminalLogic = function(input) {
     }
     //look for other ships in the solor system
     function scanForShip() {
-        sendData(
-            ship.getLocation(),
-            ship.getID(),
-            ship.getTarget(), 
-            'scanForShip',
-            'none'
-        )
     }
+
     function setTarget(command, input) {
-        target = removeCommand(command, input)
-        target = target.trim()
-        ship.setTarget(target)
-        terminalOutput('Target: ' + target)
     }
+
     function getLocation() {
         terminalOutput('Current Location: ' + ship.getLocation())   
     }

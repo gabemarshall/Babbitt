@@ -1,3 +1,8 @@
+//dataLogic.js
+/*
+description
+*/
+
 //Pubnub Subscribe
 //******************************************************************************
 pubnub.subscribe({
@@ -14,7 +19,22 @@ var data = {
     //Send Data
     //**************************************************************************
     send: function(systemD, shipD, type, content) {
-        console.log('data.deliver')
+        console.log('data.send')
+
+        var object1 = {
+            origin: {
+                system: ship.getLocation(),
+                ship: ship.getID(),
+            },
+            destination: {
+                system: systemD,
+                ship: shipD,
+            },
+            type: type,
+        }
+        var object2 = content
+        //var object3 = mergeObjects(object1, object2)
+
         pubnub.publish({
             channel: systemD,
             message: {
@@ -30,9 +50,26 @@ var data = {
                 content: content
             }
         })
-        var mergeData = function(block1, block2) {
-            return block3
-        }
+        //fucntion to merge two objects
+        function mergeObjects(object1, object2) {
+            for (var property in object2) {
+                try {
+                    if (object2[property].constructor == Object) {
+                        object1[property] = mergeObjects(
+                                                object1[property], 
+                                                object2[property]
+                                            )
+                    }
+                    else {
+                        object1[property] = object2[property]
+                    }
+                }
+                catch(err) {
+                    object1[property] = object2[property]
+                }
+            }
+            return object1
+        }  
     },
     //Receive Data
     //**************************************************************************
@@ -75,11 +112,11 @@ var data = {
             )
         },
         //method called to receive a textMessage
-        receive: function(message) {
-            if (message.destination.ship === ship.getID ||
-                message.destination.ship === 'none') {
+        receive: function(inData) {
+            if (inData.destination.ship === ship.getID ||
+                inData.destination.ship === 'none') {
                 console.log('data.textMessage.receive')
-                terminalOutput(message.origin.ship+': '+message.content)
+                terminalOutput(inData.origin.ship+': '+inData.content)
             }
         },
     },
