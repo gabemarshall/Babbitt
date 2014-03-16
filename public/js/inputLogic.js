@@ -12,8 +12,7 @@ $(document).ready(function() {
         //set ship location
         ship.setLocation('babb' + gameID)
         //send out warp drive signal
-        //data.
-
+        data.warpDriveSignal.send(ship.getLocation())
         //notify player
         term.echo('Current Location: ' + ship.getLocation())
     }
@@ -57,7 +56,8 @@ var terminalLogic = function(input) {
         '/shipname',
         '/scan',
         '/target',
-        '/location'
+        '/location',
+        '/list',
     ]
 
     //ignore blank input
@@ -108,6 +108,10 @@ var terminalLogic = function(input) {
 
             case '/location':
             getLocation()
+            break
+
+            case '/list':
+            getCommandList()
             break
 
             default:
@@ -172,5 +176,10 @@ var terminalLogic = function(input) {
 
     function getLocation() {
         terminalOutput('Current Location: ' + ship.getLocation())   
+    }
+
+    function getCommandList() {
+        terminalOutput('Command List:')
+        terminalOutput('/t, /location, /playername, /shipname, /scan, /target')
     }
 }

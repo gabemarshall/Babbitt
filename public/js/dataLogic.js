@@ -18,7 +18,7 @@ pubnub.subscribe({
 var data = {
     //Send Data
     //**************************************************************************
-    send: function(systemD, shipD, contentBlock) {
+    send: function(systemDestination, shipDestination, contentBlock) {
         console.log('data.send')
         var currentTime = new Date() //record current time
         var addressBlock = {
@@ -28,8 +28,8 @@ var data = {
                 ship: ship.getID(),
             },
             destination: {
-                system: systemD,
-                ship: shipD,
+                system: systemDestination,
+                ship: shipDestination,
             },
             timeStamp: {
                 mil: currentTime.getMilliseconds(), //millisecond (0-999)
@@ -41,10 +41,10 @@ var data = {
                 month: currentTime.getMonth(), //month (0-11)
                 year: currentTime.getFullYear(), //year (four digit)
             },
-            
         }
         var dataPackage = mergeObjects(addressBlock, contentBlock)
 
+        //send data through pubnub
         pubnub.publish({
             channel: dataPackage.destination.system,
             message: dataPackage
@@ -74,28 +74,11 @@ var data = {
     //Receive Data
     //**************************************************************************
     receive: function(incomingData) {
-        console.log('data.receive')
-        if (incomingData.origin.ship != ship.getID()) { //check source
-            switch (incomingData.type) { //check type
-
-                case 'textMessage':
-                console.log('data.receive: textMessage')
-                data.textMessage.receive(incomingData)
-                break
-
-                case 'confirmTextMessage':
-                console.log('data.receive: confirmTextMessage')
-                data.confirmTextMessage.receive(incomingData)
-                break
-
-                case 'warpDriveSignal':
-                console.log('data.receive: warpDriveSignal')
-                //data.warpDriveSignal.receive(incomingData)
-                break
-
-                default:
-                console.log('data.receive: unrecognized data.type')
-            }
+         //check source
+        if (incomingData.origin.ship != ship.getID()) {
+            console.log('data.receive.' + incomingData.type)
+            //execute code based on data type
+            data[incomingData.type].receive(incomingData)
         }
         else {
             console.log('incoming data regected')
@@ -103,7 +86,7 @@ var data = {
     },
     //Text Message
     //**************************************************************************
-    textMessage: {
+    'textMessage': {
         //takes in the message's system destination, ship destination, and msg
         send: function(system, ship, message) {
             console.log('data.textMessage.send')
@@ -119,6 +102,7 @@ var data = {
             if (incomingData.destination.ship === ship.getID() ||
                 incomingData.destination.ship === 'none') {
                 console.log('data.textMessage.receive')
+                //output to terminal
                 terminalOutput(
                     'Message Received ' +
                     incomingData.timeStamp.hour + ':' + 
@@ -126,7 +110,8 @@ var data = {
                     incomingData.origin.ship + ': ' +
                     incomingData.message
                 )
-                data.confirmTextMessage.send(
+                //sende confirmation
+                data['confirmTextMessage'].send(
                     incomingData.origin.system,
                     incomingData.origin.ship
                 )
@@ -135,32 +120,63 @@ var data = {
     },
     //Confirm Text Message
     //**************************************************************************
-    confirmTextMessage: {
-        send: function(system, ship) {
-            console.log('data.confirmTextMessage.send')
-            data.send(system, ship,
+    'confirmTextMessage': {
+        send: function(systemDestination, shipDestination) {
+            data.send(systemDestination, shipDestination,
                 {
                     type: 'confirmTextMessage',
                 }
             )
         },
         receive: function(incomingData) {
-            console.log('data.confirmTextMessage.receive')
-            console.log('source: ' + incomingData.origin.ship)
-            console.log('destination: ' + incomingData.destination.ship)
             if (incomingData.destination.ship === ship.getID()) {
                 terminalOutput('Message Sent')
             }
-        }
+        },
     },
-    //Template for Data Types
+    //Warp Drive Signal
     //**************************************************************************
-    Template: {
-        send: function() {
-
+    'warpDriveSignal': {
+        send: function(systemDestination) {
+            console.log('data.warpDriveSignal.send')
+            data.send(systemDestination, 'none',
+                {
+                    type: 'warpDriveSignal',
+                }
+            )
+        },
+        receive: function(incomingData) {
+            console.log('data.warpDriveSignal.receive')
+            terminalOutput('Warp Drive Detected')
+        },
+    },
+    //Scan For Ship
+    //**************************************************************************
+    'shipScan': {
+        send: function(systemDestination, shipDestination) {
+            data.send(systemDestination, shipDestination,
+                {
+                    type: 'shipScan',
+                }
+            )
         },
         receive: function() {
 
-        }
+        },
+    },
+    //Template for Data Types
+    //**************************************************************************
+    'template': {
+        send: function(systemDestination, shipDestination) {
+            data.send(systemDestination, shipDestination,
+                {
+                    type: 'template',
+                }
+            )
+        },
+        receive: function() {
+
+        },
+
     },
 }

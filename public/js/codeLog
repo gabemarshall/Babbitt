@@ -3,6 +3,7 @@ codeLog
 
 past:
 -----
+breakup major game engine systems, place into their own js file
 fix pubnub subscribe lag
 basic scan functionality
 intergrate initialize code into terminal/sendata
@@ -12,8 +13,8 @@ finalize framework for function 'sendData'
 
 present:
 --------
-breakup major game engine systems, place into their own js file
-rewrite receive data types, phase out unique functions for success/failure
+implement former functionality into new framework
+phase out unique functions for success/failure
 
 
 future:
