@@ -9,8 +9,13 @@ description
 $(document).ready(function() {
     //Terminal Initialization
     function initializeTerminal(term) {
+        //set ship location
         ship.setLocation('babb' + gameID)
-        term.echo('Systems Online')
+        //send out warp drive signal
+        //data.
+
+        //notify player
+        term.echo('Current Location: ' + ship.getLocation())
     }
 
     //Pass user input to terminalLogic
