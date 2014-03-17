@@ -39,6 +39,45 @@ var terminalOutput = function(data) {
     $('#term_demo').terminal().echo(data)
 }
 
+/*
+//work in progress
+var terminalLOGIC = {
+    var commandList: [
+        '/t',
+        '/shields',
+        '/lasers',
+        '/playername',
+        '/shipname',
+        '/scan',
+        '/target',
+        '/location',
+        '/list',
+    ],
+
+    cleanInput: function(incomingString) {
+        incomingString = incomingString.trim()
+        incomingString = incomingString.toLowerCase()
+        return incomingString
+    },
+
+    input: function(incomingString) {
+        //ignore blank input
+        if (incomingString !== '') {
+            //look through command list
+            for (var i = 0; i < commandList.length; i++) {
+                //search for command in user input
+                if (input.search(commandList[i]) != -1) {
+                    //use longest length command that is found
+                    if (commandList[i].length > command.length) {
+                        command = commandList[i]
+                    }
+                }
+            }
+        }
+    },
+},
+*/
+
 //******************************************************************************
 //Terminal Logic
 //******************************************************************************

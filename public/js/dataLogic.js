@@ -19,7 +19,6 @@ var data = {
     //Send Data
     //**************************************************************************
     send: function(systemDestination, shipDestination, contentBlock) {
-        console.log('data.send')
         var currentTime = new Date() //record current time
         var addressBlock = {
             id: currentTime.getTime(),
@@ -76,7 +75,7 @@ var data = {
     receive: function(incomingData) {
          //check source
         if (incomingData.origin.ship != ship.getID()) {
-            console.log('data.receive.' + incomingData.type)
+            console.log('data type: ' + incomingData.type)
             //execute code based on data type
             data[incomingData.type].receive(incomingData)
         }
@@ -89,7 +88,6 @@ var data = {
     'textMessage': {
         //takes in the message's system destination, ship destination, and msg
         send: function(system, ship, message) {
-            console.log('data.textMessage.send')
             data.send(system, ship,
                 {
                     type: 'textMessage',
@@ -101,7 +99,6 @@ var data = {
         receive: function(incomingData) {
             if (incomingData.destination.ship === ship.getID() ||
                 incomingData.destination.ship === 'none') {
-                console.log('data.textMessage.receive')
                 //output to terminal
                 terminalOutput(
                     'Message Received ' +
@@ -138,7 +135,6 @@ var data = {
     //**************************************************************************
     'warpDriveSignal': {
         send: function(systemDestination) {
-            console.log('data.warpDriveSignal.send')
             data.send(systemDestination, 'none',
                 {
                     type: 'warpDriveSignal',
@@ -146,7 +142,6 @@ var data = {
             )
         },
         receive: function(incomingData) {
-            console.log('data.warpDriveSignal.receive')
             terminalOutput('Warp Drive Detected')
         },
     },
@@ -177,6 +172,8 @@ var data = {
         receive: function() {
 
         },
+        confirm: function() {
 
+        },
     },
 }
