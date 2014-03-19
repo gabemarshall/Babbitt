@@ -41,33 +41,33 @@ var data = {
                 year: currentTime.getFullYear(), //year (four digit)
             },
         }
-        var dataPackage = mergeObjects(addressBlock, contentBlock)
+        var dataBlock = mergeBlocks(addressBlock, contentBlock)
 
         //send data through pubnub
         pubnub.publish({
-            channel: dataPackage.destination.system,
-            message: dataPackage
+            channel: dataBlock.destination.system,
+            message: dataBlock
         })
 
         //fucntion to merge two objects
-        function mergeObjects(object1, object2) {
-            for (var property in object2) {
+        function mergeBlocks(block1, block2) {
+            for (var property in block2) {
                 try {
-                    if (object2[property].constructor == Object) {
-                        object1[property] = mergeObjects(
-                                                object1[property], 
-                                                object2[property]
+                    if (block2[property].constructor == Object) {
+                        block1[property] = mergeBlocks(
+                                                block1[property], 
+                                                block2[property]
                                             )
                     }
                     else {
-                        object1[property] = object2[property]
+                        block1[property] = block2[property]
                     }
                 }
-                catch(err) {
-                    object1[property] = object2[property]
+                catch(Error) {
+                    block1[property] = block2[property]
                 }
             }
-            return object1
+            return block1
         }  
     },
     //Receive Data
@@ -100,7 +100,7 @@ var data = {
             if (incomingData.destination.ship === ship.getID() ||
                 incomingData.destination.ship === 'none') {
                 //output to terminal
-                terminalOutput(
+                terminalLogic.output(
                     'Message Received ' +
                     incomingData.timeStamp.hour + ':' + 
                     incomingData.timeStamp.min + ' ' +
@@ -127,7 +127,7 @@ var data = {
         },
         receive: function(incomingData) {
             if (incomingData.destination.ship === ship.getID()) {
-                terminalOutput('Message Sent')
+                terminalLogic.output('Message Sent')
             }
         },
     },
@@ -142,7 +142,7 @@ var data = {
             )
         },
         receive: function(incomingData) {
-            terminalOutput('Warp Drive Detected')
+            terminalLogic.output('Warp Drive Detected')
         },
     },
     //Scan For Ship
@@ -170,10 +170,7 @@ var data = {
             )
         },
         receive: function() {
-
-        },
-        confirm: function() {
-
+            //code
         },
     },
 }

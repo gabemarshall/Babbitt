@@ -3,8 +3,7 @@
 description
 */
 
-//******************************************************************************
-//Terminal
+//Terminal Setup
 //******************************************************************************
 $(document).ready(function() {
     //Terminal Initialization
@@ -20,53 +19,39 @@ $(document).ready(function() {
     //Pass user input to terminalLogic
     $('#term_demo').terminal(
         function(command, term) {
-            terminalLogic(command)
+            //pass user input to terminalLogic
+            terminalLogic.input(command)
         },
         /*Terminal setup*/ {
-            greetings: "",
-            prompt: "",
-            height: 100,
+            height: 200,
+            greetings: 'greetings',
             onInit: function(term) {
                 initializeTerminal(term)
-            }
+            },
+            prompt: '',
         })
 })
 
+//Terminal Logic
 //******************************************************************************
-//Terminal Output
-//******************************************************************************
-var terminalOutput = function(data) {
-    $('#term_demo').terminal().echo(data)
-}
+var terminalLogic = {
+    //Input
+    //**************************************************************************  
+    input: function(stringIn) {
+        
+        var commandList = terminalLogic.getCommandList()
+            
+        var stringIn = stringIn.trim()
+        stringIn = stringIn.toLowerCase()
+            
+        var command = ''
 
-/*
-//work in progress
-var terminalLOGIC = {
-    var commandList: [
-        '/t',
-        '/shields',
-        '/lasers',
-        '/playername',
-        '/shipname',
-        '/scan',
-        '/target',
-        '/location',
-        '/list',
-    ],
-
-    cleanInput: function(incomingString) {
-        incomingString = incomingString.trim()
-        incomingString = incomingString.toLowerCase()
-        return incomingString
-    },
-
-    input: function(incomingString) {
         //ignore blank input
-        if (incomingString !== '') {
+        if (stringIn !== '') {
             //look through command list
             for (var i = 0; i < commandList.length; i++) {
                 //search for command in user input
-                if (input.search(commandList[i]) != -1) {
+                if (stringIn.search(commandList[i]) != -1) {
                     //use longest length command that is found
                     if (commandList[i].length > command.length) {
                         command = commandList[i]
@@ -74,129 +59,92 @@ var terminalLOGIC = {
                 }
             }
         }
-    },
-},
-*/
 
-//******************************************************************************
-//Terminal Logic
-//******************************************************************************
-var terminalLogic = function(input) {
-    
-    input = cleanInput(input)
-    command = ''
-
-    //list of available commands
-    commandList = [
-        '/t',
-        '/shields',
-        '/lasers',
-        '/playername',
-        '/shipname',
-        '/scan',
-        '/target',
-        '/location',
-        '/list',
-    ]
-
-    //ignore blank input
-    if (input !== '') {
-        //look through command list
-        for (var i = 0; i < commandList.length; i++) {
-            //search for command in user input
-            if (input.search(commandList[i]) != -1) {
-                //use longest length command that is found
-                if (commandList[i].length > command.length) {
-                    command = commandList[i]
-                }
+        if (command) {
+            try {
+                terminalLogic[command](command, stringIn)
+            }
+            catch(Error) {
+                terminalLogic.executionFail(command)
             }
         }
-    }
-
-    //execute action 
-    if (command !== '') {
-        switch (command) {
-            case '/t':
-            textMessage(command, input)
-            break
-
-            case '/shields':
-            break
-
-            case '/powerlasers':
-            break
-
-            case '/firelasers':
-            break
-
-            case '/playername':
-            changePlayerName(command, input)
-            break
-
-            case '/shipname':
-            changeShipName(command, input)
-            break
-
-            case '/scan':
-            scanForShip()
-            break
-
-            case '/target':
-            setTarget(command, input)
-            break
-
-            case '/location':
-            getLocation()
-            break
-
-            case '/list':
-            getCommandList()
-            break
-
-            default:
-            unknownCommand(input)
+        else if (command === '') {
+            terminalLogic.commandFail(stringIn)
         }
-    }
-
-    //cleanup user input
-    function cleanInput(input) {
-        input = input.trim()
-        input = input.toLowerCase()
-        return input
-    }
-    //remove the command from input
-    function removeCommand(command, input) {
-        input = input.replace(command, '')
-        return input
-    }
-    //transmit text message
-    function textMessage(command, input) {
+    },
+    //Unknown Command
+    //**************************************************************************
+    commandFail: function(userInput) {
+        terminalLogic.output(
+            'ERROR: ' +
+            'Command Fail: ' +
+            'Command Not Found In: ' + userInput
+        )
+    },
+    //Unknown Command
+    //**************************************************************************
+    executionFail: function(command) {
+        terminalLogic.output(
+            'ERROR: ' +
+            'Command "' + command + '" OK: ' +
+            'Code Execution Fail'
+        )
+    },
+    //Display Output
+    //**************************************************************************
+    output: function(output) {
+        $('#term_demo').terminal().echo(output)
+    },
+    //Command List
+    //**************************************************************************
+    getCommandList: function() {
+        return [
+            '/t',
+            '/playername',
+            '/shipname',
+            '/scan',
+            '/location',
+            '/list',
+        ]
+    },
+    //Send Text Message
+    //**************************************************************************
+    '/t': function(command, input) {
         input = input.replace(command, '')
         input = input.trim()
         if (input !== '') {
-            console.log('input: command is textMessage')
             data.textMessage.send(ship.getLocation(), 'none', input)
         }
-    }
-    //unknown command
-    function unknownCommand(command) {
-        terminalOutput('Unknown Command: ' + command)
-    }
-    //change the name of player
-    function changePlayerName(command, data) {
-        data = data.replace(command, '')
-        data = data.trim()
-        if (data == '' || data == ship.getCaptainName()) {
+    },
+    //Display Ship System Location
+    //**************************************************************************
+    '/location': function() {
+        terminalLogic.output('Current Location: ' + ship.getLocation())   
+    },
+    //Display Terminal Command List
+    //**************************************************************************
+    '/list': function(command, input) {
+        var list = terminalLogic.getCommandList()
+        terminalLogic.output('ERROR: Code not yet implemented')
+        //output list of user commands to terminal
+    },
+    //Display or change player name
+    //**************************************************************************
+    '/playername': function(command, userInput) {
+        var name = userInput.replace(command, '')
+        name = name.trim()
+        if (name == '' || name == ship.getCaptainName()) {
             //code
         }
         else {
-            ship.setPlayerName(data)
+            ship.setPlayerName(name)
         }
-        terminalOutput('Player name: ' + ship.getCaptainName())
-    }
-    //change the name of ship
-    function changeShipName(command, name) {
-        name = name.replace(command, '')
+        terminalLogic.output('Player name: ' + ship.getCaptainName())
+    },
+    //Display or change ship name
+    //**************************************************************************
+    '/shipname': function(command, userInput) {
+        var name = userInput.replace(command, '')
         name = name.trim()
         if (name == '' || name == ship.getShipName()) {
             //code
@@ -204,21 +152,11 @@ var terminalLogic = function(input) {
         else {
             ship.setShipName(name)
         }
-        terminalOutput('Ship name: ' + ship.getShipName())
-    }
-    //look for other ships in the solor system
-    function scanForShip() {
-    }
-
-    function setTarget(command, input) {
-    }
-
-    function getLocation() {
-        terminalOutput('Current Location: ' + ship.getLocation())   
-    }
-
-    function getCommandList() {
-        terminalOutput('Command List:')
-        terminalOutput('/t, /location, /playername, /shipname, /scan, /target')
-    }
+        terminalLogic.output('Ship name: ' + ship.getShipName())
+    },
+    //Template
+    //**************************************************************************
+    'template': function(command, userInput) {
+        //code
+    },
 }
