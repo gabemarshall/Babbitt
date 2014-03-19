@@ -24,7 +24,7 @@ $(document).ready(function() {
         },
         /*Terminal setup*/ {
             height: 200,
-            greetings: 'greetings',
+            greetings: '',
             onInit: function(term) {
                 initializeTerminal(term)
             },
@@ -109,11 +109,11 @@ var terminalLogic = {
     },
     //Send Text Message
     //**************************************************************************
-    '/t': function(command, input) {
-        input = input.replace(command, '')
-        input = input.trim()
-        if (input !== '') {
-            data.textMessage.send(ship.getLocation(), 'none', input)
+    '/t': function(command, userInput) {
+        var message = userInput.replace(command, '')
+        message = message.trim()
+        if (message !== '') {
+            data.textMessage.send(ship.getLocation(), 'none', message)
         }
     },
     //Display Ship System Location
@@ -123,7 +123,7 @@ var terminalLogic = {
     },
     //Display Terminal Command List
     //**************************************************************************
-    '/list': function(command, input) {
+    '/list': function(command, userInput) {
         var list = terminalLogic.getCommandList()
         terminalLogic.output('ERROR: Code not yet implemented')
         //output list of user commands to terminal

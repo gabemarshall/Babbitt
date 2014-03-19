@@ -13,7 +13,7 @@ pubnub.subscribe({
     }
 })
 
-//Data
+//Data Logic
 //******************************************************************************
 var data = {
     //Send Data
@@ -165,12 +165,13 @@ var data = {
         send: function(systemDestination, shipDestination) {
             data.send(systemDestination, shipDestination,
                 {
-                    type: 'template',
+                    type: 'template', //name of data type
+                    //list other custom variables here
                 }
             )
         },
         receive: function() {
-            //code
+            //code to execute when receiving this type of data
         },
     },
 }
