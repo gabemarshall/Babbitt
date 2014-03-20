@@ -10,7 +10,7 @@ babbitt.gabemarshall.me
 //SHIP
 //******************************************************************************
 var ship = new function ship() {
-    //public methods
+    //public
     this.getShipID = function() {return id}
     this.getID = function() {return id}
     this.getName = function() {return name}
@@ -23,25 +23,7 @@ var ship = new function ship() {
     this.setCaptainName = function(data) {captain = data}
     this.getLocation = function() {return location}
     this.setLocation = function(data) {location = data}
-
-
-    //private methods
-    function Data(initialize) {
-        var previous = initialize
-        var current = initialize
-        this.getPrevious = function() {
-            return previous
-        }
-        this.getCurrent = function() {
-            return current
-        }
-        this.setCurrent = function(data) {
-            if (current !== data) {
-                previous = current
-                current = data
-            }
-        }
-    }
+    //private
 
     //basic ship data
     var id = Math.floor((Math.random()*1000000)+1)
@@ -51,47 +33,93 @@ var ship = new function ship() {
 
     //update ship systems
     var updateSystems = function() {
-        capacitor.update()
+        capacitor.update(generator.getCurrentOutput())
     }
 
     //ship operation
     var update = setInterval(
         function() {
+            console.groupCollapsed('Ship Main Interval')
+
             updateSystems()
-            console.log('Power Level: ' + capacitor.getPower())
+
+            console.groupEnd()
         }, 
         1000
     )
-
-
     //Capacitor System
     //**************************************************************************
     var capacitor = new function capacitor() {
-        var power = 90.0
-        this.getPower = function() {return power}
-        this.update = function() {
-            power += generator.getOutput()
-            this.limitPower()
+        //public
+        this.getCurrentPowerUnits = function() {
+            return power.current
         }
-        this.limitPower = function() {
-            if (power > 100.0) {
-                power = 100.0
+        this.getCurrentPowerPercentage = function() {
+            return (power.current / power.maximum) * 100
+        }
+        this.update = function(incomingPower) {
+            power.current += incomingPower
+            //checkPowerLevels()
+            consoleOutput()
+        }
+        //private
+        var damage = {
+            current: 0, //units
+            minimum: 0, //units
+            maximum: 100, //units
+        }
+        var power = {
+            current: 10, //units
+            minimum: 0, //units
+            maximum: 1000, //units
+        }
+        var checkPowerLevels = function() {
+            if (power.current > power.maximum) {
+                //code
             }
-            else if (power < 0) {
-                power = 0.0
+            else if (power.current < power.minimum) {
+                //code
             }
             else {
                 //do nothing
             }
         }
-    }
+        
+        var consoleOutput = function() {
+            console.groupCollapsed('System: Capacitor')
+            
+            //power data
+            console.log(
+                'Capacitor Power Storage: ' +
+                power.current + '/' + power.maximum + ' or ' +
+                Math.floor((power.current / power.maximum) * 100) +
+                '%'
+            )
 
+            //damage
+
+            //other
+
+            console.groupEnd()
+        }
+        
+    }
     //Generator System
     //**************************************************************************
     var generator = new function generator() {
-        var output = 1.0
-        this.getOutput = function() {
-            return output
+        var output = {
+            current: 1, //units
+            minimum: 0, //units
+            maximum: 0, //units 
+        }
+        this.getCurrentOutput = function() {
+            return output.current
+        }
+        this.getMinimumOutput = function() {
+            return output.minimum
+        }
+        this.getMaximumOutput = function() {
+            return output.maximum
         }
     }
 }
