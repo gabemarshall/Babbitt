@@ -11,48 +11,19 @@ babbitt.gabemarshall.me
 //******************************************************************************
 var ship = new function ship() {
     //public methods
-    this.getShipID = function() {
-        return id
-    }
-    this.getID = function() {
-        return id
-    }
-    this.getName = function() {
-        return name
-    }
-    this.setName = function(data) {
-        name = data
-    }
-    this.getShipName = function() {
-        return name
-    }
-    this.setShipName = function(data) {
-        name = data
-    }
-    this.getPlayerName = function() {
-        return captain
-    }
-    this.setPlayerName = function(data) {
-        captain = data
-    }
-    this.getCaptainName = function() {
-        return captain
-    }
-    this.setCaptainName = function(data) {
-        captain = data
-    }
-    this.getTarget = function() {
-        return target
-    }
-    this.setTarget = function(data) {
-        target = data
-    }
-    this.getLocation = function() {
-        return location
-    }
-    this.setLocation = function(data) {
-        location = data
-    }
+    this.getShipID = function() {return id}
+    this.getID = function() {return id}
+    this.getName = function() {return name}
+    this.setName = function(data) {name = data}
+    this.getShipName = function() {return name}
+    this.setShipName = function(data) {name = data}
+    this.getPlayerName = function() {return captain}
+    this.setPlayerName = function(data) {captain = data}
+    this.getCaptainName = function() {return captain}
+    this.setCaptainName = function(data) {captain = data}
+    this.getLocation = function() {return location}
+    this.setLocation = function(data) {location = data}
+
 
     //private methods
     function Data(initialize) {
@@ -71,24 +42,56 @@ var ship = new function ship() {
             }
         }
     }
-    function LaserTurret() {
-        this.power = new Data(100.0)
-    }
 
-    //private variables
+    //basic ship data
     var id = Math.floor((Math.random()*1000000)+1)
-    var shipName = id
     var captain = id
     var name = id
-    var target = 'none'
-    var laserTurret = new LaserTurret()
     var location = 'location'
+
+    //update ship systems
+    var updateSystems = function() {
+        capacitor.update()
+    }
 
     //ship operation
     var update = setInterval(
         function() {
-            //code
+            updateSystems()
+            console.log('Power Level: ' + capacitor.getPower())
         }, 
         1000
     )
+
+
+    //Capacitor System
+    //**************************************************************************
+    var capacitor = new function capacitor() {
+        var power = 90.0
+        this.getPower = function() {return power}
+        this.update = function() {
+            power += generator.getOutput()
+            this.limitPower()
+        }
+        this.limitPower = function() {
+            if (power > 100.0) {
+                power = 100.0
+            }
+            else if (power < 0) {
+                power = 0.0
+            }
+            else {
+                //do nothing
+            }
+        }
+    }
+
+    //Generator System
+    //**************************************************************************
+    var generator = new function generator() {
+        var output = 1.0
+        this.getOutput = function() {
+            return output
+        }
+    }
 }
