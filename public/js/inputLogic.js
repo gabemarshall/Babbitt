@@ -104,6 +104,7 @@ var terminalLogic = {
             '/shipname',
             '/scan',
             '/location',
+            '/laser',
             '/list',
         ]
     },
@@ -115,6 +116,11 @@ var terminalLogic = {
         if (message !== '') {
             data.textMessage.send(ship.getLocation(), 'none', message)
         }
+    },
+    //Laser
+    //**************************************************************************
+    '/laser': function(command, userInput) {
+        //code
     },
     //Display Ship System Location
     //**************************************************************************
