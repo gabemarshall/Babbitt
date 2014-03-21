@@ -99,13 +99,13 @@ var terminalLogic = {
     //**************************************************************************
     getCommandList: function() {
         return [
-            '/t',
-            '/playername',
-            '/shipname',
-            '/scan',
-            '/location',
-            '/laser',
-            '/list',
+            '/t',               //send text message
+            '/playername',      //get or set player name
+            '/shipname',        //get or set ship name
+            '/scan',            //scan for ships
+            '/location',        //get location
+            '/laser',           //fire laser
+            '/list',            //list commands
         ]
     },
     //Send Text Message
