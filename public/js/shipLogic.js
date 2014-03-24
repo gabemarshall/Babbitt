@@ -97,16 +97,15 @@ function Capacitor() {
 //******************************************************************************
 function Generator() {
 	//private
-	var output = new Stat('Output', 1, 1, 1)
-	var efficiency = new Stat('Efficiency', 1, 0, 1)
-	var hull = new Stat('Hull', 99, 0, 100)
-	var damage = new Stat('Damage', 0, 0, 1)
+	var structure = new Stat('Structure', 75, 0, 100)	//units
+	var damage = new Stat('Damage', 0, 0, 1)			//percentage
+	var output = new Stat('Output', 1, 0, 1)			//units
+	var efficiency = new Stat('Efficiency', 1, 0, 1)	//percentage
 	var calculateDamage = function() {
-		var x = 1 - hull.getCurrent() / hull.getMaximum()
-		x = (Math.floor(x * 100) / 100)
 		damage.setCurrent(
-			//1 - hull.getCurrent() / hull.getMaximum()
-			x
+			Math.round( //round to 2 decimal places
+				(1 - structure.getCurrent() / structure.getMaximum() ) * 100
+			) / 100
 		)
 	}
 	var calculateEfficiency = function() {
@@ -130,10 +129,10 @@ function Generator() {
 	}
 	this.sendToConsole = function() {
 		console.groupCollapsed('Generator')
-		hull.sendToConsole()
+		structure.sendToConsole()
 		damage.sendToConsole()
-		efficiency.sendToConsole()
 		output.sendToConsole()
+		efficiency.sendToConsole()
 		console.groupEnd()
 	}
 }
@@ -147,14 +146,13 @@ function Radiator() {
 
 //LimitedValue
 //******************************************************************************
-function Stat(nam, now, min, max) {
+function Stat(nam, cur, min, max) {
 	//private
-	var name = nam
-	var current = now
-	var previous = now
-	var minimum = min
-	var maximum = max
-	var type
+	var name = nam		//stat name, string
+	var current = cur	//current value
+	var previous = cur	//previous value
+	var minimum = min	//minimum value
+	var maximum = max	//maximum value
 	//private
 	this.sendToConsole = function() {
 		console.groupCollapsed(name)
