@@ -8,7 +8,6 @@ description
 pubnub.subscribe({
 	channel: 'babb' + gameID,        
 	callback: function(message) {
-		console.log('pubnub.suscribe')
 		data.receive(message)
 	}
 })
