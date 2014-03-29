@@ -48,20 +48,20 @@ var terminalLogic = {
 	},
 	//Cleans up terminal input
 	//**************************************************************************
-	cleanUserInput: function(stringIn) {						//start function
+	cleanUserInput: function(stringIn) {						
 		debug.startNest('cleanUserInput')						//start nest
 		var stringIn = stringIn.trim();							//remove excess
 		stringIn = stringIn.toLowerCase();						//lower case
-		debug.log('complete')									//log
+		debug.log('return "' + stringIn + '"')					//log
 		debug.endNest()											//end nest
 		return stringIn;										//return value
-	},															//end function
+	},															
 	//Looks for command in input
 	//**************************************************************************
 	findCommand: function(stringIn) {
-		debug.startNest('findCommand')
-		var commandList = terminalLogic.getCommandList()
-		var command = ''
+		debug.startNest('findCommand')							//start nest
+		var commandList = terminalLogic.getCommandList()		//get list
+		var command = ''										//set command
 
 		if (stringIn !== '') {
 			//look through command list
@@ -145,7 +145,8 @@ var terminalLogic = {
 	//List of commands
 	//**************************************************************************
 	getCommandList: function() {
-		return [
+		debug.startNest('getCommandList')
+		var commandList = [
 			'/t',               //send text message
 			'/playername',      //get or set player name
 			'/shipname',        //get or set ship name
@@ -157,6 +158,9 @@ var terminalLogic = {
 			'/d/clear',         //clear browser's console
 			'/debug',			//turn debug mode on or off
 		]
+		debug.log('return "' + commandList + '"')
+		debug.endNest()
+		return commandList
 	},
 	//Send Text Message
 	//**************************************************************************
@@ -172,7 +176,9 @@ var terminalLogic = {
 	//Laser
 	//**************************************************************************
 	'/laser': function(command, userInput) {
+		debug.startNest('/laser')
 		//code
+		debug.endNest()
 	},
 	//Display Ship System Location
 	//**************************************************************************
@@ -184,13 +190,16 @@ var terminalLogic = {
 	//Display Terminal Command List
 	//**************************************************************************
 	'/list': function(command, userInput) {
+		debug.startNest('/list')
 		var list = terminalLogic.getCommandList()
 		terminalLogic.output('ERROR: List Code not yet implemented')
 		//output list of user commands to terminal
+		debug.endNest()
 	},
 	//Display or change player name
 	//**************************************************************************
 	'/playername': function(command, userInput) {
+		debug.startNest('/playername')
 		var name = userInput.replace(command, '')
 		name = name.trim()
 		if (name == '' || name == ship.getCaptainName()) {
@@ -200,10 +209,12 @@ var terminalLogic = {
 			ship.setPlayerName(name)
 		}
 		terminalLogic.output('Player name: ' + ship.getCaptainName())
+		debug.endNest()
 	},
 	//Display or change ship name
 	//**************************************************************************
 	'/shipname': function(command, userInput) {
+		debug.startNest('/shipname')
 		var name = userInput.replace(command, '')
 		name = name.trim()
 		if (name == '' || name == ship.getShipName()) {
@@ -213,11 +224,14 @@ var terminalLogic = {
 			ship.setShipName(name)
 		}
 		terminalLogic.output('Ship name: ' + ship.getShipName())
+		debug.endNest()
 	},
 	//Display ship stats in browser's console
 	//**************************************************************************
 	'/d/shipstats': function() {
+		debug.startNest('/d/shipstats')
 		ship.getShipStats()
+		debug.endNest()
 	},
 	//Clear the browser's console
 	//**************************************************************************
@@ -234,7 +248,9 @@ var terminalLogic = {
 	//Template
 	//**************************************************************************
 	'template': function(command, userInput) {
+		debug.startNest('template')
 		//code
+		debug.endNest()
 	},
 }
 
