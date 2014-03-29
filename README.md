@@ -4,6 +4,7 @@ Babbitt
 Update:
 
 Index.html has been moved to /views/index.ejs 
+also... /views/sector.ejs
 
 Game files have been moved to /public/
 

@@ -48,26 +48,26 @@ var terminalLogic = {
 	},
 	//Cleans up terminal input
 	//**************************************************************************
-	cleanUserInput: function(stringIn) {		//start function
-		debug.startNest('cleanUserInput')		//start nest
-		var stringIn = stringIn.trim();			//remove excess
-		stringIn = stringIn.toLowerCase();		//lower case
-		debug.log('complete')					//log
-		debug.endNest()							//end nest
-		return stringIn;						//return value
-	},											//end function
+	cleanUserInput: function(stringIn) {						//start function
+		debug.startNest('cleanUserInput')						//start nest
+		var stringIn = stringIn.trim();							//remove excess
+		stringIn = stringIn.toLowerCase();						//lower case
+		debug.log('complete')									//log
+		debug.endNest()											//end nest
+		return stringIn;										//return value
+	},															//end function
 	//Looks for command in input
 	//**************************************************************************
-	findCommand: function(userInput) {
+	findCommand: function(stringIn) {
 		debug.startNest('findCommand')
 		var commandList = terminalLogic.getCommandList()
 		var command = ''
 
-		if (userInput !== '') {
+		if (stringIn !== '') {
 			//look through command list
 			for (var i = 0; i < commandList.length; i++) {
 				//search for command in user input
-				if (userInput.search(commandList[i]) != -1) {
+				if (stringIn.search(commandList[i]) != -1) {
 					//use longest length command that is found
 					if (commandList[i].length > command.length) {
 						command = commandList[i]
@@ -90,30 +90,30 @@ var terminalLogic = {
 	},	
 	//Execute Command
 	//**************************************************************************
-	executeCommand: function(command, userInput) {
+	executeCommand: function(command, stringIn) {
 		debug.startNest('executeCommand')
 		if (command) {
 			try {
-				terminalLogic[command](command, userInput)
+				terminalLogic[command](command, stringIn)
 			}
-			catch(Error) {
+			catch(error) {
 				terminalLogic.executionFail(command)
 			}
 		}
 		else if (command === '') {
-			terminalLogic.commandFail(userInput)
+			terminalLogic.commandFail(stringIn)
 		}
 		debug.endNest()
 	},
 	//Command not found
 	//**************************************************************************
-	commandFail: function(userInput) {
+	commandFail: function(stringIn) {
 		debug.startNest('commandFail')
-		if (userInput) {
+		if (stringIn) {
 			terminalLogic.output(
 				'ERROR: ' +
 				'Command Fail: ' +
-				'Command Not Found In: ' + userInput
+				'Command Not Found In: ' + stringIn
 			)
 		}
 		debug.endNest()
@@ -145,8 +145,6 @@ var terminalLogic = {
 	//List of commands
 	//**************************************************************************
 	getCommandList: function() {
-		debug.startNest('getCommandList')
-		debug.endNest()
 		return [
 			'/t',               //send text message
 			'/playername',      //get or set player name
@@ -157,6 +155,7 @@ var terminalLogic = {
 			'/list',            //list commands
 			'/d/shipstats',     //output ship stats to browser's console
 			'/d/clear',         //clear browser's console
+			'/debug',			//turn debug mode on or off
 		]
 	},
 	//Send Text Message
@@ -227,8 +226,10 @@ var terminalLogic = {
 	},
 	//Set debug state
 	//**************************************************************************
-	'/d/debug': function(command, userInput) {
-		//code
+	'/debug': function(command, userInput) {
+		debug.startNest('/debug')
+		debug.stateSwitch()
+		debug.endNest()
 	},
 	//Template
 	//**************************************************************************
@@ -237,34 +238,3 @@ var terminalLogic = {
 	},
 }
 
-//debug stuff
-//******************************************************************************
-var debug = {
-	state: true,
-	startNest: function(value) {
-		if (debug.state === true) {
-			console.groupCollapsed(value)
-		}
-	},
-	endNest: function() {
-		if (debug.state === true) {
-			console.groupEnd()
-		}
-	},
-	log: function(value) {
-		if (debug.state === true) {
-			console.log(value)
-		}
-	},
-	clear: function() {
-		if (debug.state === true) {
-			console.clear()
-		}
-	},
-	setState: function() {
-		//code
-	},
-	getState: function() {
-		//code
-	},
-}
