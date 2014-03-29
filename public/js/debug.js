@@ -40,4 +40,13 @@ var debug = {
 		}
 		console.groupEnd()
 	},
+	getFunctionName: function() {
+		return arguments.callee.caller.name
+		/*
+		var name = arguments.callee.caller.toString();
+		name = name.substr('function '.length); 	//remove 'function '
+		name = name.substr(0, name.indexOf('(')); 	//remove all after name
+		return name
+		*/
+	}
 }

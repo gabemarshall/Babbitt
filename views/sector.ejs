@@ -4,50 +4,49 @@
 <head>
 
 	<link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
-    <link href='/stylesheets/terminal.css' rel='stylesheet'>
-    <link href='/stylesheets/game.css' rel='stylesheet'>
+	<link href='/stylesheets/terminal.css' rel='stylesheet'>
+	<link href='/stylesheets/game.css' rel='stylesheet'>
 
-    <script>
+	<script>
 
-        function getParameterByName(name) {
-            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-            return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-        }
-        var gameID = decodeURI(getParameterByName("id"))
-        var allowedToPlay = false
+		function getParameterByName(name) {
+			name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+			var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+			results = regex.exec(location.search);
+			return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+		}
+		var gameID = decodeURI(getParameterByName("id"))
+		var allowedToPlay = false
 
-    </script>
+	</script>
 
 </head>
-
-<!-- terminal -->
-    <body style="padding: 0px; margin: 0px; border: 0px;">
-        <div class="wrapper">
-            <canvas id="canvas"></canvas>
-            <div class="terminal" id="term_demo">
-        </div>
-    </body>
-     <!-- UI Terminal Dependency -->
-    <script src="bower_components/jquery/jquery.min.js"></script>
-    <!-- terminal code -->
-    <script src="js/terminal.js"></script>
+	<body style="padding: 0px; margin: 0px; border: 0px;">
+		<div class="wrapper">
+			<canvas id="canvas"></canvas>
+			<div class="terminal" id="term_demo">
+		</div>
+	</body>
+	<!-- terminal -->
+	<!-- ui terminal dependency -->
+	<script src="bower_components/jquery/jquery.min.js"></script>
+	<!-- terminal code -->
+	<script src="js/terminal.js"></script>
 
 <!-- impact -->
-    <!-- core library -->
-    <script type="text/javascript" src="/lib/impact/impact.js"></script> 
-     <!-- draw/update methods -->
-    <script type="text/javascript" src="/lib/game/main.js"></script>
+	<!-- core library -->
+	<script type="text/javascript" src="/lib/impact/impact.js"></script> 
+	<!-- draw/update methods -->
+	<script type="text/javascript" src="/lib/game/main.js"></script>
 
 <!-- pubnub -->
-    <script src="https://cdn.pubnub.com/pubnub.min.js"></script>
-    <script src="js/pubnub.js"></script>
+	<script src="https://cdn.pubnub.com/pubnub.min.js"></script>
+	<script src="js/pubnub.js"></script>
 
 <!-- game code -->
-    <script src="js/shipLogic.js"></script>
-    <script src="js/inputLogic.js"></script>
-    <script src="js/dataLogic.js"></script>
-    <script src="js/debug.js"></script>
+	<script src="js/shipLogic.js"></script>
+	<script src="js/inputLogic.js"></script>
+	<script src="js/dataLogic.js"></script>
+	<script src="js/debug.js"></script>
 
 </html>
