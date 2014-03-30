@@ -80,7 +80,7 @@ var data = {
 			data[incomingData.type].receive(incomingData)
 		}
 		else {
-			console.log('incoming data regected')
+			console.log('incoming data rejected')
 		}
 	},
 	//Text Message
