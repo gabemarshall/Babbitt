@@ -159,6 +159,24 @@ var data = {
 
 		},
 	},
+
+	//SOS Message
+	//**************************************************************************
+	'SOS_Message': {
+		send: function(systemDestination) {
+			data.send(systemDestination, 'none',
+				{
+					type: 'SOS_Message', //name of data type
+					//list other custom variables here
+				}
+			)
+		},
+		receive: function(incomingData) {
+			terminalLogic.output('A distress signal from '+incomingData.origin.ship)
+			//data['textMessage'].send(ship.getLocation(), incomingData.origin.ship,'string')
+		},
+	},
+
 	//Template for Data Types
 	//**************************************************************************
 	'template': {

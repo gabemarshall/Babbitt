@@ -157,6 +157,7 @@ var terminalLogic = {
 			'/d/shipstats',     //output ship stats to browser's console
 			'/d/clear',         //clear browser's console
 			'/debug',			//turn debug mode on or off
+			'/sos',				//Gabe's prototype for an SOS "help" call
 		]
 		debug.log('return "' + commandList + '"')
 		debug.endNest()
@@ -245,6 +246,15 @@ var terminalLogic = {
 		debug.stateSwitch()
 		debug.endNest()
 	},
+	//SOS
+	//**************************************************************************
+	'/sos': function(command, userInput) {
+		debug.startNest('/sos')
+		terminalLogic.output('Distress Signal Sent.')
+		data['SOS_Message'].send(ship.getLocation())
+		debug.endNest()
+	},
+
 	//Template
 	//**************************************************************************
 	'template': function(command, userInput) {
