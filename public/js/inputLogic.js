@@ -20,7 +20,7 @@ $(document).ready(function() {
 	$('#term_demo').terminal(
 		function(command, term) {
 			//pass user input to terminalLogic
-			debug.startNest('terminalLogic')
+			debug.startNest('terminalLogic.input')
 			terminalLogic.input(command)
 			debug.endNest()
 		},
@@ -40,29 +40,33 @@ var terminalLogic = {
 	//Input
 	//**************************************************************************  
 	input: function(stringIn) {
-		debug.startNest('input')								//start nest
+		debug.startNest('cleanUserInput')
 		var stringIn = terminalLogic.cleanUserInput(stringIn)	//clean string
+		debug.endNest()
+
+		debug.startNest('findCommand')
 		var command = terminalLogic.findCommand(stringIn)		//find command
+		debug.endNest()
+
+		debug.startNest('executeCommand')
 		terminalLogic.executeCommand(command, stringIn)			//execute
-		debug.endNest()											//end nest
+		debug.endNest()
 	},
 	//Cleans up terminal input
 	//**************************************************************************
 	cleanUserInput: function(stringIn) {						
-		debug.startNest('cleanUserInput')						//start nest
 		var stringIn = stringIn.trim();							//remove excess
 		stringIn = stringIn.toLowerCase();						//lower case
 		debug.log('return "' + stringIn + '"')					//log
-		debug.endNest()											//end nest
 		return stringIn;										//return value
 	},															
 	//Looks for command in input
 	//**************************************************************************
 	findCommand: function(stringIn) {
-		debug.startNest('findCommand')							//start nest
+		debug.startNest('getCommandList')
 		var commandList = terminalLogic.getCommandList()		//get list
+		debug.endNest()
 		var command = ''										//set command
-
 		if (stringIn !== '') {
 			//look through command list
 			for (var i = 0; i < commandList.length; i++) {
@@ -85,30 +89,30 @@ var terminalLogic = {
 		else {
 			debug.log('NO VALUE')
 		}
-		debug.endNest()
 		return command
 	},	
 	//Execute Command
 	//**************************************************************************
 	executeCommand: function(command, stringIn) {
-		debug.startNest('executeCommand')
 		if (command) {
 			try {
+				debug.startNest(command)
 				terminalLogic[command](command, stringIn)
+				debug.endNest()
 			}
 			catch(error) {
 				terminalLogic.executionFail(command)
 			}
 		}
 		else if (command === '') {
+
 			terminalLogic.commandFail(stringIn)
+
 		}
-		debug.endNest()
 	},
 	//Command not found
 	//**************************************************************************
 	commandFail: function(stringIn) {
-		debug.startNest('commandFail')
 		if (stringIn) {
 			terminalLogic.output(
 				'ERROR: ' +
@@ -116,36 +120,25 @@ var terminalLogic = {
 				'Command Not Found In: ' + stringIn
 			)
 		}
-		debug.endNest()
 	},
 	//Command code returned error
 	//**************************************************************************
 	executionFail: function(command) {
-		debug.startNest('executionFail')
 		terminalLogic.output(
 			'ERROR: ' +
 			'Command "' + command + '" OK: ' +
 			'Code Execution Fail'
 		)
-		debug.endNest()
 	},
 	//Output to terminal
 	//**************************************************************************
 	output: function(output) {
-		debug.startNest('output')
-		try {
-			$('#term_demo').terminal().echo(output)
-			debug.log('Terminal Output -> "' + output + '"')
-		}
-		catch(error) {
-			debug.log('Failure')
-		}
-		debug.endNest()
+		$('#term_demo').terminal().echo(output)
+		debug.log('Terminal Output -> "' + output + '"')
 	},
 	//List of commands
 	//**************************************************************************
 	getCommandList: function() {
-		debug.startNest('getCommandList')
 		var commandList = [
 			'/t',               //send text message
 			'/playername',      //get or set player name
@@ -160,47 +153,37 @@ var terminalLogic = {
 			'/sos',				//Gabe's prototype for an SOS "help" call
 		]
 		debug.log('return "' + commandList + '"')
-		debug.endNest()
 		return commandList
 	},
 	//Send Text Message
 	//**************************************************************************
 	'/t': function(command, userInput) {
-		debug.startNest('/t')
 		var message = userInput.replace(command, '')
 		message = message.trim()
 		if (message !== '') {
 			data.textMessage.send(ship.getLocation(), 'none', message)
 		}
-		debug.endNest()
 	},
 	//Laser
 	//**************************************************************************
 	'/laser': function(command, userInput) {
-		debug.startNest('/laser')
 		//code
-		debug.endNest()
 	},
 	//Display Ship System Location
 	//**************************************************************************
 	'/location': function() {
-		debug.startNest('/location')
-		terminalLogic.output('Current Location: ' + ship.getLocation())
-		debug.endNest()   
+		terminalLogic.output('Current Location: ' + ship.getLocation()) 
 	},
 	//Display Terminal Command List
 	//**************************************************************************
 	'/list': function(command, userInput) {
-		debug.startNest('/list')
 		var list = terminalLogic.getCommandList()
 		terminalLogic.output('ERROR: List Code not yet implemented')
 		//output list of user commands to terminal
-		debug.endNest()
 	},
 	//Display or change player name
 	//**************************************************************************
 	'/playername': function(command, userInput) {
-		debug.startNest('/playername')
 		var name = userInput.replace(command, '')
 		name = name.trim()
 		if (name == '' || name == ship.getCaptainName()) {
@@ -210,12 +193,10 @@ var terminalLogic = {
 			ship.setPlayerName(name)
 		}
 		terminalLogic.output('Player name: ' + ship.getCaptainName())
-		debug.endNest()
 	},
 	//Display or change ship name
 	//**************************************************************************
 	'/shipname': function(command, userInput) {
-		debug.startNest('/shipname')
 		var name = userInput.replace(command, '')
 		name = name.trim()
 		if (name == '' || name == ship.getShipName()) {
@@ -225,14 +206,11 @@ var terminalLogic = {
 			ship.setShipName(name)
 		}
 		terminalLogic.output('Ship name: ' + ship.getShipName())
-		debug.endNest()
 	},
 	//Display ship stats in browser's console
 	//**************************************************************************
 	'/d/shipstats': function() {
-		debug.startNest('/d/shipstats')
 		ship.getShipStats()
-		debug.endNest()
 	},
 	//Clear the browser's console
 	//**************************************************************************
@@ -242,25 +220,18 @@ var terminalLogic = {
 	//Set debug state
 	//**************************************************************************
 	'/debug': function(command, userInput) {
-		debug.startNest('/debug')
 		debug.stateSwitch()
-		debug.endNest()
 	},
 	//SOS
 	//**************************************************************************
 	'/sos': function(command, userInput) {
-		debug.startNest('/sos')
+		data['Distress_Signal'].send(ship.getLocation())
 		terminalLogic.output('Distress Signal Sent.')
-		data['SOS_Message'].send(ship.getLocation())
-		debug.endNest()
 	},
 
 	//Template
 	//**************************************************************************
 	'template': function(command, userInput) {
-		debug.startNest('template')
 		//code
-		debug.endNest()
 	},
 }
-

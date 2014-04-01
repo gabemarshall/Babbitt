@@ -160,20 +160,25 @@ var data = {
 		},
 	},
 
-	//SOS Message
+	//Distress Signal
 	//**************************************************************************
-	'SOS_Message': {
+	'Distress_Signal': {
 		send: function(systemDestination) {
 			data.send(systemDestination, 'none',
 				{
-					type: 'SOS_Message', //name of data type
-					//list other custom variables here
+					type: 'Distress_Signal', //name of data type
+					shipName: ship.getName(),
 				}
 			)
 		},
 		receive: function(incomingData) {
-			terminalLogic.output('A distress signal from '+incomingData.origin.ship)
-			//data['textMessage'].send(ship.getLocation(), incomingData.origin.ship,'string')
+			terminalLogic.output(
+				'A distress signal has been detected from the "' + 
+				incomingData.shipName +
+				'", located in the ' +
+				incomingData.origin.system +
+				' system'
+			)
 		},
 	},
 
