@@ -83,6 +83,21 @@ var data = {
 			console.log('incoming data rejected')
 		}
 	},
+	//Confirmation
+	//**************************************************************************
+	'confirmation': {
+		send: function(systemDestination, shipDestination) {
+			data.send(systemDestination, shipDestination,
+				{
+					type: 'confirmation', //name of data type
+					//list other custom variables here
+				}
+			)
+		},
+		receive: function() {
+			//code to execute when receiving this type of data
+		},
+	},
 	//Text Message
 	//**************************************************************************
 	'textMessage': {
@@ -100,7 +115,8 @@ var data = {
 			if (incomingData.destination.ship === ship.getID() ||
 				incomingData.destination.ship === 'none') {
 				//output to terminal
-				terminalLogic.output(
+				TERMINAL_LOGIC.output
+				(
 					'Message Received ' +
 					incomingData.timeStamp.hour + ':' + 
 					incomingData.timeStamp.min + ' ' +
@@ -127,7 +143,7 @@ var data = {
 		},
 		receive: function(incomingData) {
 			if (incomingData.destination.ship === ship.getID()) {
-				terminalLogic.output('Message Sent')
+				TERMINAL_LOGIC.output('Message Sent')
 			}
 		},
 	},
@@ -142,7 +158,7 @@ var data = {
 			)
 		},
 		receive: function(incomingData) {
-			terminalLogic.output('Warp Drive Detected')
+			TERMINAL_LOGIC.output('Warp Drive Detected')
 		},
 	},
 	//Scan For Ship
@@ -159,7 +175,6 @@ var data = {
 
 		},
 	},
-
 	//Distress Signal
 	//**************************************************************************
 	'Distress_Signal': {
@@ -172,7 +187,7 @@ var data = {
 			)
 		},
 		receive: function(incomingData) {
-			terminalLogic.output(
+			TERMINAL_LOGIC.output(
 				'A distress signal has been detected from the "' + 
 				incomingData.shipName +
 				'", located in the ' +
@@ -181,7 +196,6 @@ var data = {
 			)
 		},
 	},
-
 	//Template for Data Types
 	//**************************************************************************
 	'template': {

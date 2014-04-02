@@ -1,42 +1,42 @@
 //Debug
 //******************************************************************************
-var debug = {
+var DEBUG = {
 	state: true,
 	startNest: function(value) {
-		if (debug.state === true) {
+		if (DEBUG.state === true) {
 			console.groupCollapsed(value)
 		}
 	},
 	endNest: function() {
-		if (debug.state === true) {
+		if (DEBUG.state === true) {
 			console.groupEnd()
 		}
 	},
 	log: function(value) {
-		if (debug.state === true) {
+		if (DEBUG.state === true) {
 			console.log(value)
 		}
 	},
 	clear: function() {
-		if (debug.state === true) {
+		if (DEBUG.state === true) {
 			console.clear()
 		}
 	},
 	setState: function(value) {
-		debug.state = value
+		DEBUG.state = value
 	},
 	getState: function() {
-		return debug.state
+		return DEBUG.state
 	},
 	stateSwitch: function() {
-		console.groupCollapsed('debug.stateSwitch')
-		if (debug.state === true) {
-			debug.state = false
-			console.log ('debug.state = false')
+		console.groupCollapsed('DEBUG.stateSwitch')
+		if (DEBUG.state === true) {
+			DEBUG.state = false
+			console.log ('DEBUG.state = false')
 		}
 		else {
-			debug.state = true
-			console.log ('debug.state = true')
+			DEBUG.state = true
+			console.log ('DEBUG.state = true')
 		}
 		console.groupEnd()
 	},

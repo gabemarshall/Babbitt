@@ -20,7 +20,8 @@ var ship = new function ship() {
 	var target = 'none'
 	var debug = false
 
-	var sendToConsole = function() {
+	var sendToConsole = function()
+	{
 		console.groupCollapsed('ship')
 		console.groupCollapsed('Basic')
 		console.log('Ship\'s ID #: ' + id)
