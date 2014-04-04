@@ -1,7 +1,5 @@
 //inputLogic.js
-/*
-description
-*/
+
 
 //Terminal Setup
 //******************************************************************************
@@ -11,7 +9,7 @@ $(document).ready(function() {
 		//set ship location
 		ship.setLocation('babb' + gameID)
 		//send out warp drive signal
-		data.warpDriveSignal.send(ship.getLocation())
+		ship.warpDriveSignal()
 		//notify player
 		term.echo('Current Location: ' + ship.getLocation())
 	}
@@ -20,9 +18,9 @@ $(document).ready(function() {
 	$('#term_demo').terminal(
 		function(command, term) {
 			//pass user input to TERMINAL_LOGIC
-			DEBUG.startNest('TERMINAL_LOGIC.input')
+			console.groupCollapsed('TERMINAL_LOGIC.input')
 			TERMINAL_LOGIC.input(command)
-			DEBUG.endNest()
+			console.groupEnd()
 		},
 		/*Terminal setup*/ {
 			height: 200,
@@ -41,17 +39,17 @@ var TERMINAL_LOGIC = {
 	//**************************************************************************  
 	input: function(stringIn)
 	{
-		DEBUG.startNest('cleanUserInput')
+		console.groupCollapsed('cleanUserInput')
 		var stringIn = TERMINAL_LOGIC.cleanUserInput(stringIn)	//clean string
-		DEBUG.endNest()
+		console.groupEnd()
 
-		DEBUG.startNest('findCommand')
+		console.groupCollapsed('findCommand')
 		var command = TERMINAL_LOGIC.findCommand(stringIn)		//find command
-		DEBUG.endNest()
+		console.groupEnd()
 
-		DEBUG.startNest('executeCommand')
+		console.groupCollapsed('executeCommand')
 		TERMINAL_LOGIC.executeCommand(command, stringIn)			//execute
-		DEBUG.endNest()
+		console.groupEnd()
 	},
 
 	//Cleans up terminal input
@@ -60,15 +58,15 @@ var TERMINAL_LOGIC = {
 	{						
 		var stringIn = stringIn.trim();							//remove excess
 		stringIn = stringIn.toLowerCase();						//lower case
-		DEBUG.log('return "' + stringIn + '"')					//log
+		console.log('return "' + stringIn + '"')					//log
 		return stringIn;										//return value
 	},															
 	//Looks for command in input
 	//**************************************************************************
 	findCommand: function(stringIn) {
-		DEBUG.startNest('getCommandList')
+		console.groupCollapsed('getCommandList')
 		var commandList = TERMINAL_LOGIC.getCommandList()		//get list
-		DEBUG.endNest()
+		console.groupEnd()
 		var command = ''										//set command
 		if (stringIn !== '') {
 			//look through command list
@@ -78,19 +76,19 @@ var TERMINAL_LOGIC = {
 					//use longest length command that is found
 					if (commandList[i].length > command.length) {
 						command = commandList[i]
-						DEBUG.log('FOUND: ' + commandList[i]) 
+						console.log('FOUND: ' + commandList[i]) 
 					}
 					else {
-						DEBUG.log('IGNORE: ' + commandList[i])
+						console.log('IGNORE: ' + commandList[i])
 					}
 				}
 				else {
-					DEBUG.log('NOT: ' + commandList[i])
+					console.log('NOT: ' + commandList[i])
 				}
 			}
 		}
 		else {
-			DEBUG.log('NO VALUE')
+			console.log('NO VALUE')
 		}
 		return command
 	},	
@@ -99,9 +97,9 @@ var TERMINAL_LOGIC = {
 	executeCommand: function(command, stringIn) {
 		if (command) {
 			try {
-				DEBUG.startNest(command)
+				console.groupCollapsed(command)
 				TERMINAL_LOGIC[command](command, stringIn)
-				DEBUG.endNest()
+				console.groupEnd()
 			}
 			catch(error) {
 				TERMINAL_LOGIC.executionFail(command)
@@ -135,7 +133,7 @@ var TERMINAL_LOGIC = {
 	//**************************************************************************
 	output: function(output) {
 		$('#term_demo').terminal().echo(output)
-		DEBUG.log('Terminal Output -> "' + output + '"')
+		console.log('Terminal Output -> "' + output + '"')
 	},
 	//List of commands
 	//**************************************************************************
@@ -150,31 +148,27 @@ var TERMINAL_LOGIC = {
 			'/list',            //list commands
 			'/d/shipstats',     //output ship stats to browser's console
 			'/d/clear',         //clear browser's console
-			'/debug',			//turn debug mode on or off
 			'/sos',				//Gabe's prototype for an SOS "help" call
 		]
-		DEBUG.log('return "' + commandList + '"')
+		console.log('return "' + commandList + '"')
 		return commandList
 	},
 	//Send Text Message
 	//**************************************************************************
 	'/t': function(command, userInput) {
 		var message = userInput.replace(command, '')
-		DEBUG.log('removing command "' + command + '" from message') 
+		console.log('removing command "' + command + '" from message') 
 		message = message.trim()
 		if (message !== '') {
-			DEBUG.log('sending message "' + message + '"')
-			data.textMessage.send(ship.getLocation(), 'none', message)
+			console.log('sending message "' + message + '"')
+			ship.textMessage(ship.getLocation(), 'none', message)
+			//ship.data['textMessage'].send(ship.getLocation(), 'none', message)
+			//data.textMessage.send(ship.getLocation(), 'none', message)
 		}
 		else {
-			DEBUG.log('No message after command')
+			console.log('No message after command')
 		}
 
-	},
-	//Laser
-	//**************************************************************************
-	'/laser': function(command, userInput) {
-		//code
 	},
 	//Display Ship System Location
 	//**************************************************************************
@@ -222,17 +216,13 @@ var TERMINAL_LOGIC = {
 	//Clear the browser's console
 	//**************************************************************************
 	'/d/clear': function() {
-		DEBUG.clear()
-	},
-	//Set debug state
-	//**************************************************************************
-	'/debug': function(command, userInput) {
-		DEBUG.stateSwitch()
+		console.clear()
 	},
 	//SOS
 	//**************************************************************************
 	'/sos': function(command, userInput) {
-		data['Distress_Signal'].send(ship.getLocation())
+		ship.distressSignal()
+		//data['Distress_Signal'].send(ship.getLocation())
 		TERMINAL_LOGIC.output('Distress Signal Sent.')
 	},
 	//Template
