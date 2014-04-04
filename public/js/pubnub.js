@@ -1,6 +1,6 @@
 //pubnub.js
 
-//Pubnub Subscribe
+//Pubnub Keys
 //******************************************************************************
 var userID = Math.floor((Math.random()*10000)+1);
 var pubnub = PUBNUB.init({

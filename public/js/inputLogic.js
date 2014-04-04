@@ -1,6 +1,5 @@
 //inputLogic.js
 
-
 //Terminal Setup
 //******************************************************************************
 $(document).ready(function() {
@@ -11,6 +10,7 @@ $(document).ready(function() {
 		//send out warp drive signal
 		ship.warpDriveSignal()
 		//notify player
+		term.echo('Disengaging Warp Drive')
 		term.echo('Current Location: ' + ship.getLocation())
 	}
 
@@ -58,7 +58,7 @@ var TERMINAL_LOGIC = {
 	{						
 		var stringIn = stringIn.trim();							//remove excess
 		stringIn = stringIn.toLowerCase();						//lower case
-		console.log('return "' + stringIn + '"')					//log
+		console.log('return "' + stringIn + '"')				//log
 		return stringIn;										//return value
 	},															
 	//Looks for command in input

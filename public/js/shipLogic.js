@@ -2,9 +2,9 @@
 
 //SHIP
 //******************************************************************************
-var ship = new Ship()
+var ship = new Ship(pubnub.publish)
 
-function Ship() {
+function Ship(deliveryMethod) {
 	//Private
 	//**************************************************************************
 	var id = Math.floor((Math.random()*1000000)+1)
@@ -41,8 +41,7 @@ function Ship() {
 
 	var sendData = function(systemDestination, shipDestination, contentBlock) {
 		var currentTime = new Date()				//record current time
-		var addressBlock = 
-		{											//create address block
+		var addressBlock = {						//create address block
 			id: currentTime.getTime(),				//get unique id
 			origin: {								//origin of data
 				system: ship.getLocation(),			//origin system name
@@ -66,9 +65,8 @@ function Ship() {
 		//combine address block and content block to form data to send
 		var dataBlock = mergeBlocks(addressBlock, contentBlock)
 
-		//send data block through pubnub
-		//GLOBAL
-		pubnub.publish({
+		//send data block through delivery method
+		deliveryMethod({
 			channel: dataBlock.destination.system,	//system destination
 			message: dataBlock						//data
 		})
@@ -163,7 +161,7 @@ function Ship() {
 	this.distressSignal = function() {
 		sendData(location, 'none',
 			{
-				type: 'distressSignal', //name of data type
+				type: 'distressSignal',
 				shipName: name,
 			}
 		)
