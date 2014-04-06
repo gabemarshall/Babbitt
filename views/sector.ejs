@@ -44,7 +44,9 @@
 	<script src="js/pubnub.js"></script>
 
 <!-- game code -->
-	<script src="js/shipLogic.js"></script>
+	<!-- dependency for shipLogic.js -->
+	<script src="js/shipParts.js"></script> <!-- dependency for shipLogic.js -->
+	<script src="js/shipLogic.js"></script> <!-- requires shipParts.js -->
 	<script src="js/inputLogic.js"></script>
 
 </html>
