@@ -208,11 +208,6 @@ var TERMINAL_LOGIC = {
 		}
 		TERMINAL_LOGIC.output('Ship name: ' + ship.getShipName())
 	},
-	//Display ship stats in browser's console
-	//**************************************************************************
-	'/d/shipstats': function() {
-		ship.getShipStats()
-	},
 	//Clear the browser's console
 	//**************************************************************************
 	'/d/clear': function() {

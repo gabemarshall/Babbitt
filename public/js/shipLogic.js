@@ -6,33 +6,18 @@ var ship = new Ship(pubnub.publish)
 
 function Ship(deliveryMethod) {
 	var id = Math.floor((Math.random()*1000000)+1)
-	var captain = id
-	var name = id
-	var location = 'location'
+	var captain = 'unknown'
+	var name = 'unknown'
+	var location = 'unknown'
 	var capacitor = new Capacitor()
 	var generator = new Generator()
 	var targetingSystem = new TargetingSystem()
-	
-	var sendToConsole = function() {
-		console.groupCollapsed('ship')
-		console.groupCollapsed('Basic')
-		console.log('Ship\'s ID #: ' + id)
-		console.log('Ship\'s Name: ' + name)
-		console.log('Ship\'s Captain: ' + captain)
-		console.log('Ship\'s Location: ' + location)
-		console.log('Ship\'s Target: ' + target)
-		console.groupEnd()
-		capacitor.sendToConsole()
-		generator.sendToConsole()
-		console.groupEnd()
-	}
+	var encounterLog = new EncounterLog()
 
-	var debug = false
 	var updateSystems = setInterval(
 		function() {
 			generator.update()
 			capacitor.update(generator.sendPower())
-			if (debug === true) { sendToConsole() }
 		}, 
 		1000
 	)
@@ -43,6 +28,8 @@ function Ship(deliveryMethod) {
 	this.receiveData = function(incomingData) {
 		 //check source
 		if (incomingData.origin.ship != id) {
+			//check encounter log
+			encounterLog.update(incomingData.origin.ship)
 			//execute code based on data type
 			data[incomingData.type](incomingData)
 		}
@@ -51,14 +38,14 @@ function Ship(deliveryMethod) {
 			console.log('ignore data, origin is my ship')
 		}
 	}
+
 	//send controller
 	var sendData = function(systemDestination, shipDestination, contentBlock) {
 		var currentTime = new Date()				//record current time
 		var addressBlock = {						//create address block
-			id: currentTime.getTime(),				//get unique id
 			origin: {								//origin of data
-				system: ship.getLocation(),			//origin system name
-				ship: ship.getID(),					//origin ship id #
+				system: location,					//origin system name
+				ship: id,							//origin ship id #
 			},
 			destination: {							//destination of data
 				system: systemDestination,			//destination system name
@@ -107,14 +94,27 @@ function Ship(deliveryMethod) {
 	//receive types defined
 	var data = {
 		'textMessage': function(incomingData) {
-			if (incomingData.destination.ship === ship.getID() ||
+			var displayName = function() {
+				if (encounterLog.getShipName(incomingData.origin.ship) === 
+					encounterLog.getUnidentified()) {
+					return 'Unidentified Ship #' + incomingData.origin.ship
+				}
+				else {
+					return encounterLog.getShipName(incomingData.origin.ship)
+				}
+			}
+
+			if (incomingData.destination.ship === id ||
 				incomingData.destination.ship === 'none') {
 				//output to terminal
 				TERMINAL_LOGIC.output (
 					'Message Received ' +
 					incomingData.timeStamp.hour + ':' + 
-					incomingData.timeStamp.min + ' ' +
-					incomingData.origin.ship + ': ' +
+					incomingData.timeStamp.min + ' ' + 
+					displayName() + ': ' +
+
+					//encounterLog.getShipName(incomingData.origin.ship) + ': ' +
+					//incomingData.origin.ship + ': ' +
 					incomingData.message
 				)
 			}
@@ -124,9 +124,9 @@ function Ship(deliveryMethod) {
 		},
 		'distressSignal': function(incomingData) {
 			TERMINAL_LOGIC.output(
-				'A distress signal has been detected from the "' + 
+				'A distress signal has been detected from a ship named "' + 
 				incomingData.shipName +
-				'", located in the ' +
+				'", located within the ' +
 				incomingData.origin.system +
 				' system'
 			)
@@ -135,21 +135,22 @@ function Ship(deliveryMethod) {
 
 	//Public Methods
 	//**************************************************************************
+	//get
 	this.getShipID = function() {return id}
-	this.getID 			= function(     )   { return id                     }
-	this.getName 		= function(     )   { return name                   }
-	this.setName 		= function(value)   { name = value                  }
-	this.getShipName 	= function(     )   { return name                   }
-	this.setShipName 	= function(value)   { name = value                  }
-	this.getPlayerName 	= function(     )   { return captain                }
-	this.setPlayerName 	= function(value)   { captain = value               }
-	this.getCaptainName = function(     )   { return captain                }
-	this.setCaptainName = function(value)   { captain = value               }
-	this.getLocation 	= function(     )   { return location               }
-	this.setLocation 	= function(value)   { location = value              }
-	this.getTarget 		= function(     )   { return target                 }
-	this.setTarget 		= function(value)   { target = value                }
-	this.getShipStats 	= function(     )   { sendToConsole()				}
+	this.getID = function() {return id}
+	this.getName = function() {return name}
+	this.getShipName = function() {return name}
+	this.getPlayerName = function() {return captain}
+	this.getCaptainName = function() {return captain}
+	this.getLocation = function() {return location}
+	this.getTarget = function() {return target}
+	//set
+	this.setName = function(value) {name = value}
+	this.setShipName = function(value) {name = value}
+	this.setPlayerName = function(value)   {captain = value}
+	this.setCaptainName = function(value) {captain = value}
+	this.setLocation = function(value) {location = value}
+	this.setTarget = function(value) {target = value}
 
 	this.textMessage = function(systemDestination, shipDestination, msg) {
 		sendData(systemDestination, shipDestination,
@@ -179,6 +180,9 @@ function Ship(deliveryMethod) {
 	}
 
 	this.setTarget = function(targetshipID) {
+	}
 
+	this.useWarpDrive = function() {
+		this.warpDriveSignal()
 	}
 }

@@ -24,10 +24,8 @@ function Capacitor() {
 		this.receivePower(incomingPower)
 	}
 	this.sendToConsole = function() {
-		console.groupCollapsed('Capacitor')
 		efficiency.sendToConsole()
 		power.sendToConsole()
-		console.groupEnd()
 	}
 }
 
@@ -66,12 +64,10 @@ function Generator() {
 		calculateOutput()
 	}
 	this.sendToConsole = function() {
-		console.groupCollapsed('Generator')
 		structure.sendToConsole()
 		damage.sendToConsole()
 		output.sendToConsole()
 		efficiency.sendToConsole()
-		console.groupEnd()
 	}
 }
 
@@ -82,7 +78,7 @@ function Radiator() {
 	//public
 }
 
-//LimitedValue
+//Stat
 //******************************************************************************
 function Stat(nam, cur, min, max) {
 	//private
@@ -93,12 +89,10 @@ function Stat(nam, cur, min, max) {
 	var maximum = max	//maximum value
 	//private
 	this.sendToConsole = function() {
-		console.groupCollapsed(name)
 		console.log('Current: ' + current)
 		console.log('Previous: ' + previous)
 		console.log('Minimum: ' + minimum)
 		console.log('Maximum: ' + maximum)
-		console.groupEnd()
 	}
 	this.getCurrent = function() {
 		return current
@@ -126,20 +120,6 @@ function Stat(nam, cur, min, max) {
 	}
 }
 
-//Known ship List
-//******************************************************************************
-function encounterLog() {
-	var log = []
-
-	this.addShip = function() {
-
-	}
-	this.verifyShip = function (shipID) {
-		//if shp is known, return true
-		//else return false
-	}
-}
-
 //Targeting System
 //******************************************************************************
 //this system handings targeting
@@ -155,28 +135,89 @@ function TargetingSystem() {
 	}
 }
 
-//Ship Records
+//Ship Encounter Log
 //******************************************************************************
-//this system handles basic ship records and logging
-function shipLog() {
-	var shipID = Math.floor((Math.random()*1000000)+1)
-	var shipName = 'unknown'
-	var captainName = 'unknown'
-	var location = 'unknown'
-
-	this.getShipID = function() {
-		return shipID
+function EncounterLog() {
+	/* this system handles ship encounter logging.  this system keeps records of
+	ship that have been encountered.  if a new ship id is found, it makes a 
+	new entry into the log with the ship id number */
+	var log = [] //holds log entry data
+	var unidentified = 'unidentified'
+	this.getUnidentified = function() {
+		return unidentified
 	}
-
-	this.getShipName = function() {
-		return shipName
+	this.findEntry = function(shipID) {
+		/* returns a simnple true/false if an entry is found in log */
+		try { 
+			if(log[shipID].getShipID() === shipID) { 
+				console.log('log entry found')
+				return true 
+			} 
+		}
+		catch(error) { 
+			console.log('log entry not found')
+			return false 
+		}
 	}
-
-	this.getCaptainName = function() {
-		return captainName
+	this.getShipName = function(shipID) {
+		/* returns name of ship of ship, if in log, else */
+		if (this.findEntry(shipID) === true) {
+			console.log('return ship name')
+			return log[shipID].getShipName()
+		}
 	}
-
-	this.getLocation = function() {
-		return location
+	this.getCaptainName = function(shipID) {
+		if (this.findEntry(shipID) === true) {
+			console.log('return captain name')
+			return log[shipID].getCaptainName()
+		}
+	}
+	this.newEntry = function(shipID) {
+		/* adds a new entry to the log */
+		log[shipID] = new ShipDiscription(shipID)
+		console.log('adding new log entry, log: ' + shipID)
+	}
+	this.update = function(shipID) {
+		/* use this public method to check for a log entry
+		if entry not found, add to log */
+		if (this.findEntry(shipID) === true) {
+		}
+		else {
+			this.newEntry(shipID)
+		}
+	}
+	this.updateEntry = function(shipID, shipName, captainName, loation) {
+		/* use this public method to update data in a log entry */
+		try {
+			if (log[shipID].shipID === shipID) {
+				log[entryLocation].setShipName(shipName)
+				log[entryLocation].setCaptainName(captainName)
+				log[entryLocation].setLocation(loation)
+				console.log('ship\'s encounter log updated')
+				console.log('ship\'s name: ' + shipName)
+				console.log('ship\'s captain: ' + captainName)
+				console.log('ship\'s location: ' + loation)
+			}
+		}
+		catch(error) {
+			console.log('ship id not found in log')
+		}
+	}
+	function ShipDiscription(shipID, shipName, captainName, loation) {
+		/* this object holds log entry values */
+		var shipID = shipID || 'unidentified'
+		var shipName = shipName || 'unidentified'
+		var captainName = captainName || 'unidentified'
+		var location = loation || 'unidentified'
+		//get
+		this.getShipID = function() {return shipID}
+		this.getShipName = function() {return shipName}
+		this.getCaptainName = function() {return captainName}
+		this.getLocation = function() {return location}
+		//set
+		this.setShipID = function(value) {shipID = value}
+		this.setShipName = function(value) {rshipName = value}
+		this.setCaptainName = function(value) {captainName = value}
+		this.setLocation = function(value) {location = value}
 	}
 }
