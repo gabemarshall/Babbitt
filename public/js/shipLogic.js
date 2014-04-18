@@ -22,12 +22,6 @@ function Ship(deliveryMethod) {
 		1000
 	)
 
-	var syncTimer = setInterval(
-		function(){
-			saveData(this.getPlayerName(), this.getShipID(), this.getShipName())
-		}, 10000
-	)
-
 	//Data System
 	//**************************************************************************
 	//receive controller
