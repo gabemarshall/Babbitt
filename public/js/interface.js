@@ -12,6 +12,9 @@ $(document).ready(function() {
 		//notify player
 		term.echo('Disengaging Warp Drive')
 		term.echo('Current Location: ' + ship.getLocation())
+		// Initially on load we will try to sync from the server
+		initSyncData()
+		
 	}
 
 	//Pass user input to TERMINAL_LOGIC
@@ -149,6 +152,7 @@ var TERMINAL_LOGIC = {
 			'/d/shipstats',     //output ship stats to browser's console
 			'/d/clear',         //clear browser's console
 			'/sos',				//Gabe's prototype for an SOS "help" call
+			'/login',
 		]
 		console.log('return "' + commandList + '"')
 		return commandList
@@ -220,6 +224,18 @@ var TERMINAL_LOGIC = {
 		//data['Distress_Signal'].send(ship.getLocation())
 		TERMINAL_LOGIC.output('Distress Signal Sent.')
 	},
+
+	//Login Prototype
+	//**************************************************************************
+	'/login': function(command, userInput) {
+		var credentials = userInput.replace(/(\/login\s{1}?)/gi, "")
+		credentials = credentials.split(":")
+		var username = credentials[0]
+		var password = credentials[1]
+
+		ship.login(username, password)
+	},
+
 	//Template
 	//**************************************************************************
 	'template': function(command, userInput) {

@@ -146,6 +146,7 @@ function Ship(deliveryMethod) {
 	this.getTarget = function() {return target}
 	//set
 	this.setName = function(value) {name = value}
+	this.setShipID = function(value) {id = value}
 	this.setShipName = function(value) {name = value}
 	this.setPlayerName = function(value)   {captain = value}
 	this.setCaptainName = function(value) {captain = value}
@@ -177,6 +178,45 @@ function Ship(deliveryMethod) {
 				shipName: name,
 			}
 		)
+	}
+
+	this.login = function(username, password){
+		TERMINAL_LOGIC.output("Attempting to sync data with server...")
+		// ajax login method, will set auth cookie and return ship data in json format if successful
+		$.ajax({
+		  type: "POST",
+		  url: "http://localhost:3000/users/sign_in",
+		  xhrFields: { withCredentials: true },
+		  data: {"user[email]": username, "user[password]": password, commit: "Log in", "user[remember_me]":0}
+		}).done(function( Data ) {
+    		
+    		var serverShipName
+    		var serverPlayerName
+    		var serverShipId
+
+    		if (!Data.ship_name){
+    			serverShipName = "unknown"
+    		}
+    		else {
+    			serverShipName = Data.ship_name
+    		}
+
+    		if (!Data.ship_id){
+    			serverShipId = Math.floor((Math.random()*1000000)+1)
+    		}
+    		else {
+    			serverShipId = Data.ship_id
+    		}
+
+    		if (!Data.playername){
+    			serverPlayerName = "unknown"
+    		}
+    		else {
+    			serverPlayerName = Data.playername
+    		}
+    		// Calls setData within the dbsync.js file
+    		setLocalData(serverShipName, serverPlayerName, serverShipId)
+  		});;
 	}
 
 	this.setTarget = function(targetshipID) {
