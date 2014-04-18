@@ -2,7 +2,7 @@
 function initSyncData(){
 		$.ajax({
 		  type: "GET",
-		  url: "http://localhost:3000/init",
+		  url: "http://babbitt.gabemarshall.me:1982/init",
 		  xhrFields: { withCredentials: true }
 		}).done(function(Data){
 			setLocalData(Data.ship_name, Data.playername, Data.ship_id)
@@ -14,7 +14,7 @@ function initSyncData(){
 function saveData(){
 		$.ajax({
 		  type: "POST",
-		  url: "http://localhost:3000/sync",
+		  url: "http://babbitt.gabemarshall.me:1982/sync",
 		  xhrFields: { withCredentials: true },
 		  data: {"playername": playername, "shipid": shipid, "shipname": shipname}
 		}).error(function(){

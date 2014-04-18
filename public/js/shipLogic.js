@@ -185,7 +185,7 @@ function Ship(deliveryMethod) {
 		// ajax login method, will set auth cookie and return ship data in json format if successful
 		$.ajax({
 		  type: "POST",
-		  url: "http://localhost:3000/users/sign_in",
+		  url: "http://babbitt.gabemarshall.me:1982/users/sign_in",
 		  xhrFields: { withCredentials: true },
 		  data: {"user[email]": username, "user[password]": password, commit: "Log in", "user[remember_me]":0}
 		}).done(function( Data ) {
