@@ -18,7 +18,7 @@ function saveData(playername, shipid, shipname){
 		  xhrFields: { withCredentials: true },
 		  data: {"playername": playername, "shipid": shipid, "shipname": shipname}
 		}).error(function(){
-			alert("Not logged in")
+			console.log("sync failed, not logged in")
 		})
 }
 
