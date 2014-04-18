@@ -11,7 +11,7 @@ function initSyncData(){
 		})
 }
 
-function saveData(){
+function saveData(playername, shipid, shipname){
 		$.ajax({
 		  type: "POST",
 		  url: "http://babbitt.gabemarshall.me:1982/sync",
@@ -21,6 +21,13 @@ function saveData(){
 			alert("Not logged in")
 		})
 }
+
+var syncTimer = setInterval(
+	function(){
+		saveData(this.getPlayerName(), this.getShipID(), this.getShipName())
+	}, 10000
+)
+	
 
 // Set local values to data received from server
 function setLocalData(shipname, playername, shipid){
