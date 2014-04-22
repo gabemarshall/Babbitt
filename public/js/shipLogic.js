@@ -243,7 +243,7 @@ var ship = new Ship(pubnub.publish)
                     // Calls setData within the dbsync.js file
                     setLocalData(serverShipName, serverPlayerName, serverShipId)
                 } else {
-                    TERMINAL_LOGIC.output("Sorry, your credentials are not valid.."
+                    TERMINAL_LOGIC.output("Sorry, your credentials are not valid..");
                 }
             });;
         }
