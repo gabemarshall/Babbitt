@@ -3,6 +3,10 @@
     path = require('path');
 
 var child = require('child_process');
+//var argv = require('yargs').argv;
+var server_environment;
+
+console.log(server_environment);
 
 var app = express();
 
@@ -24,7 +28,7 @@ var clients = 0
 
 
 app.get('/sector', function(req, res) {
-    res.render('sector');
+    res.render('sector', {'server_environment':server_environment});
 });
 
 app.get('/', function(req, res) {
