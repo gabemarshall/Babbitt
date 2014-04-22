@@ -203,7 +203,8 @@ var ship = new Ship(pubnub.publish)
 
         this.login = function(username, password) {
             TERMINAL_LOGIC.output("Attempting to sync data with server...")
-            // ajax login method, will set auth cookie and return ship data in json format if successful
+            // ajax login method, will set auth cookie and return ship data 
+            // in JSON format if successful
             $.ajax({
                 type: "POST",
                 url: "http://babbitt.gabemarshall.me:1982/users/sign_in",
